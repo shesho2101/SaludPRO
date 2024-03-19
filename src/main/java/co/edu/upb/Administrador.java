@@ -28,7 +28,7 @@ public class Administrador extends JFrame {
 
     public Administrador() {
         setTitle("IPS Salud Pro - Administrador");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Poner en pantalla completa
+        setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -143,7 +143,7 @@ public class Administrador extends JFrame {
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 63)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             JPanel panelMedicamentos = new JPanel();
             panelMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -192,7 +192,7 @@ public class Administrador extends JFrame {
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             // Crear la tabla y su modelo de datos
             DefaultTableModel model = new DefaultTableModel() {
@@ -253,7 +253,7 @@ public class Administrador extends JFrame {
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             // Crear la tabla y su modelo de datos
             DefaultTableModel model = new DefaultTableModel() {
