@@ -31,7 +31,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
 
     public AgenteAtencionAlPaciente() {
         setTitle("IPS Salud Pro - Agente atención al paciente");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Poner en pantalla completa
+        setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -92,8 +92,8 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void moverBotones() {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
-                final int deltaX = 33;
-                final int duration = 250;
+                final int deltaX = 30;
+                final int duration = 215;
                 final long startTime = System.currentTimeMillis();
 
                 public void actionPerformed(ActionEvent e) {
@@ -160,7 +160,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JPanel panelAgendarCita = new JPanel();
             panelAgendarCita.setBackground(new Color(7, 29, 68));
             panelAgendarCita.setLayout(null);
-            panelAgendarCita.setBounds(760, 0, 800, 900);
+            panelAgendarCita.setBounds(800, 0, 800, 900);
 
             JButton btnAgendarCita = new JButton("Agendar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -236,7 +236,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             JButton btnAgendarCita = new JButton("Buscar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -250,7 +250,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 114, 45);
+            lblDocumento.setBounds(338, 321, 120, 45);
             panelCancelarCita.add(lblDocumento);
 
             contentPane.add(panelCancelarCita);
@@ -270,7 +270,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JPanel panelActivarCita = new JPanel();
             panelActivarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelActivarCita.setLayout(null);
-            panelActivarCita.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActivarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             JButton btnAgendarCita = new JButton("Buscar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -284,7 +284,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 114, 45);
+            lblDocumento.setBounds(338, 321, 120, 45);
             panelActivarCita.add(lblDocumento);
 
             contentPane.add(panelActivarCita);
