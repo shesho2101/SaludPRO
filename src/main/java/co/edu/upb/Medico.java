@@ -30,7 +30,7 @@ public class Medico extends JFrame {
 
     public Medico() {
         setTitle("IPS Salud Pro - Medico");
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Poner en pantalla completa
+        setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -84,8 +84,8 @@ public class Medico extends JFrame {
     private void moverBotones() {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
-                int deltaX = 33;
-                int duration = 250;
+                int deltaX = 30;
+                int duration = 240;
                 long startTime = System.currentTimeMillis();
 
                 public void actionPerformed(ActionEvent e) {
@@ -146,7 +146,7 @@ public class Medico extends JFrame {
             JPanel panelHistoriaClinica = new JPanel();
             panelHistoriaClinica.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelHistoriaClinica.setLayout(null);
-            panelHistoriaClinica.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelHistoriaClinica.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             JButton btnAgendarCita = new JButton("Buscar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -156,7 +156,7 @@ public class Medico extends JFrame {
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 114, 45);
+            lblDocumento.setBounds(338, 321, 120, 45);
             panelHistoriaClinica.add(lblDocumento);
 
             textFieldDocumento = new JTextField();
@@ -183,7 +183,7 @@ public class Medico extends JFrame {
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             JButton btnAgendarCita = new JButton("Ver agenda");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -241,7 +241,7 @@ public class Medico extends JFrame {
             JPanel panelReportar = new JPanel();
             panelReportar.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelReportar.setLayout(null);
-            panelReportar.setBounds(760, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelReportar.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             JButton btnAgendarCita = new JButton("Buscar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -256,7 +256,7 @@ public class Medico extends JFrame {
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 114, 45);
+            lblDocumento.setBounds(338, 321, 120, 45);
             panelReportar.add(lblDocumento);
 
             contentPane.add(panelReportar);
