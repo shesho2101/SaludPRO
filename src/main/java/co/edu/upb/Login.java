@@ -28,31 +28,31 @@ public class Login extends JFrame {
                 JLabel lblUsuario = new JLabel("Usuario");
                 lblUsuario.setForeground(new Color(7, 29, 68));
                 lblUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
-                lblUsuario.setBounds(334, 359, 100, 25);
+                lblUsuario.setBounds(334, 339, 100, 25);
                 mainPanel.add(lblUsuario);
 
                 JLabel lblPassword = new JLabel("Contraseña");
                 lblPassword.setForeground(new Color(7, 29, 68));
                 lblPassword.setFont(new Font("Tahoma", Font.BOLD, 20));
-                lblPassword.setBounds(334, 435, 127, 25);
+                lblPassword.setBounds(334, 415, 127, 25);
                 mainPanel.add(lblPassword);
 
                 nombreUsuario = new JTextField();
                 nombreUsuario.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                nombreUsuario.setBounds(334, 394, 213, 31);
+                nombreUsuario.setBounds(334, 374, 213, 31);
                 mainPanel.add(nombreUsuario);
                 nombreUsuario.setColumns(10);
 
                 passwordField = new JPasswordField();
                 passwordField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                passwordField.setBounds(334, 470, 213, 31);
+                passwordField.setBounds(334, 450, 213, 31);
                 mainPanel.add(passwordField);
 
                 JButton btnLogin = new JButton("Iniciar sesión");
                 btnLogin.setBackground(new Color(7, 29, 68));
                 btnLogin.setForeground(new Color(255, 255, 255));
                 btnLogin.setFont(new Font("Tahoma", Font.BOLD, 20));
-                btnLogin.setBounds(355, 525, 170, 50);
+                btnLogin.setBounds(355, 505, 170, 50);
                 mainPanel.add(btnLogin);
 
                 JLabel lblImagenLogin = new JLabel("New label");
