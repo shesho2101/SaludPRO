@@ -6,7 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="proyecto" />
+        <module name="Medico" />
+        <module name="AgenteAtencionAlPaciente" />
+        <module name="Administrador" />
+        <module name="autenticacion" />
       </profile>
     </annotationProcessing>
   </component>
