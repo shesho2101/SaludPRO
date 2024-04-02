@@ -12,5 +12,8 @@
         <module name="autenticacion" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="proyecto" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

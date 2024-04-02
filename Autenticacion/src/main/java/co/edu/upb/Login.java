@@ -1,13 +1,16 @@
 package co.edu.upb;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Login extends JFrame {
         private JTextField nombreUsuario;
         private JPasswordField passwordField;
 
         public Login() {
-                // Configsuración de la ventana
+                // Configuración de la ventana
                 setTitle("IPS Salud Pro - Inicio de Sesión");
                 setExtendedState(JFrame.MAXIMIZED_BOTH); // Poner en pantalla completa
                 setResizable(false); // Desactivar la capacidad de redimensionamiento
@@ -53,6 +56,14 @@ public class Login extends JFrame {
                 btnLogin.setForeground(new Color(255, 255, 255));
                 btnLogin.setFont(new Font("Tahoma", Font.BOLD, 20));
                 btnLogin.setBounds(355, 505, 170, 50);
+                btnLogin.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                String usuario = nombreUsuario.getText();
+                                String contrasena = new String(passwordField.getPassword());
+                                validarSesion(usuario, contrasena);
+                        }
+                });
                 mainPanel.add(btnLogin);
 
                 JLabel lblImagenLogin = new JLabel("New label");
@@ -67,6 +78,42 @@ public class Login extends JFrame {
 
                 // Hacer visible la ventana
                 setVisible(true);
+        }
+
+        public void validarSesion(String usuario, String password) {
+                switch (usuario) {
+                        case "medico":
+                                if (password.equals("medico123")) {
+                                        Medico ventanaMedico = new Medico();
+                                        ventanaMedico.setVisible(true);
+                                        dispose();
+
+                                } else {
+                                        System.out.println("Contraseña incorrecta para el medico.");
+                                }
+                                break;
+                        case "operador":
+                                if (password.equals("operador123")) {
+                                        AgenteAtencionAlPaciente ventanaAgente = new AgenteAtencionAlPaciente();
+                                        ventanaAgente.setVisible(true);
+                                        dispose();
+                                } else {
+                                        System.out.println("Contraseña incorrecta para el operador.");
+                                }
+                                break;
+                        case "admin":
+                                if (password.equals("admin123")) {
+                                        Administrador ventanaAdministrador = new Administrador();
+                                        ventanaAdministrador.setVisible(true);
+                                        dispose();
+                                }
+                                else{
+                                        System.out.println("Contraseña incorrecta para el administrador.");
+                                }
+                        default:
+                                System.out.println("Usuario no reconocido.");
+                                break;
+                }
         }
 
         public static void main(String[] args) {
