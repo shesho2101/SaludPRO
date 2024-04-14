@@ -5,7 +5,7 @@
 package principal.dominio.consultorio;
 
 import java.util.Collection;
-import principal.cbd.ConsultorioCBD;
+import principal.DAO.Entities.ConsultorioDAO;
 import principal.dominio.sede.SedeServices;
 
 /**
@@ -14,11 +14,11 @@ import principal.dominio.sede.SedeServices;
  */
 public class ConsultorioServices {
     
-    private ConsultorioCBD cbd;
-    private SedeServices sedeService = new SedeServices();
+    private ConsultorioDAO cbd;
+    private SedeServices ss = new SedeServices();
     
     public ConsultorioServices(){
-        this.cbd = new ConsultorioCBD();
+        this.cbd = new ConsultorioDAO();
     }
     
     public void saveConsultorio(String nombre, int codSede) throws Exception{
@@ -27,13 +27,13 @@ public class ConsultorioServices {
             if(nombre == null || nombre.trim().isEmpty()){
                 throw new Exception("El nombre no puede ser nulo");
             }
-            if(sedeService.searchSedePerCod(codSede) == null){
+            if(ss.searchSedePerCod(codSede) == null){
                 throw new Exception("No existe esa sede");
             }
             
             Consultorio cns = new Consultorio();
             cns.setNombre(nombre);
-            cns.setSede(sedeService.searchSedePerCod(codSede));
+            cns.setSede(ss.searchSedePerCod(codSede));
             //Call database
             cbd.saveConsultorio(cns);
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class ConsultorioServices {
             Consultorio consultorio = new Consultorio();
             consultorio.setNumHab(cod);
             consultorio.setNombre(nombre);
-            consultorio.setSede(sedeService.searchSedePerCod(cod));
+            consultorio.setSede(ss.searchSedePerCod(cod));
             //Call database
             cbd.modConsultorio(consultorio);
         } catch (Exception e) {

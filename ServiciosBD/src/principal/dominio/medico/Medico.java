@@ -12,6 +12,7 @@ import principal.dominio.user.Usuario;
  * @author PC
  */
 public class Medico {
+     
     private Usuario usr;
     private String especializacion;
     private Consultorio cons;
@@ -21,6 +22,10 @@ public class Medico {
     }
     
     public Medico(){
+    }
+    
+    public String getID(){
+        return getUsr().getId();
     }
 
     public Consultorio getCons() {
@@ -54,7 +59,7 @@ public class Medico {
 
     @Override
     public String toString() {
-        return "Medico{" + "usr=" + usr + ", especializacion=" + especializacion + ", cons=" + cons + '}';
+        return "Medico{" + usr + ", especializacion=" + especializacion + ", cons=" + cons + '}';
     }
 
     

@@ -45,6 +45,11 @@ public class Usuario{
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+
+    @Override
+    public String toString() {
+        return "id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", ";
+    }
     
     
     

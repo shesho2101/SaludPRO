@@ -4,11 +4,13 @@
  */
 package Main;
 
-import principal.cbd.UsrCBD;
+import java.util.Date;
+import principal.DAO.Entities.UsuarioDAO;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.paciente.PacienteServices;
 import principal.dominio.user.Usuario;
+import principal.dominio.user.UsuarioServices;
 
 /**
  *
@@ -23,13 +25,12 @@ public class MainClass {
         
         PacienteServices pacS = new PacienteServices();
         MedicoServices medS = new MedicoServices();
-        UsrCBD ctr = new UsrCBD();
+        UsuarioServices usrS = new UsuarioServices();
         ConsultorioServices cons = new ConsultorioServices();
-        //cons.saveConsultorio("Consultorio A" , 1);
-        //cons.imprimirConsultorios();
-        //System.out.println(cons.searchPerCod(1));
-        medS.createMed("10", "q", 1);
-        //ctr.saveUsr(new Usuario("10", "juan", "tabarespelaezs"));
+        //usrS.createUsr("112", "Maria", "Abello");
+        //pacS.createPac("112", "2005-10-9", "Female");
+        
+        
         try {
             //System.out.println(ctr.listUsr());
         } catch (Exception e) {

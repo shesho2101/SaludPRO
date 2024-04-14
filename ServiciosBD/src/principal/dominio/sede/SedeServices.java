@@ -5,7 +5,7 @@
 package principal.dominio.sede;
 
 import java.util.Collection;
-import principal.cbd.SedeCBD;
+import principal.DAO.Entities.SedeDAO;
 
 /**
  *
@@ -13,10 +13,10 @@ import principal.cbd.SedeCBD;
  */
 public class SedeServices {
     
-    private SedeCBD cbd;
+    private SedeDAO cbd;
 
     public SedeServices() {
-        this.cbd = new SedeCBD();
+        this.cbd = new SedeDAO();
     }
     
     public void createSede(String nombre, String direccion) throws Exception{
@@ -61,8 +61,7 @@ public class SedeServices {
             cbd.modSede(sede);
         } catch (Exception e) {
             throw e;
-        }
-        
+        }    
     }
     
     public void deleteSede(int cod) throws Exception{
@@ -86,6 +85,19 @@ public class SedeServices {
             }
             //call database
             return cbd.searchSedePerCod(cod);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public Sede searchPerNombre(String name) throws Exception{
+        try {
+            //Validacion
+            if(name == null || name.trim().isEmpty()){
+                throw new Exception("El nombre no puede ser nulo");
+            }
+            //call database
+            return cbd.searchPerName(name);
         } catch (Exception e) {
             throw e;
         }

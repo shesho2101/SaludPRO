@@ -5,8 +5,9 @@
 package principal.dominio.medico;
 
 import java.util.Collection;
-import principal.cbd.MedicoCBD;
+import principal.DAO.Entities.MedicoDAO;
 import principal.dominio.consultorio.ConsultorioServices;
+import principal.dominio.user.UsuarioServices;
 
 /**
  *
@@ -14,12 +15,14 @@ import principal.dominio.consultorio.ConsultorioServices;
  */
 public class MedicoServices {
     
-    private MedicoCBD cbd;
-    private ConsultorioServices cs = new ConsultorioServices();
-    //Hacer el usr services
+    private MedicoDAO cbd;
+    private ConsultorioServices cs;
+    private UsuarioServices us;
     
     public MedicoServices(){
-        this.cbd = new MedicoCBD();
+        this.cbd = new MedicoDAO();
+        this.cs = new ConsultorioServices();
+        this.us = new UsuarioServices();
     }
     
     public void createMed(String id, String especializacion, int numHab) throws Exception{
@@ -40,7 +43,7 @@ public class MedicoServices {
             
             
             Medico med = new Medico();
-            //usr services
+            med.setUsr(us.searchPerID(id));
             med.setEspecializacion(especializacion);
             med.setCons(cs.searchPerCod(numHab));
             cbd.saveDoctor(med);

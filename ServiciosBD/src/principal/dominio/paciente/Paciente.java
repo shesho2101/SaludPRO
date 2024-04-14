@@ -4,69 +4,72 @@
  */
 package principal.dominio.paciente;
 
+import java.util.Date;
+import principal.dominio.user.Usuario;
+
 
 /**
  *
  * @author PC
  */
 public class Paciente {
-    private String idPac;
-    private String nombre;
-    private String apellido;
-    private String edad;
+    private Usuario usr;
+    private String fechaNacimiento;
+    private int edad;
+    private String sexo;
 
-    public Paciente(String idPac, String nombre, String apellido, String edad) {
-        this.idPac = idPac;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.edad = edad;
+    public Paciente(String fechaNacimiento, String sexo) {
+        this.fechaNacimiento = fechaNacimiento;
+        this.sexo = sexo;
     }
 
     public Paciente() {
     }
+    
+    public String getID(){
+        return getUsr().getId();
+    }
+
+    public Usuario getUsr() {
+        return usr;
+    }
+
+    public void setUsr(Usuario usr) {
+        this.usr = usr;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    @Override
+    public String toString() {
+        return "Paciente{" + usr + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", sexo=" + sexo + '}';
+    }
+    
     
     
     public String getInstance(){
         return this.getClass().getSimpleName();
     }
 
-    public String getId() {
-        return idPac;
-    }
-
-    public void setIdPac(String idPac) {
-        this.idPac = idPac;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getEdad() {
-        return edad;
-    }
-
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
-
-    @Override
-    public String toString() {
-        return "Paciente{" + "idPac=" + idPac + ", nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + '}';
-    }
-    
+  
     
     
     
