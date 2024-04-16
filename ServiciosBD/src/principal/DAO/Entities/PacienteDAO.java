@@ -7,6 +7,8 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import principal.dominio.paciente.GrupoSanguineo;
 import principal.dominio.paciente.Paciente;
 import principal.dominio.user.UsuarioServices;
 
@@ -29,8 +31,9 @@ public final class PacienteDAO extends DAO{
                 throw new Exception("Debe indicar un paciente");
             }
             
-            String sql = "INSERT INTO Paciente(ID_Paciente, fecha_nacimiento, sexo)" 
-                    + "VALUES ( '" + pac.getUsr().getId()  + "' , ' " + pac.getFechaNacimiento() + "' , '" + pac.getSexo()+ "');"; 
+            String sql = "INSERT INTO Paciente(ID_Paciente, fecha_nacimiento, sexo, grupoSanguineo, telefono, correoElectronico)" 
+                    + "VALUES ( '" + pac.getUsr().getId()  + "' , ' " + pac.getFechaNacimiento() + "' , '" + pac.getSexo()+ "', '"
+                    + pac.getSangre() + "' , '" + pac.getTelefono() + "' , '" + pac.getCorreo() + "')"; 
             insertModDel(sql);
         } catch (Exception e) {
             throw e;
@@ -75,7 +78,12 @@ public final class PacienteDAO extends DAO{
                 pac = new Paciente();
                 pac.setUsr(us.searchPerID(result.getString(1)));
                 pac.setFechaNacimiento(result.getDate(2).toString());
+                pac.setEdad(result.getInt(3));
                 pac.setSexo(result.getString(4));
+                GrupoSanguineo grupo = GrupoSanguineo.valueOf(result.getString(5));
+                pac.setSangre(grupo);
+                pac.setTelefono(result.getString(6));
+                pac.setCorreo(result.getString(7));
             }
             desconectarBase();
             return pac;
@@ -86,19 +94,24 @@ public final class PacienteDAO extends DAO{
         }
     }
     
-    public Collection<Paciente> listPac() throws Exception{
+    public List<Paciente> listPac() throws Exception{
         try {
             String sql = "SELECT * FROM paciente";
             
             consultarBase(sql);
             
-            Collection<Paciente> pacientes = new ArrayList();
+            List<Paciente> pacientes = new ArrayList();
             Paciente pac = null;
             while(result.next()){
                 pac = new Paciente();
                 pac.setUsr(us.searchPerID(result.getString(1)));
                 pac.setFechaNacimiento(result.getDate(2).toString());
+                pac.setEdad(result.getInt(3));
                 pac.setSexo(result.getString(4));
+                GrupoSanguineo grupo = GrupoSanguineo.valueOf(result.getString(5));
+                pac.setSangre(grupo);
+                pac.setTelefono(result.getString(6));
+                pac.setCorreo(result.getString(7));
                 pacientes.add(pac);
             }
             desconectarBase();

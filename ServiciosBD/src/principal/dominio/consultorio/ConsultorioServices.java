@@ -5,6 +5,7 @@
 package principal.dominio.consultorio;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.ConsultorioDAO;
 import principal.dominio.sede.SedeServices;
 
@@ -92,13 +93,29 @@ public class ConsultorioServices {
         }
     }
     
+    public Consultorio searchPerSede(int codSede, String nombre) throws Exception{
+        try {
+            //Validaciones
+            if(codSede == 0){
+                throw new Exception("El codigo no puede ser 0");
+            }
+            if(nombre == null || nombre.trim().isEmpty()){
+                throw new Exception("El nombre no puede ser nulo");
+            }
+            
+            //Call Database
+            return cbd.searchPerSede(codSede, nombre);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     //Lista e imprimir
     
-    private Collection<Consultorio> listCons() throws Exception{
+    public List<Consultorio> listCons() throws Exception{
         try {
             
-            Collection<Consultorio> consultorios = cbd.listCon();
-            return consultorios;
+            return cbd.listCon();
             
         } catch (Exception e) {
             throw e;
@@ -108,7 +125,7 @@ public class ConsultorioServices {
     public void imprimirConsultorios() throws Exception{
         try {
             
-            Collection<Consultorio> consultorios = listCons();
+            List<Consultorio> consultorios = listCons();
             
             //Validaciones
             if(consultorios.isEmpty()){

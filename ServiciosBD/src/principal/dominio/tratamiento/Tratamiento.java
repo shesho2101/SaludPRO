@@ -76,6 +76,11 @@ public class Tratamiento {
     public void setObs(String obs) {
         this.obs = obs;
     }
+
+    @Override
+    public String toString() {
+        return "Tratamiento{" + "codigo=" + codigo + ", descripcion=" + descripcion + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", " + pac + ", obs=" + obs + '}';
+    }
     
     
     

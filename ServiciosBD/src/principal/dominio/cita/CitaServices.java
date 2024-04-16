@@ -5,6 +5,7 @@
 package principal.dominio.cita;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.CitaDAO;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.MedicoServices;
@@ -83,6 +84,25 @@ public class CitaServices {
         }    
     }
     
+    public void modificarAsistencia(int numCita, boolean asistencia) throws Exception{
+        try {
+            //Validaciones
+            if(numCita == 0){
+                throw new Exception("El numero de la cita no puede ser 0");
+            }
+            if(searchCita(numCita) == null){
+                throw new Exception("No existe esa cita");
+            }
+            
+            Cita cita = searchCita(numCita);
+            cita.setAsistencia(asistencia);
+            //Call database
+            cbd.modCita(cita);
+        } catch (Exception e) {
+            throw e;
+        }    
+    }
+    
     public void deleteCita(int numCita) throws Exception{
         try {
             //Validaciones
@@ -112,11 +132,23 @@ public class CitaServices {
         }
     }
     
-    private Collection<Cita> listCita() throws Exception{
+    public Cita searchCita(String id) throws Exception{
+        try {
+            //Validacion
+            if(id == null || id.trim().isEmpty()){
+                throw new Exception("El id del paciente no puede ser nulo");
+            }
+            //call database
+            return cbd.searchPerPac(id);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public List<Cita> listCita() throws Exception{
         try {
             
-            Collection<Cita> citas = cbd.listCita();
-            return citas;
+            return cbd.listCita();
             
         } catch (Exception e) {
             throw e;
@@ -125,7 +157,7 @@ public class CitaServices {
     
     public void printSede() throws Exception{
         try {
-            Collection<Cita> citas = listCita();
+            List<Cita> citas = listCita();
             //Valida
             if(citas.isEmpty()){
                 throw new Exception("La lista esta vacia");

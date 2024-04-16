@@ -4,13 +4,12 @@
  */
 package Main;
 
-import java.util.Date;
-import principal.DAO.Entities.UsuarioDAO;
-import principal.dominio.consultorio.ConsultorioServices;
-import principal.dominio.medico.MedicoServices;
+import principal.dominio.historialClinico.HistorialClinicoServices;
+import principal.dominio.paciente.GrupoSanguineo;
 import principal.dominio.paciente.PacienteServices;
-import principal.dominio.user.Usuario;
 import principal.dominio.user.UsuarioServices;
+
+
 
 /**
  *
@@ -23,18 +22,16 @@ public class MainClass {
      */
     public static void main(String[] args) throws Exception{
         
-        PacienteServices pacS = new PacienteServices();
-        MedicoServices medS = new MedicoServices();
-        UsuarioServices usrS = new UsuarioServices();
-        ConsultorioServices cons = new ConsultorioServices();
-        //usrS.createUsr("112", "Maria", "Abello");
-        //pacS.createPac("112", "2005-10-9", "Female");
+        UsuarioServices us = new UsuarioServices();
+        PacienteServices ps = new PacienteServices();
+        
+        HistorialClinicoServices hcs = new HistorialClinicoServices();
+        hcs.modificarHistorial("10");
+        
+        System.out.println(hcs.searchHC("10"));
         
         
-        try {
-            //System.out.println(ctr.listUsr());
-        } catch (Exception e) {
-        }
+    
     }
     
 }

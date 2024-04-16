@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.sede.Sede;
 
 /**
@@ -102,13 +103,13 @@ public class SedeDAO extends DAO{
         }
     }
     
-    public Collection<Sede> listSede() throws Exception{
+    public List<Sede> listSede() throws Exception{
         try {
             String sql = "SELECT * FROM sede";
             
             consultarBase(sql);
             
-            Collection<Sede> sedes = new ArrayList();
+            List<Sede> sedes = new ArrayList();
             Sede sede = null;
             while(result.next()){
                 sede = new Sede();

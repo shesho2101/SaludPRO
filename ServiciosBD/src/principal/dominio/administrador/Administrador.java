@@ -23,6 +23,11 @@ public class Administrador {
     public void setUsr(Usuario usr) {
         this.usr = usr;
     }
+
+    @Override
+    public String toString() {
+        return "Administrador{" + usr + '}';
+    }
     
     
     

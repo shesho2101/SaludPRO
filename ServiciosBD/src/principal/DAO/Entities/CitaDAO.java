@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.cita.Cita;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.MedicoServices;
@@ -34,8 +35,9 @@ public class CitaDAO extends DAO{
                 throw new Exception("Debe indicar una cita");
             }
             
-            String sql = "INSERT INTO cita(NumHab, ID_Medico, fecha, ID_Paciente)" 
-                        + "VALUES ('" + cita.getCons().getNumHab() + "' , '" + cita.getMed().getID() + "' , '" + cita.getDate() + "' , '" + cita.getPac().getID() + "')";
+            String sql = "INSERT INTO cita(NumHab, ID_Medico, fecha, ID_Paciente, asistencia)" 
+                        + "VALUES ('" + cita.getCons().getNumHab() + "' , '" + cita.getMed().getID() + "' , '" + cita.getDate() + "' , '" + cita.getPac().getID() + ""
+                        + "' , '" + cita.isAsistencia() + "')";
             
             insertModDel(sql);
         } catch (Exception e) {
@@ -57,6 +59,19 @@ public class CitaDAO extends DAO{
         }
     }
     
+    public void modAsistencia(Cita cita) throws Exception{
+        try {
+            if(cita == null){
+                throw new Exception("Debe indicar una cita a modificar");
+            }
+            String sql = "UPDATE cita SET asistencia = '" + cita.isAsistencia()+
+                    "' WHERE NumCita = '" + cita.getNumCita()+ "'"; 
+            insertModDel(sql);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public void delCita(int codCita) throws Exception{
         try {
             String sql = "DELETE FROM cita WHERE NumCita = '" + codCita + "'";
@@ -69,7 +84,7 @@ public class CitaDAO extends DAO{
     public Cita searchPerCod(int cod) throws Exception{
         try {
             
-            String sql = "SELECT * FROM sede "
+            String sql = "SELECT * FROM cita "
                     + "WHERE NumHab = '" + cod + "'";
             
             consultarBase(sql);
@@ -83,6 +98,7 @@ public class CitaDAO extends DAO{
                 cita.setMed(ms.searchPerId(result.getString(3)));
                 cita.setDate(result.getDate(4).toString());
                 cita.setPac(ps.searchPerId(result.getString(5)));
+                cita.setAsistencia(result.getBoolean(6));
             }
             desconectarBase();
             return cita;
@@ -93,13 +109,41 @@ public class CitaDAO extends DAO{
         }
     }
     
-    public Collection<Cita> listCita() throws Exception{
+    public Cita searchPerPac(String id) throws Exception{
+        try {
+            
+            String sql = "SELECT * FROM cita "
+                    + "WHERE ID_Paciente = '" + id + "'";
+            
+            consultarBase(sql);
+            
+            Cita cita = null;
+            
+            while(result.next()){
+                cita = new Cita();
+                cita.setNumCita(result.getInt(1));
+                cita.setCons(cs.searchPerCod(result.getInt(2)));
+                cita.setMed(ms.searchPerId(result.getString(3)));
+                cita.setDate(result.getDate(4).toString());
+                cita.setPac(ps.searchPerId(result.getString(5)));
+                cita.setAsistencia(result.getBoolean(6));
+            }
+            desconectarBase();
+            return cita;
+            
+        } catch (Exception e) {
+            desconectarBase();
+            throw e;
+        }
+    }
+    
+    public List<Cita> listCita() throws Exception{
         try {
             String sql = "SELECT * FROM cita";
             
             consultarBase(sql);
             
-            Collection<Cita> citas = new ArrayList();
+            List<Cita> citas = new ArrayList();
             Cita cita = null;
             while(result.next()){
                 cita = new Cita();
@@ -108,6 +152,7 @@ public class CitaDAO extends DAO{
                 cita.setMed(ms.searchPerId(result.getString(3)));
                 cita.setDate(result.getDate(4).toString());
                 cita.setPac(ps.searchPerId(result.getString(5)));
+                cita.setAsistencia(result.getBoolean(6));
                 citas.add(cita);
             }
             desconectarBase();

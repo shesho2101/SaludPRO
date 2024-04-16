@@ -5,6 +5,7 @@
 package principal.dominio.tratamiento;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.TratamientoDAO;
 import principal.dominio.paciente.PacienteServices;
 
@@ -100,7 +101,7 @@ public class TratamientoServices {
         }
     }
     
-    private Collection<Tratamiento> listTrat() throws Exception{
+    public List<Tratamiento> listTrat() throws Exception{
         try {
             return cbd.listTrat();
         } catch (Exception e) {
@@ -110,7 +111,7 @@ public class TratamientoServices {
     
     public void imprimir() throws Exception{
         try {
-            Collection<Tratamiento> trats = listTrat();
+            List<Tratamiento> trats = listTrat();
             if(trats == null){
                 throw new Exception("La lista esta vacia");
             }

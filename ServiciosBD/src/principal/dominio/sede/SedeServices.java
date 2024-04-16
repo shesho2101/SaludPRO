@@ -5,6 +5,7 @@
 package principal.dominio.sede;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.SedeDAO;
 
 /**
@@ -103,11 +104,10 @@ public class SedeServices {
         }
     }
     
-    private Collection<Sede> listSede() throws Exception{
+    public List<Sede> listSede() throws Exception{
         try {
-            
-            Collection<Sede> sedes = cbd.listSede();
-            return sedes;
+
+            return cbd.listSede();
             
         } catch (Exception e) {
             throw e;
@@ -116,7 +116,7 @@ public class SedeServices {
     
     public void printSede() throws Exception{
         try {
-            Collection<Sede> sedes = listSede();
+            List<Sede> sedes = listSede();
             //Valida
             if(sedes.isEmpty()){
                 throw new Exception("La lista esta vacia");

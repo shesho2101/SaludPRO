@@ -6,6 +6,7 @@ package principal.DAO.Entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Abstract.DAO;
 import principal.dominio.medicamento.Medicamento;
 
@@ -58,8 +59,9 @@ public class MedicamentoDAO extends DAO{
             Medicamento medi = null;
             while(result.next()){
                 medi = new Medicamento();
-                medi.setNombre(result.getString(1));
-                medi.setDescripcion(result.getString(2));
+                medi.setCodigo(result.getInt(1));
+                medi.setNombre(result.getString(2));
+                medi.setDescripcion(result.getString(3));
             }
             desconectarBase();
             return medi;
@@ -69,19 +71,42 @@ public class MedicamentoDAO extends DAO{
         }
     }
     
-    public Collection<Medicamento> listMedi() throws Exception{
+    public Medicamento searchPerCod(int cod) throws Exception{
+        try {
+            String sql = "SELECT * FROM medicamento "
+                    + "WHERE codigo = '" + cod + "'";
+            
+            consultarBase(sql);
+            
+            Medicamento medi = null;
+            while(result.next()){
+                medi = new Medicamento();
+                medi.setCodigo(result.getInt(1));
+                medi.setNombre(result.getString(2));
+                medi.setDescripcion(result.getString(3));
+            }
+            desconectarBase();
+            return medi;
+        } catch (Exception e) {
+            desconectarBase();
+            throw e;
+        }
+    }
+    
+    public List<Medicamento> listMedi() throws Exception{
         try {
             String sql = "SELECT * FROM medi";
             
             consultarBase(sql);
             
-            Collection<Medicamento> medis = new ArrayList();
+            List<Medicamento> medis = new ArrayList();
             Medicamento medi = null;
             
             while(result.next()){
                 medi = new Medicamento();
-                medi.setNombre(result.getString(1));
-                medi.setDescripcion(result.getString(2));
+                medi.setCodigo(result.getInt(1));
+                medi.setNombre(result.getString(2));
+                medi.setDescripcion(result.getString(3));
                 medis.add(medi);
             }
             desconectarBase();

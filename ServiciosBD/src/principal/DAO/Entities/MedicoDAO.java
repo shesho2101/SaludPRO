@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.Medico;
 import principal.dominio.user.UsuarioServices;
@@ -88,13 +89,13 @@ public class MedicoDAO extends DAO{
         }
     }
     
-    public Collection<Medico> listPac() throws Exception{
+    public List<Medico> listPac() throws Exception{
         try {
             String sql = "SELECT * FROM medico";
             
             consultarBase(sql);
             
-            Collection<Medico> medicos = new ArrayList();
+            List<Medico> medicos = new ArrayList();
             Medico med = null;
             
             while(result.next()){

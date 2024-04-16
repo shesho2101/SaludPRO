@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.PersonalAtencion.PersonalAtencion;
 import principal.dominio.user.UsuarioServices;
 
@@ -81,13 +82,13 @@ public class PersonalAtencionDAO extends DAO{
         }
     }
     
-    public Collection<PersonalAtencion> listCita() throws Exception{
+    public List<PersonalAtencion> listCita() throws Exception{
         try {
             String sql = "SELECT * FROM cita";
             
             consultarBase(sql);
             
-            Collection<PersonalAtencion> pas = new ArrayList();
+            List<PersonalAtencion> pas = new ArrayList();
             PersonalAtencion pa = null;
             while(result.next()){
                 pa = new PersonalAtencion();

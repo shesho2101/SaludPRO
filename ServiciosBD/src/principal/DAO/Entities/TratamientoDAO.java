@@ -6,6 +6,7 @@ package principal.DAO.Entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Abstract.DAO;
 import principal.dominio.paciente.PacienteServices;
 import principal.dominio.tratamiento.Tratamiento;
@@ -116,13 +117,13 @@ public class TratamientoDAO extends DAO{
         }
     }
     */
-    public Collection<Tratamiento> listTrat() throws Exception{
+    public List<Tratamiento> listTrat() throws Exception{
         try {
             String sql = "SELECT * FROM tratamiento";
             
             consultarBase(sql);
             
-            Collection<Tratamiento> trats = new ArrayList<>();
+            List<Tratamiento> trats = new ArrayList<>();
             Tratamiento trat = null;
             while(result.next()){
                 trat = new Tratamiento();

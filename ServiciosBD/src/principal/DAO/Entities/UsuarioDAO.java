@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.paciente.PacienteServices;
 import principal.dominio.user.Usuario;
@@ -65,7 +66,7 @@ public class UsuarioDAO extends DAO{
         try {
             
             String sql = "SELECT * FROM usuario "
-                + "WHERE ID = '" + id + "';";
+                + "WHERE ID = '" + id + "'";
 
             
             consultarBase(sql);
@@ -87,14 +88,14 @@ public class UsuarioDAO extends DAO{
         }
     }
     
-    public Collection<Usuario> listUsr() throws Exception{
+    public List<Usuario> listUsr() throws Exception{
         try {
             
             String sql = "SELECT * FROM usuario";
             
             consultarBase(sql);
             
-            Collection<Usuario> usuarios = new ArrayList();
+            List<Usuario> usuarios = new ArrayList();
             Usuario usr = null;
             while(result.next()){
                 usr = new Usuario();

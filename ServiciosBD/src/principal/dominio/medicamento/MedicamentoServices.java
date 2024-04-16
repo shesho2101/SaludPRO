@@ -5,6 +5,7 @@
 package principal.dominio.medicamento;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.MedicamentoDAO;
 
 /**
@@ -65,6 +66,7 @@ public class MedicamentoServices {
             throw e;
         }
     }
+    
     public Medicamento searchPerName(String nombre) throws Exception{
         try {
             if(nombre == null || nombre.trim().isEmpty()){
@@ -78,7 +80,19 @@ public class MedicamentoServices {
         }
     }
     
-    public Collection<Medicamento> listMedi() throws Exception{
+    public Medicamento searchPerCod(int cod) throws Exception{
+        try {
+            if(cod == 0){
+                throw new Exception("El codigo no puede ser 0");
+            }
+            
+            return cbd.searchPerCod(cod);
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    public List<Medicamento> listMedi() throws Exception{
         try {
             return cbd.listMedi();
         } catch (Exception e) {
@@ -88,7 +102,7 @@ public class MedicamentoServices {
     
     public void imprimir() throws Exception{
         try {
-            Collection<Medicamento> medis = listMedi();
+            List<Medicamento> medis = listMedi();
             if(medis == null){
                 throw new Exception("La lista esta vacia");
             }

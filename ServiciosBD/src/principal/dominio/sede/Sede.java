@@ -54,7 +54,7 @@ public class Sede {
 
     @Override
     public String toString() {
-        return "Sede{" + "cod=" + cod + ", nombre=" + nombre + ", direccion=" + direccion + '}';
+        return "cod=" + cod + ", nombre=" + nombre + ", direccion=" + direccion ;
     }
     
     

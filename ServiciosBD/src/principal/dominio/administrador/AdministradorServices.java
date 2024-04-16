@@ -5,6 +5,7 @@
 package principal.dominio.administrador;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.AdministradorDAO;
 import principal.dominio.user.UsuarioServices;
 
@@ -67,13 +68,9 @@ public class AdministradorServices {
         }
     }
     
-    private Collection<Administrador> listAdmin() throws Exception{
-        try {
-            
-            Collection<Administrador> admins = cbd.listAdmin();
-            
-            return admins;
-            
+    public List<Administrador> listAdmin() throws Exception{
+        try {     
+            return cbd.listAdmin();
         } catch (Exception e) {
             throw e;
         }
@@ -81,7 +78,7 @@ public class AdministradorServices {
     
     public void imprimir() throws Exception{
         try {
-            Collection<Administrador> admins = listAdmin();
+            List<Administrador> admins = listAdmin();
             //Validacion
             if(admins == null){
                 throw new Exception("La lista esta vacia");

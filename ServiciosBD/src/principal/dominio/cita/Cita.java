@@ -18,12 +18,14 @@ public class Cita {
     private Medico med;
     private String date;
     private Paciente pac;
+    private boolean asistencia;
 
     public Cita(Consultorio cons, Medico med, String date, Paciente pac) {
         this.cons = cons;
         this.med = med;
         this.date = date;
         this.pac = pac;
+        this.asistencia = true;
     }
 
     public Cita() {
@@ -37,6 +39,14 @@ public class Cita {
         this.numCita = numCita;
     }
 
+    public boolean isAsistencia() {
+        return asistencia;
+    }
+
+    public void setAsistencia(boolean asistencia) {
+        this.asistencia = asistencia;
+    }
+    
     public Consultorio getCons() {
         return cons;
     }
@@ -67,6 +77,11 @@ public class Cita {
 
     public void setPac(Paciente pac) {
         this.pac = pac;
+    }
+
+    @Override
+    public String toString() {
+        return "Cita{" + "numCita=" + numCita + ", " + cons + ", " + med + ", date=" + date + ", " + pac + ", asistencia=" + asistencia + '}';
     }
     
     

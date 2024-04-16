@@ -17,21 +17,55 @@ public class Paciente {
     private String fechaNacimiento;
     private int edad;
     private String sexo;
-
-    public Paciente(String fechaNacimiento, String sexo) {
+    private String telefono;
+    private String correo;
+    private GrupoSanguineo sangre;
+    
+    public Paciente(String fechaNacimiento, String sexo, String telefono, String correo, GrupoSanguineo sangre) {
         this.fechaNacimiento = fechaNacimiento;
         this.sexo = sexo;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.sangre = sangre;
     }
 
     public Paciente() {
     }
+
+    public GrupoSanguineo getSangre() {
+        return sangre;
+    }
+
+    public void setSangre(GrupoSanguineo sangre) {
+        this.sangre = sangre;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
     
     public String getID(){
-        return getUsr().getId();
+        return this.getUsr().getId();
     }
 
     public Usuario getUsr() {
         return usr;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
     }
 
     public void setUsr(Usuario usr) {

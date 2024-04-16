@@ -54,7 +54,7 @@ public class Consultorio {
 
     @Override
     public String toString() {
-        return "Consultorio{" + "numHab=" + numHab + ", nombre=" + nombre + ", sede=" + sede + '}';
+        return "numHab=" + numHab + ", nombre=" + nombre + ", sede=" + sede;
     }
     
     

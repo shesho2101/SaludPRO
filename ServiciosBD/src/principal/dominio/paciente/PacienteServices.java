@@ -3,6 +3,7 @@ package principal.dominio.paciente;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import principal.DAO.Entities.PacienteDAO;
 import principal.dominio.user.UsuarioServices;
 
@@ -21,7 +22,7 @@ public class PacienteServices {
         this.us = new UsuarioServices();
     }
     
-    public void createPac(String id, String fechaNacimiento, String sexo) throws Exception{
+    public void createPac(String id, String fechaNacimiento, String sexo, String telefono, String correo, GrupoSanguineo grupo) throws Exception{
         try {
             //Validaciones
             if(id == null || id.trim().isEmpty()){
@@ -29,6 +30,15 @@ public class PacienteServices {
             }
             if(fechaNacimiento == null || fechaNacimiento.trim().isEmpty()){
                 throw new Exception("La fecha de nacimiento no puede ser nula");
+            }
+            if(telefono == null || telefono.trim().isEmpty()){
+                throw new Exception("El telefono no puede ser nulo");
+            }
+            if(correo == null || correo.trim().isEmpty()){
+                throw new Exception("El correo no puede ser nulo");
+            }
+            if(grupo == null){
+                throw new Exception("El grupo sanguineo no puede ser nulo");
             }
             if(searchPerId(id) != null){
                 throw new Exception("Ya existe el paciente");
@@ -38,6 +48,9 @@ public class PacienteServices {
             pac.setUsr(us.searchPerID(id));
             pac.setFechaNacimiento(fechaNacimiento);
             pac.setSexo(sexo);
+            pac.setCorreo(correo);
+            pac.setTelefono(telefono);
+            pac.setSangre(grupo);
             cbd.savePaciente(pac);
             
         } catch (Exception e) {
@@ -94,10 +107,9 @@ public class PacienteServices {
         }
     }
     
-    private Collection<Paciente> listPac() throws Exception{
+    public List<Paciente> listPac() throws Exception{
         try {
-            Collection<Paciente> pacientes = cbd.listPac();
-            return pacientes;
+            return cbd.listPac();
         } catch (Exception e) {
             throw e;
         }
@@ -105,7 +117,7 @@ public class PacienteServices {
     
     public void imprimirPacientes() throws Exception{
         try {
-            Collection<Paciente> pacientes = listPac();
+            List<Paciente> pacientes = listPac();
             
             if(pacientes.isEmpty()){
                 throw new Exception("La lista esta vacia");

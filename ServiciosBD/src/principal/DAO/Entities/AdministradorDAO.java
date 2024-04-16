@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.administrador.Administrador;
 import principal.dominio.user.UsuarioServices;
 
@@ -70,13 +71,13 @@ public class AdministradorDAO extends DAO{
         }
     }
     
-    public Collection<Administrador> listAdmin() throws Exception{
+    public List<Administrador> listAdmin() throws Exception{
         try {
             String sql = "SELECT * FROM administrador";
             
             consultarBase(sql);
             
-            Collection<Administrador> admins = new ArrayList();
+            List<Administrador> admins = new ArrayList();
             Administrador admin = null;
             
             while(result.next()){

@@ -5,6 +5,7 @@
 package principal.dominio.user;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.UsuarioDAO;
 
 /**
@@ -71,11 +72,9 @@ public class UsuarioServices {
         }
     }
     
-    public Collection<Usuario> listUsr() throws Exception{
+    public List<Usuario> listUsr() throws Exception{
         try {
-            
-            Collection<Usuario> usuarios = cbd.listUsr();
-            return usuarios;
+            return cbd.listUsr();
             
         } catch (Exception e) {
             throw e;
@@ -84,7 +83,7 @@ public class UsuarioServices {
     
     public void imprimir() throws Exception{
         try {
-            Collection<Usuario> usuarios = listUsr();
+            List<Usuario> usuarios = listUsr();
             
             if(usuarios == null){
                 throw new Exception("La lista esta vacia");

@@ -7,6 +7,7 @@ package principal.DAO.Entities;
 import principal.DAO.Abstract.DAO;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import principal.dominio.consultorio.Consultorio;
 import principal.dominio.sede.Sede;
 import principal.dominio.sede.SedeServices;
@@ -77,17 +78,37 @@ public class ConsultorioDAO extends DAO{
             throw e;
         }
     }
-    //Lista e imprimir
     
-    public Collection<Consultorio> listCon() throws Exception{
+    public Consultorio searchPerSede(int codSede, String nombre) throws Exception{
+        try {
+            String sql = "SELECT * FROM consultorio WHERE CodSede = '" + codSede + "' "
+                    + "and nombre = '" + nombre + "'";
+            
+            consultarBase(sql);
+            
+            Consultorio cons = null;
+            
+            while(result.next()){
+                cons = new Consultorio();
+                cons.setNumHab(result.getInt(1));
+                cons.setNombre(result.getString(2));
+                cons.setSede(sedeService.searchSedePerCod(result.getInt(3)));
+            }
+            return cons;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public List<Consultorio> listCon() throws Exception{
         try {
             String sql = "SELECT * FROM consultorio";
             
             consultarBase(sql);
             
-            Collection<Consultorio> consultorios = new ArrayList();
+            List<Consultorio> consultorios = new ArrayList();
             
-             Consultorio c = null;
+            Consultorio c = null;
             while(result.next()){
                c = new Consultorio();
                c.setNumHab(result.getInt(1));

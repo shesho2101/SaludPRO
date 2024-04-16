@@ -5,6 +5,7 @@
 package principal.dominio.medico;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.MedicoDAO;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.user.UsuarioServices;
@@ -99,10 +100,9 @@ public class MedicoServices {
         }
     }
     
-    private Collection<Medico> listMed() throws Exception{
+    public List<Medico> listMed() throws Exception{
         try {
-            Collection<Medico> medicos = cbd.listPac();
-            return medicos;
+            return cbd.listPac();
         } catch (Exception e) {
             throw e;
         }
@@ -110,7 +110,7 @@ public class MedicoServices {
     
     public void imprimirMedicos() throws Exception{
         try {
-            Collection<Medico> medicos = listMed();
+            List<Medico> medicos = listMed();
             
             if(medicos.isEmpty()){
                 throw new Exception("La lista esta vacia");

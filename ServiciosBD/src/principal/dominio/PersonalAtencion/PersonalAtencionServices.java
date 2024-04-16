@@ -5,6 +5,7 @@
 package principal.dominio.PersonalAtencion;
 
 import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.PersonalAtencionDAO;
 import principal.dominio.user.UsuarioServices;
 
@@ -98,7 +99,7 @@ public class PersonalAtencionServices {
         }
     }
     
-    private Collection<PersonalAtencion> listPA() throws Exception{
+    public List<PersonalAtencion> listPA() throws Exception{
         try {
             return cbd.listCita();
         } catch (Exception e) {
@@ -108,7 +109,7 @@ public class PersonalAtencionServices {
     
     public void imprimir() throws Exception{
         try {
-            Collection<PersonalAtencion> pas = listPA();
+            List<PersonalAtencion> pas = listPA();
             if(pas == null){
                 throw new Exception("La lista esta vacia");
             }

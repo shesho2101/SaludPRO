@@ -40,6 +40,11 @@ public class PersonalAtencion {
     public void setAreaAtencion(String areaAtencion) {
         this.areaAtencion = areaAtencion;
     }
+
+    @Override
+    public String toString() {
+        return "PersonalAtencion{" + user + ", areaAtencion=" + areaAtencion + '}';
+    }
     
     
 }

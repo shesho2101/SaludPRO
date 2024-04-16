@@ -10,6 +10,7 @@ package principal.dominio.medicamento;
  */
 public class Medicamento {
     
+    private int codigo;
     private String nombre;
     private String descripcion;
 
@@ -20,6 +21,14 @@ public class Medicamento {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    } 
 
     public String getNombre() {
         return nombre;
@@ -35,6 +44,11 @@ public class Medicamento {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Medicamento{" + "codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
     }
     
     
