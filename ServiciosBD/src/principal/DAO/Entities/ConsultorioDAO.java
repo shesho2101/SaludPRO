@@ -100,6 +100,26 @@ public class ConsultorioDAO extends DAO{
         }
     }
     
+    public Consultorio searchPerSede(String nombre) throws Exception{
+        try {
+            String sql = "SELECT * FROM consultorio WHERE nombre = '" + nombre + "'";
+            
+            consultarBase(sql);
+            
+            Consultorio cons = null;
+            
+            while(result.next()){
+                cons = new Consultorio();
+                cons.setNumHab(result.getInt(1));
+                cons.setNombre(result.getString(2));
+                cons.setSede(sedeService.searchSedePerCod(result.getInt(3)));
+            }
+            return cons;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public List<Consultorio> listCon() throws Exception{
         try {
             String sql = "SELECT * FROM consultorio";

@@ -110,6 +110,20 @@ public class ConsultorioServices {
         }
     }
     
+    public Consultorio searchPerSede(String nombre) throws Exception{
+        try {
+            //Validaciones
+            if(nombre == null || nombre.trim().isEmpty()){
+                throw new Exception("El nombre no puede ser nulo");
+            }
+            
+            //Call Database
+            return cbd.searchPerSede(nombre);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     //Lista e imprimir
     
     public List<Consultorio> listCons() throws Exception{

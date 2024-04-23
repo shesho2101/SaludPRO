@@ -28,9 +28,6 @@ public class UsuarioServices {
             if(nombre == null || nombre.trim().isEmpty()){
                 throw new Exception("El nombre no puede ser nulo");
             }
-            if(apellidos == null || apellidos.trim().isEmpty()){
-                throw new Exception("Los apellidos no pueden ser nulo");
-            }
             if(searchPerID(ID) != null){
                 throw new Exception("El usuario ya existe");
             }
