@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -18,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import principal.dominio.cita.CitaServices;
+import principal.dominio.consultorio.ConsultorioServices;
+import principal.dominio.sede.SedeServices;
 
 public class AgenteAtencionAlPaciente extends JFrame {
 
@@ -28,8 +33,22 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private boolean movimiento = false;
     private JPanel nuevoPanel;
     private final int panelPositionX = 770;
+    private CitaServices cs;
+    private ConsultorioServices conSer;
+    private SedeServices ss;
+    private JTextField textFieldFecha;
+    private JTextField textFieldConsultorio;
+    private JTextField textFieldDocumentoPac;
+    private JTextField textFieldDocumentoDoc;
+    private JButton btnAgendarCita;
+    private JComboBox<String> menuDesplegableOpciones;
+    
 
-    public AgenteAtencionAlPaciente() {
+    public AgenteAtencionAlPaciente() throws Exception {
+        this.cs = new CitaServices();
+        this.ss = new SedeServices();
+        this.conSer = new ConsultorioServices();
+        this.btnAgendarCita = new JButton();
         setTitle("IPS Salud Pro - Agente atención al paciente");
         setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
@@ -53,6 +72,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
         lblFondo.setIcon(icon);
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
+        addAction();
     }
 
     private JButton createButton(final String text, int x, int y) {
@@ -62,7 +82,8 @@ public class AgenteAtencionAlPaciente extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!movimiento) {
+                try {
+                    if (!movimiento) {
                     moverBotones();
                 }
 
@@ -83,6 +104,14 @@ public class AgenteAtencionAlPaciente extends JFrame {
                         crearNuevoPanel(4);
                         break;
                 }
+                } catch (Exception ex) {
+                    try {
+                        throw ex;
+                    } catch (Exception ex1) {
+                        Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                }
+                
             }
         });
         contentPane.add(button);
@@ -119,7 +148,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
         }
     }
 
-    private void crearNuevoPanel(int opcion) {
+    private void crearNuevoPanel(int opcion) throws Exception {
         nuevoPanel = new JPanel();
         nuevoPanel.setBackground(new Color(250, 250, 250));
         nuevoPanel.setBounds(panelPositionX, 0, 800, 900);
@@ -151,18 +180,16 @@ public class AgenteAtencionAlPaciente extends JFrame {
         }
     }
     
-    private void cargarPanelAgendarCita() {
+    private void cargarPanelAgendarCita() throws Exception {
         if (movimiento) {
-            JTextField textFieldApellido;
-            JTextField textFieldNombre;
-            JTextField textFieldDocumento;
+            
 
             JPanel panelAgendarCita = new JPanel();
             panelAgendarCita.setBackground(new Color(7, 29, 68));
             panelAgendarCita.setLayout(null);
             panelAgendarCita.setBounds(800, 0, 800, 900);
 
-            JButton btnAgendarCita = new JButton("Agendar cita");
+            btnAgendarCita.setText("Agendar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnAgendarCita.setBounds(310, 700, 180, 40);
             panelAgendarCita.add(btnAgendarCita);
@@ -175,40 +202,50 @@ public class AgenteAtencionAlPaciente extends JFrame {
             menuDesplegableSedes.setBounds(310, 600, 180, 30);
             panelAgendarCita.add(menuDesplegableSedes);
 
-            JComboBox<String> menuDesplegableOpciones = new JComboBox<>(opciones);
+            menuDesplegableOpciones = new JComboBox<>(opciones);
             menuDesplegableOpciones.setModel(new DefaultComboBoxModel<>(sedes));
             menuDesplegableOpciones.setBounds(310, 505, 180, 30);
             panelAgendarCita.add(menuDesplegableOpciones);
 
-            textFieldNombre = new JTextField();
-            textFieldNombre.setBounds(310, 208, 180, 34);
-            panelAgendarCita.add(textFieldNombre);
+            textFieldDocumentoPac = new JTextField();
+            textFieldDocumentoPac.setBounds(310, 208, 180, 34);
+            panelAgendarCita.add(textFieldDocumentoPac);
 
-            textFieldApellido = new JTextField();
-            textFieldApellido.setBounds(310, 307, 180, 34);
-            panelAgendarCita.add(textFieldApellido);
+            textFieldDocumentoDoc = new JTextField();
+            textFieldDocumentoDoc.setBounds(310, 307, 180, 34);
+            panelAgendarCita.add(textFieldDocumentoDoc);
 
-            textFieldDocumento = new JTextField();
-            textFieldDocumento.setBounds(310, 406, 180, 34);
-            panelAgendarCita.add(textFieldDocumento);
+            textFieldConsultorio = new JTextField();
+            textFieldConsultorio.setBounds(440, 406, 180, 34);
+            panelAgendarCita.add(textFieldConsultorio);
+            
+            textFieldFecha = new JTextField();
+            textFieldFecha.setBounds(175, 406, 180, 34);
+            panelAgendarCita.add(textFieldFecha);
 
-            JLabel lblNombre = new JLabel("Nombre");
+            JLabel lblNombre = new JLabel("<html>Documento<p> Paciente<html>");
             lblNombre.setForeground(new Color(255, 255, 255));
             lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblNombre.setBounds(310, 153, 180, 45);
             panelAgendarCita.add(lblNombre);
 
-            JLabel lblApellido = new JLabel("Apellido");
+            JLabel lblApellido = new JLabel("<html>Documento<p> Doctor<html>");
             lblApellido.setForeground(new Color(255, 255, 255));
             lblApellido.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblApellido.setBounds(310, 252, 180, 45);
             panelAgendarCita.add(lblApellido);
 
-            JLabel lblDocumento = new JLabel("Documento");
-            lblDocumento.setForeground(new Color(255, 255, 255));
-            lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(310, 351, 180, 45);
-            panelAgendarCita.add(lblDocumento);
+            JLabel lblDocumentoPac = new JLabel("Consultorio");
+            lblDocumentoPac.setForeground(new Color(255, 255, 255));
+            lblDocumentoPac.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblDocumentoPac.setBounds(450, 351, 180, 45);
+            panelAgendarCita.add(lblDocumentoPac);
+            
+            JLabel lblDocumentoDoc = new JLabel("Fecha");
+            lblDocumentoDoc.setForeground(new Color(255, 255, 255));
+            lblDocumentoDoc.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblDocumentoDoc.setBounds(200, 351, 180, 45);
+            panelAgendarCita.add(lblDocumentoDoc);
 
             contentPane.add(panelAgendarCita);
             contentPane.setComponentZOrder(panelAgendarCita, 0);
@@ -224,7 +261,33 @@ public class AgenteAtencionAlPaciente extends JFrame {
             lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblCiudad.setBounds(310, 450, 180, 45);
             panelAgendarCita.add(lblCiudad);
-
+            
+                
+            
+            //agregarCita(, , t, );
+            
+        }
+    }
+    
+    private void addAction(){
+        btnAgendarCita.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    agregarCita((String) menuDesplegableOpciones.getSelectedItem(),textFieldConsultorio.getText(),textFieldDocumentoDoc.getText() , textFieldDocumentoPac.getText(), textFieldFecha.getText());
+                } catch (Exception ex) {
+                    Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    
+    private void agregarCita(String sede,String consultorio, String docMed, String docPac, String fecha) throws Exception{
+        try {
+            int codSede = ss.searchPerNombre(sede).getCod();
+            cs.createCita(conSer.searchPerSede(codSede,consultorio).getNumHab(), docMed, fecha, docPac);
+        } catch (Exception e) {
+            throw e;
         }
     }
     
@@ -308,7 +371,11 @@ public class AgenteAtencionAlPaciente extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new AgenteAtencionAlPaciente().setVisible(true);
+                try {
+                    new AgenteAtencionAlPaciente().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
