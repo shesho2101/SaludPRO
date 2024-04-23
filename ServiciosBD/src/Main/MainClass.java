@@ -4,6 +4,7 @@
  */
 package Main;
 
+import principal.dominio.cita.CitaServices;
 import principal.dominio.historialClinico.HistorialClinicoServices;
 import principal.dominio.paciente.GrupoSanguineo;
 import principal.dominio.paciente.PacienteServices;
@@ -25,10 +26,9 @@ public class MainClass {
         UsuarioServices us = new UsuarioServices();
         PacienteServices ps = new PacienteServices();
         
-        HistorialClinicoServices hcs = new HistorialClinicoServices();
-        hcs.modificarHistorial("10");
+        CitaServices cs = new CitaServices();
         
-        System.out.println(hcs.searchHC("10"));
+        cs.createCita(1, "20", "2024-12-02", "10");
         
         
     
