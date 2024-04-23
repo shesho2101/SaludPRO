@@ -100,6 +100,23 @@ public class MedicoServices {
         }
     }
     
+    public Medico searchPerEspecializacion(String especializacion, String id) throws Exception{
+        try {
+            if(id == null || id.isEmpty()){
+                throw new Exception("El id no puede ser nulo");
+            }
+            if(especializacion == null || especializacion.isEmpty()){
+                throw new Exception("La especializacion no puede ser nula");
+            }
+            
+            Medico pac = cbd.searchDocPerEspe(especializacion,id);
+            
+            return pac;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public List<Medico> listMed() throws Exception{
         try {
             return cbd.listPac();

@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.consultorio.ConsultorioServices;
+import principal.dominio.medico.MedicoServices;
 import principal.dominio.sede.SedeServices;
 
 public class AgenteAtencionAlPaciente extends JFrame {
@@ -36,17 +37,21 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private CitaServices cs;
     private ConsultorioServices conSer;
     private SedeServices ss;
+    private MedicoServices ms;
     private JTextField textFieldFecha;
     private JTextField textFieldConsultorio;
     private JTextField textFieldDocumentoPac;
     private JTextField textFieldDocumentoDoc;
     private JButton btnAgendarCita;
     private JComboBox<String> menuDesplegableOpciones;
+    private JComboBox<String> menuDesplegableSedes;
+    
     
 
     public AgenteAtencionAlPaciente() throws Exception {
         this.cs = new CitaServices();
         this.ss = new SedeServices();
+        this.ms = new MedicoServices();
         this.conSer = new ConsultorioServices();
         this.btnAgendarCita = new JButton();
         setTitle("IPS Salud Pro - Agente atención al paciente");
@@ -197,13 +202,13 @@ public class AgenteAtencionAlPaciente extends JFrame {
             String[] sedes = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
             String[] opciones = {"Medicina familiar", "Fisioterapia", "Medina interna", "Psicología"};
 
-            JComboBox<String> menuDesplegableSedes = new JComboBox<>(sedes);
-            menuDesplegableSedes.setModel(new DefaultComboBoxModel<>(opciones));
+            menuDesplegableSedes = new JComboBox<>(sedes);
+            menuDesplegableSedes.setModel(new DefaultComboBoxModel<>(sedes));
             menuDesplegableSedes.setBounds(310, 600, 180, 30);
             panelAgendarCita.add(menuDesplegableSedes);
 
             menuDesplegableOpciones = new JComboBox<>(opciones);
-            menuDesplegableOpciones.setModel(new DefaultComboBoxModel<>(sedes));
+            menuDesplegableOpciones.setModel(new DefaultComboBoxModel<>(opciones));
             menuDesplegableOpciones.setBounds(310, 505, 180, 30);
             panelAgendarCita.add(menuDesplegableOpciones);
 
@@ -274,7 +279,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    agregarCita((String) menuDesplegableOpciones.getSelectedItem(),textFieldConsultorio.getText(),textFieldDocumentoDoc.getText() , textFieldDocumentoPac.getText(), textFieldFecha.getText());
+                    agregarCita((String) menuDesplegableSedes.getSelectedItem(),textFieldConsultorio.getText(),textFieldDocumentoDoc.getText() , textFieldDocumentoPac.getText(), textFieldFecha.getText(), (String) menuDesplegableOpciones.getSelectedItem());
                 } catch (Exception ex) {
                     Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -282,10 +287,12 @@ public class AgenteAtencionAlPaciente extends JFrame {
         });
     }
     
-    private void agregarCita(String sede,String consultorio, String docMed, String docPac, String fecha) throws Exception{
+    private void agregarCita(String sede, String consultorio, String docMed, String docPac, String fecha, String especializacion) throws Exception{
         try {
             int codSede = ss.searchPerNombre(sede).getCod();
-            cs.createCita(conSer.searchPerSede(codSede,consultorio).getNumHab(), docMed, fecha, docPac);
+            if(ms.searchPerEspecializacion(especializacion, docMed) != null){
+                cs.createCita(conSer.searchPerSede(codSede,consultorio).getNumHab(), docMed, fecha, docPac);
+            }            
         } catch (Exception e) {
             throw e;
         }

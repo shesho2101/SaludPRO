@@ -104,7 +104,6 @@ public class ConsultorioDAO extends DAO{
         try {
             String sql = "SELECT * FROM consultorio WHERE nombre = '" + nombre + "'";
             
-            
             consultarBase(sql);
             
             Consultorio cons = null;

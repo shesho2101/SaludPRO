@@ -89,6 +89,31 @@ public class MedicoDAO extends DAO{
         }
     }
     
+    public Medico searchDocPerEspe(String espe, String id) throws Exception{
+        try {
+            
+            String sql = "SELECT * FROM medico "
+                    + "WHERE Especializacion = '" + espe + "' and ID_Medico = '" + id + "'";
+            
+            consultarBase(sql);
+            
+            Medico med = null;
+            
+            while(result.next()){
+                med = new Medico();
+                med.setUsr(us.searchPerID(result.getString(1)));
+                med.setEspecializacion(result.getString(2));
+                med.setCons(cs.searchPerCod(result.getInt(3)));
+            }
+            desconectarBase();
+            return med;
+            
+        } catch (Exception e) {
+            desconectarBase();
+            throw e;
+        }
+    }
+    
     public List<Medico> listPac() throws Exception{
         try {
             String sql = "SELECT * FROM medico";
