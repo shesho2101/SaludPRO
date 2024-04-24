@@ -93,11 +93,10 @@ public class CitaServices {
             if(searchCita(numCita) == null){
                 throw new Exception("No existe esa cita");
             }
-            
             Cita cita = searchCita(numCita);
             cita.setAsistencia(asistencia);
             //Call database
-            cbd.modCita(cita);
+            cbd.modAsistencia(cita);
         } catch (Exception e) {
             throw e;
         }    

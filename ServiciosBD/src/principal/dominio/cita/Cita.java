@@ -25,11 +25,11 @@ public class Cita {
         this.med = med;
         this.date = date;
         this.pac = pac;
-        this.asistencia = true;
+        this.asistencia = false;
     }
 
     public Cita() {
-        this.asistencia = true;
+        this.asistencia = false;
     }
 
     public int getNumCita() {
@@ -41,10 +41,10 @@ public class Cita {
     }
 
     public int isAsistencia() {
-        if(asistencia == true){
-            return 1;
-        } else{
+        if(asistencia == false){
             return 0;
+        } else{
+            return 1;
         }
     }
 
