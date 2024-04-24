@@ -1,6 +1,7 @@
 package co.edu.upb;
 
 import principal.dominio.PersonalAtencion.PersonalAtencionServices;
+import principal.dominio.medico.Medico;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.user.Usuario;
 import principal.dominio.user.UsuarioServices;
@@ -219,6 +220,8 @@ public class Administrador extends JFrame {
             limpiarPanel(nuevoPanel);
 
             Medico medico;
+            medico = new Medico();
+            usuario = medico.getUsr();
 
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68));
@@ -234,7 +237,7 @@ public class Administrador extends JFrame {
             // Generación de la tabla de trabajadores
             int y = 10;
             for (int i = 0; i == 0; i++) {
-                medico = new Medico("", "", "","","", "");
+
 
                 JPanel panelRow = new JPanel();
                 panelRow.setVisible(true);
@@ -244,14 +247,14 @@ public class Administrador extends JFrame {
 
                 panelRow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor clickeable
 
-                JLabel nombre = new JLabel(medico.getNombre());
+                JLabel nombre = new JLabel(usuario.getNombre());
                 nombre.setVisible(true);
                 nombre.setSize(250, 25);
                 nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
                 panelRow.add(nombre);
                 nombre.setLocation(20, 5);
 
-                JLabel documento = new JLabel(medico.getDocumento());
+                JLabel documento = new JLabel(medico.getID());
                 documento.setVisible(true);
                 documento.setSize(140, 30);
                 documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -265,14 +268,14 @@ public class Administrador extends JFrame {
                 panelRow.add(sede);
                 sede.setLocation(320, 5);
 
-                JLabel especialidad = new JLabel(medico.getEspecialidad());
+                JLabel especialidad = new JLabel(medico.getEspecializacion());
                 especialidad.setVisible(true);
                 especialidad.setSize(320, 30);
                 especialidad.setFont(new Font("Tahoma", Font.PLAIN, 15));
                 panelRow.add(especialidad);
                 especialidad.setLocation(470, 5);
 
-                JLabel consultorio = new JLabel(medico.getConsultorio());
+                JLabel consultorio = new JLabel(String.valueOf(medico.getCons()));
                 consultorio.setVisible(true);
                 consultorio.setSize(320, 30);
                 consultorio.setFont(new Font("Tahoma", Font.PLAIN, 15));
