@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>co.edu.upb</groupId>
-            <artifactId>JavaApplication</artifactId>
+            <artifactId>ServiciosBD</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

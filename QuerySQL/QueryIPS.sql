@@ -108,11 +108,3 @@ alter table tratamiento_medicamento add constraint FK_Tratamiento_Medicamento fo
 alter table tratamiento_medicamento add constraint FK_MedicamentoTrat foreign key (cod_medicamento) references medicamento(codigo);
 
 alter table historial_clinico add constraint FK_HistorialPac foreign key (ID_Paciente) references paciente(ID_Paciente);
-
-
-
-
-
-
-
-

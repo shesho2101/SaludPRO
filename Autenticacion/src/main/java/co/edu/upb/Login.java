@@ -1,4 +1,5 @@
 package co.edu.upb;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -67,6 +68,7 @@ public class Login extends JFrame {
 
                 // Hacer visible la ventana
                 setVisible(true);
+
         }
 
         public static void main(String[] args) {

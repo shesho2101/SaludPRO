@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Medico" />
         <module name="AgenteAtencionAlPaciente" />
+        <module name="ServiciosBD" />
         <module name="Administrador" />
         <module name="autenticacion" />
       </profile>
