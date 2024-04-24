@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serial;
+import java.sql.ResultSet;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,9 +18,14 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
+import principal.DAO.Abstract.CallDAO;
+import principal.dominio.cita.Cita;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.MedicoServices;
@@ -38,6 +44,9 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private ConsultorioServices conSer;
     private SedeServices ss;
     private MedicoServices ms;
+    private CallDAO cd;
+    
+    //Agendar cita variables
     private JTextField textFieldFecha;
     private JTextField textFieldConsultorio;
     private JTextField textFieldDocumentoPac;
@@ -46,14 +55,31 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private JComboBox<String> menuDesplegableOpciones;
     private JComboBox<String> menuDesplegableSedes;
     
+    //Cancelar cita variables
+    private JTextField textFieldDocumentoPacCan;
+    private JButton btnCancelarCita;
+    private JTable tablaCitas;
+    private JScrollPane scroll;
+    private DefaultTableModel dt;
+    private JButton btnBorrarCita;
     
-
     public AgenteAtencionAlPaciente() throws Exception {
         this.cs = new CitaServices();
         this.ss = new SedeServices();
         this.ms = new MedicoServices();
+        this.cd = new CallDAO();
         this.conSer = new ConsultorioServices();
+        
+        //Agendar cita
         this.btnAgendarCita = new JButton();
+        
+        //Cancelar cita
+        this.btnCancelarCita = new JButton();
+        this.tablaCitas = new JTable();
+        this.scroll = new JScrollPane();
+        this.dt = new DefaultTableModel();
+        this.btnBorrarCita = new JButton();
+
         setTitle("IPS Salud Pro - Agente atención al paciente");
         setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
@@ -77,7 +103,10 @@ public class AgenteAtencionAlPaciente extends JFrame {
         lblFondo.setIcon(icon);
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
-        addAction();
+        addActionAgregar();
+        createTable();
+        addActionSearch();
+        addActionBorrar();
     }
 
     private JButton createButton(final String text, int x, int y) {
@@ -255,13 +284,13 @@ public class AgenteAtencionAlPaciente extends JFrame {
             contentPane.add(panelAgendarCita);
             contentPane.setComponentZOrder(panelAgendarCita, 0);
 
-            JLabel lblEspecialidad = new JLabel("Especialidad");
+            JLabel lblEspecialidad = new JLabel("Ciudad");
             lblEspecialidad.setForeground(new Color(255, 255, 255));
             lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblEspecialidad.setBounds(310, 545, 180, 45);
             panelAgendarCita.add(lblEspecialidad);
 
-            JLabel lblCiudad = new JLabel("Ciudad");
+            JLabel lblCiudad = new JLabel("Especialidad");
             lblCiudad.setForeground(new Color(255, 255, 255));
             lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblCiudad.setBounds(310, 450, 180, 45);
@@ -274,7 +303,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
         }
     }
     
-    private void addAction(){
+    private void addActionAgregar(){
         btnAgendarCita.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -301,26 +330,33 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelCancelarCita() {
         if (movimiento) {
             //movimiento = false;
-            JTextField textFieldDocumento;
+            
             
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
             panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
-            JButton btnAgendarCita = new JButton("Buscar cita");
-            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(305, 437, 180, 40);
-            panelCancelarCita.add(btnAgendarCita);
-
-            textFieldDocumento = new JTextField();
-            textFieldDocumento.setBounds(305, 376, 180, 34);
-            panelCancelarCita.add(textFieldDocumento);
+            btnCancelarCita.setText("Buscar citas");
+            btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnCancelarCita.setBounds(200, 580, 180, 40);
+            panelCancelarCita.add(btnCancelarCita);
+            
+            btnBorrarCita.setText("Borrar cita");
+            btnBorrarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnBorrarCita.setBounds(415, 580, 180, 40);
+            panelCancelarCita.add(btnBorrarCita);
+            
+            panelCancelarCita.add(scroll);
+            
+            textFieldDocumentoPacCan = new JTextField();
+            textFieldDocumentoPacCan.setBounds(305, 200, 180, 34);
+            panelCancelarCita.add(textFieldDocumentoPacCan);
 
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 120, 45);
+            lblDocumento.setBounds(335, 160, 120, 45);
             panelCancelarCita.add(lblDocumento);
 
             contentPane.add(panelCancelarCita);
@@ -330,7 +366,61 @@ public class AgenteAtencionAlPaciente extends JFrame {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
             }
         }
-    }    
+    }   
+    
+    private void createTable(){
+        String[] nombreC = {"Consultorio", "Fecha", "Asistencia"};
+        dt.setColumnIdentifiers(nombreC);
+        tablaCitas.setModel(dt);
+        scroll.setBounds(225, 280, 350, 250);
+        scroll.setViewportView(tablaCitas);
+    }
+    
+    private void getCitas(String id) throws Exception{
+        try {
+            
+            String sql = "SELECT NumHab, fecha, asistencia FROM cita "
+                    + "INNER JOIN paciente USING(ID_Paciente)"
+                    + "WHERE ID_Paciente = '" + id + "'";
+            
+            ResultSet rs = cd.consultDataBase(sql);
+            while(rs.next()){
+                dt.addRow(new Object[] {conSer.searchPerCod(rs.getInt(1)).getNombre(), rs.getDate(2).toString(), rs.getBoolean(3)});
+            }
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    private void addActionSearch(){
+        btnCancelarCita.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    getCitas(textFieldDocumentoPacCan.getText());
+                    //Reiniciar tabla
+                } catch (Exception ex) {
+                    Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+    
+    private void addActionBorrar(){
+        btnBorrarCita.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    System.out.println();
+                    dt.removeRow(tablaCitas.getSelectedRow());
+                    //Borrar en base de datos
+                } catch (Exception ex) {
+                    Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
 
     private void cargarPanelActivarCita() {
         if (movimiento) {
