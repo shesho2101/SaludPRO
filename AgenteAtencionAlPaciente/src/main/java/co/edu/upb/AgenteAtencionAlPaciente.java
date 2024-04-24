@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -61,7 +62,10 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private JTable tablaCitas;
     private JScrollPane scroll;
     private DefaultTableModel dt;
-    private JButton btnBorrarCita;
+    private JButton btnBRACita;
+    
+    //Reprogramar cita
+    private JTextField textFieldDateNew;
     
     public AgenteAtencionAlPaciente() throws Exception {
         this.cs = new CitaServices();
@@ -73,12 +77,15 @@ public class AgenteAtencionAlPaciente extends JFrame {
         //Agendar cita
         this.btnAgendarCita = new JButton();
         
+       
+        
         //Cancelar cita
         this.btnCancelarCita = new JButton();
         this.tablaCitas = new JTable();
-        this.scroll = new JScrollPane();
+        this.scroll = new JScrollPane(tablaCitas);
         this.dt = new DefaultTableModel();
-        this.btnBorrarCita = new JButton();
+        this.btnBRACita = new JButton();
+        
 
         setTitle("IPS Salud Pro - Agente atención al paciente");
         setSize(1600, 900);
@@ -106,7 +113,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
         addActionAgregar();
         createTable();
         addActionSearch();
-        addActionBorrar();
+        addActionBRA();
     }
 
     private JButton createButton(final String text, int x, int y) {
@@ -197,7 +204,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
                 break;
     
             case 2:
-                cargarPanelAgendarCita();
+                cargarPanelReprogramarCita();
                 break;
     
             case 3:
@@ -327,6 +334,57 @@ public class AgenteAtencionAlPaciente extends JFrame {
         }
     }
     
+    private void cargarPanelReprogramarCita() {
+        if (movimiento) {
+            //movimiento = false;
+            
+            
+            JPanel panelCancelarCita = new JPanel();
+            panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelCancelarCita.setLayout(null);
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+
+            btnCancelarCita.setText("Buscar citas");
+            btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnCancelarCita.setBounds(200, 580, 180, 40);
+            panelCancelarCita.add(btnCancelarCita);
+            
+            btnBRACita.setText("Reprogramar");
+            btnBRACita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnBRACita.setBounds(415, 580, 180, 40);
+            panelCancelarCita.add(btnBRACita);
+            
+            panelCancelarCita.add(scroll);
+            
+            textFieldDocumentoPacCan = new JTextField();
+            textFieldDocumentoPacCan.setBounds(200, 200, 180, 34);
+            panelCancelarCita.add(textFieldDocumentoPacCan);
+            
+            textFieldDateNew = new JTextField();
+            textFieldDateNew.setBounds(415, 200, 180, 34);
+            panelCancelarCita.add(textFieldDateNew);
+
+            JLabel lblDocumento = new JLabel("Documento");
+            lblDocumento.setForeground(new Color(255, 255, 255));
+            lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblDocumento.setBounds(230, 160, 120, 45);
+            panelCancelarCita.add(lblDocumento);
+            
+            JLabel lblDate = new JLabel("<html>Fecha<p> nueva<html>");
+            lblDate.setForeground(new Color(255, 255, 255));
+            lblDate.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblDate.setBounds(465, 150, 120, 45);
+            panelCancelarCita.add(lblDate);
+
+            contentPane.add(panelCancelarCita);
+            contentPane.setComponentZOrder(panelCancelarCita, 0);
+
+            if (nuevoPanel != null) {
+                nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
+            }
+        }
+    }  
+    
     private void cargarPanelCancelarCita() {
         if (movimiento) {
             //movimiento = false;
@@ -342,10 +400,10 @@ public class AgenteAtencionAlPaciente extends JFrame {
             btnCancelarCita.setBounds(200, 580, 180, 40);
             panelCancelarCita.add(btnCancelarCita);
             
-            btnBorrarCita.setText("Borrar cita");
-            btnBorrarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnBorrarCita.setBounds(415, 580, 180, 40);
-            panelCancelarCita.add(btnBorrarCita);
+            btnBRACita.setText("Borrar");
+            btnBRACita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnBRACita.setBounds(415, 580, 180, 40);
+            panelCancelarCita.add(btnBRACita);
             
             panelCancelarCita.add(scroll);
             
@@ -369,23 +427,27 @@ public class AgenteAtencionAlPaciente extends JFrame {
     }   
     
     private void createTable(){
-        String[] nombreC = {"Consultorio", "Fecha", "Asistencia"};
+        String[] nombreC = {"Numero Cita","Consultorio", "Fecha", "Asistencia"};
         dt.setColumnIdentifiers(nombreC);
+        tablaCitas.setDefaultEditor(Object.class, null);
         tablaCitas.setModel(dt);
+        tablaCitas.getTableHeader().setReorderingAllowed(false);
         scroll.setBounds(225, 280, 350, 250);
-        scroll.setViewportView(tablaCitas);
+        scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        scroll.setBackground(Color.blue);
     }
     
     private void getCitas(String id) throws Exception{
         try {
             
-            String sql = "SELECT NumHab, fecha, asistencia FROM cita "
+            String sql = "SELECT NumCita, NumHab, fecha, asistencia FROM cita "
                     + "INNER JOIN paciente USING(ID_Paciente)"
-                    + "WHERE ID_Paciente = '" + id + "'";
+                    + "WHERE ID_Paciente = '" + id + "'"
+                    + "ORDER BY fecha ASC";
             
             ResultSet rs = cd.consultDataBase(sql);
             while(rs.next()){
-                dt.addRow(new Object[] {conSer.searchPerCod(rs.getInt(1)).getNombre(), rs.getDate(2).toString(), rs.getBoolean(3)});
+                dt.addRow(new Object[] {rs.getInt(1), conSer.searchPerCod(rs.getInt(2)).getNombre(), rs.getDate(3).toString(), rs.getBoolean(4)});
             }
             
         } catch (Exception e) {
@@ -398,8 +460,12 @@ public class AgenteAtencionAlPaciente extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    getCitas(textFieldDocumentoPacCan.getText());
-                    //Reiniciar tabla
+                    if(tablaCitas.getRowCount() != 0){
+                        dt.setNumRows(0);
+                    } else{
+                        getCitas(textFieldDocumentoPacCan.getText());
+                    }
+                    
                 } catch (Exception ex) {
                     Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -407,48 +473,74 @@ public class AgenteAtencionAlPaciente extends JFrame {
         });
     }
     
-    private void addActionBorrar(){
-        btnBorrarCita.addActionListener(new ActionListener() {
+    private void addActionBRA(){
+        btnBRACita.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    System.out.println();
-                    dt.removeRow(tablaCitas.getSelectedRow());
-                    //Borrar en base de datos
+                    if(btnBRACita.getText().equals("Borrar")){
+                        int row = tablaCitas.getSelectedRow();
+                        if(row == -1){
+                            throw new Exception("No escogio fila");
+                        }
+                        int numCita = (int) dt.getValueAt(row, 0);
+                        dt.removeRow(row);
+                        cs.deleteCita(numCita);
+                    }
+                    if(btnBRACita.getText().equals("Reprogramar")){
+                        int row = tablaCitas.getSelectedRow();
+                        int numCita = (int) dt.getValueAt(row, 0);
+                        dt.setValueAt(textFieldDateNew.getText(), row, 2);
+                        cs.modificarCita(numCita, textFieldDateNew.getText());
+                    }
+                    if(btnBRACita.getText().equals("Activar")){
+                        int row = tablaCitas.getSelectedRow();
+                        int numCita = (int) dt.getValueAt(row, 0);
+                        dt.setValueAt(true, row, 3);
+                        cs.modificarAsistencia(numCita, true);
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
     }
+    
 
     private void cargarPanelActivarCita() {
         if (movimiento) {
             //movimiento = false;
-            JTextField textFieldDocumento;
             
-            JPanel panelActivarCita = new JPanel();
-            panelActivarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelActivarCita.setLayout(null);
-            panelActivarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            
+            JPanel panelCancelarCita = new JPanel();
+            panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelCancelarCita.setLayout(null);
+            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            
+            btnCancelarCita.setText("Buscar citas");
+            btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnCancelarCita.setBounds(200, 580, 180, 40);
+            panelCancelarCita.add(btnCancelarCita);
+            
+            btnBRACita.setText("Activar");
+            btnBRACita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnBRACita.setBounds(415, 580, 180, 40);
+            panelCancelarCita.add(btnBRACita);
+            
+            panelCancelarCita.add(scroll);
+            
+            textFieldDocumentoPacCan = new JTextField();
+            textFieldDocumentoPacCan.setBounds(305, 200, 180, 34);
+            panelCancelarCita.add(textFieldDocumentoPacCan);
 
-            JButton btnAgendarCita = new JButton("Buscar cita");
-            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(305, 437, 180, 40);
-            panelActivarCita.add(btnAgendarCita);
-
-            textFieldDocumento = new JTextField();
-            textFieldDocumento.setBounds(305, 376, 180, 34);
-            panelActivarCita.add(textFieldDocumento);
-
-            JLabel lblDocumento = new JLabel("Documento");
+            JLabel lblDocumento = new JLabel("<html>Documento<p> Paciente<html>");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 120, 45);
-            panelActivarCita.add(lblDocumento);
+            lblDocumento.setBounds(335, 150, 120, 45);
+            panelCancelarCita.add(lblDocumento);
 
-            contentPane.add(panelActivarCita);
-            contentPane.setComponentZOrder(panelActivarCita, 0);
+            contentPane.add(panelCancelarCita);
+            contentPane.setComponentZOrder(panelCancelarCita, 0);
 
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());

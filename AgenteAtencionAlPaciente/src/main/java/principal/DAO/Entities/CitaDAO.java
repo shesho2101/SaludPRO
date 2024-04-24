@@ -85,7 +85,7 @@ public class CitaDAO extends DAO{
         try {
             
             String sql = "SELECT * FROM cita "
-                    + "WHERE NumHab = '" + cod + "'";
+                    + "WHERE NumCita = '" + cod + "'";
             
             consultarBase(sql);
             

@@ -21,7 +21,7 @@ public abstract class DAO {
     //Nombre del usuario con el que tienen el mysql
     private final String user = "root";
     //Contraseña con la que entran a su mysql
-    private final String password = "informatica";
+    private final String password = "jufetape";
     private final String database = "ips";
     private final String driver = "com.mysql.jdbc.Driver";
     
