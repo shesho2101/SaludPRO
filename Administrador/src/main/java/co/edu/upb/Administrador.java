@@ -1,5 +1,10 @@
 package co.edu.upb;
 
+import principal.dominio.PersonalAtencion.PersonalAtencionServices;
+import principal.dominio.medico.MedicoServices;
+import principal.dominio.user.Usuario;
+import principal.dominio.user.UsuarioServices;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,10 +24,23 @@ public class Administrador extends JFrame {
     private boolean movimiento = false;
     private JPanel nuevoPanel;
     private int panelPositionX = 770;
-    private ArrayList<Trabajador> listaTrabajadores;
-    private ArrayList<Medico> listaMedico;
+
+    private UsuarioServices usuarioServices;
+
+    private MedicoServices medicoServices;
+
+    private PersonalAtencionServices personalAtencionServices;
+
+    private Usuario usuario;
+
+    private Medico medico;
+
 
     public Administrador() {
+        usuarioServices = new UsuarioServices();
+        medicoServices = new MedicoServices();
+        personalAtencionServices = new PersonalAtencionServices();
+        usuario = new Usuario();
         setTitle("IPS Salud Pro - Administrador");
         setSize(1600, 900);
         setResizable(false);
@@ -44,9 +62,6 @@ public class Administrador extends JFrame {
         lblFondo.setIcon(new ImageIcon(getClass().getResource("/interfazBlanca.jpg")));
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
-
-        listaTrabajadores = new ArrayList<>();
-        listaMedico = new ArrayList<>();
     }
 
     private JButton createButton(final String text, int x, int y) {
@@ -61,15 +76,27 @@ public class Administrador extends JFrame {
 
                 switch (text) {
                     case "Inventario medicamentos":
-                        crearNuevoPanel(1);
+                        try {
+                            crearNuevoPanel(1);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
 
                     case "Administrar consultorios":
-                        crearNuevoPanel(2);
+                        try {
+                            crearNuevoPanel(2);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
 
                     case "Administrar usuarios":
-                        crearNuevoPanel(3);
+                        try {
+                            crearNuevoPanel(3);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                         break;
                 }
             }
@@ -108,8 +135,14 @@ public class Administrador extends JFrame {
         }
     }
 
-    private void crearNuevoPanel(int opcion) {
-        nuevoPanel = new JPanel();
+    private void crearNuevoPanel(int opcion) throws Exception {
+        // Limpiar el contenido previo del panel antes de crear algo nuevo
+        if (nuevoPanel != null) {
+            limpiarPanel(nuevoPanel);
+        } else {
+            nuevoPanel = new JPanel(); // Crear nuevo panel si no existe
+        }
+
         nuevoPanel.setBackground(new Color(250, 250, 250));
         nuevoPanel.setBounds(panelPositionX, 0, 800, 900);
 
@@ -138,6 +171,7 @@ public class Administrador extends JFrame {
 
     private void cargarInventario() {
         if (movimiento) {
+            limpiarPanel(nuevoPanel);
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 63));
             panelCancelarCita.setLayout(null);
@@ -177,12 +211,15 @@ public class Administrador extends JFrame {
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
             }
-
         }
     }
 
-    private void cargarConsultorios() {
+    private void cargarConsultorios() throws Exception {
         if (movimiento) {
+            limpiarPanel(nuevoPanel);
+
+            Medico medico;
+
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68));
             panelCancelarCita.setLayout(null);
@@ -196,8 +233,8 @@ public class Administrador extends JFrame {
 
             // Generación de la tabla de trabajadores
             int y = 10;
-            for (int i = 0; i < listaMedico.size(); i++) {
-                Medico medico = listaMedico.get(i);
+            for (int i = 0; i == 0; i++) {
+                medico = new Medico("", "", "","","", "");
 
                 JPanel panelRow = new JPanel();
                 panelRow.setVisible(true);
@@ -274,22 +311,24 @@ public class Administrador extends JFrame {
 
     private void cargarUsuarios() {
         if (movimiento) {
-
+            limpiarPanel(nuevoPanel);
+            // Crear el panel de usuarios
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68));
-            panelCancelarCita.setLayout(null); // Usar null layout en lugar de BorderLayout
+            panelCancelarCita.setLayout(null); // Usar null layout
             panelCancelarCita.setBounds(800, 0, 800, 900);
 
             JPanel jPanelTable = new JPanel();
             jPanelTable.setLayout(null); // Usar null layout
             jPanelTable.setBackground(Color.WHITE);
-            jPanelTable.setBounds(40, 168, 700, 400);
+            jPanelTable.setBounds(40, 168, 700, 400); // Ubicación y tamaño del área para la tabla
             panelCancelarCita.add(jPanelTable);
 
-            JButton btnAgendarCita = new JButton("Agregar");
-            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(65, 618, 180, 40);
-            panelCancelarCita.add(btnAgendarCita);
+            // Agregar botones para interacción
+            JButton btnAgregar = new JButton("Agregar");
+            btnAgregar.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnAgregar.setBounds(65, 618, 180, 40);
+            panelCancelarCita.add(btnAgregar);
 
             JButton btnModificar = new JButton("Modificar");
             btnModificar.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -302,58 +341,69 @@ public class Administrador extends JFrame {
             panelCancelarCita.add(btnBorrar);
 
             getContentPane().add(panelCancelarCita);
-            getContentPane().setComponentZOrder(panelCancelarCita, 0);
+            getContentPane().setComponentZOrder(panelCancelarCita, 0); // Ubicar el nuevo panel al frente
 
-            JLabel lblNombreCategoria = new JLabel("Administrar usuarios");
+            // Configurar el título del panel
+            JLabel lblNombreCategoria = new JLabel("Administrar Usuarios");
             lblNombreCategoria.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblNombreCategoria.setForeground(new Color(255, 255, 255));
+            lblNombreCategoria.setForeground(Color.WHITE);
             lblNombreCategoria.setBounds(285, 96, 210, 40);
             panelCancelarCita.add(lblNombreCategoria);
 
-            // Generación de la tabla de trabajadores
-            int y = 10;
-            for (int i = 0; i < listaTrabajadores.size(); i++) {
-                Trabajador trabajador = listaTrabajadores.get(i);
-
-                JPanel panelRow = new JPanel();
-                panelRow.setVisible(true);
-                panelRow.setSize(1050, 30);
-                panelRow.setBackground(Color.WHITE);
-                jPanelTable.add(panelRow);
-
-                panelRow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor clickeable
-
-                JLabel nombre = new JLabel(trabajador.getNombre());
-                nombre.setVisible(true);
-                nombre.setSize(250, 25);
-                nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(nombre);
-                nombre.setLocation(20, 5);
-
-                JLabel documento = new JLabel(trabajador.getDocumento());
-                documento.setVisible(true);
-                documento.setSize(140, 30);
-                documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(documento);
-                documento.setLocation(250, 5);
-
-                JLabel cargo = new JLabel(trabajador.getCargo());
-                cargo.setVisible(true);
-                cargo.setSize(320, 30);
-                cargo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(cargo);
-                cargo.setLocation(500, 5);
-
-                panelRow.setLocation(0, y); // Establecer la posición vertical
-                y += 40; // Incrementar la posición vertical para la próxima fila
+            // Ejemplo de lista de usuarios
+            List<Usuario> usuarios = null;
+            try {
+                usuarios = usuarioServices.listUsr();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
 
-            btnAgendarCita.addActionListener(new ActionListener() {
+            // Generación de filas para la tabla
+            int y = 10; // Posición inicial para la primera fila
+            for (Usuario usuario : usuarios) {
+                JPanel panelRow = new JPanel();
+                panelRow.setVisible(true);
+                panelRow.setSize(700, 30); // Tamaño de cada fila
+                panelRow.setBackground(Color.WHITE); // Color de fondo para la fila
+                panelRow.setLayout(null); // Posicionamiento libre
+
+                // Etiquetas para mostrar información del usuario
+                JLabel nombre = new JLabel(usuario.getNombre());
+                nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                nombre.setBounds(20, 5, 200, 25); // Posición y tamaño
+                panelRow.add(nombre);
+
+                JLabel documento = new JLabel(usuario.getId());
+                documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                documento.setBounds(250, 5, 200, 25);
+                panelRow.add(documento);
+
+                JLabel cargo = new JLabel(usuario.getCargo());
+                cargo.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                cargo.setBounds(480, 5, 200, 25); // Posición para "cargo"
+                panelRow.add(cargo);
+
+                panelRow.setLocation(0, y); // Posición vertical para cada fila
+                y += 40; // Incrementar para la siguiente fila
+
+                jPanelTable.add(panelRow); // Añadir la fila al panel de la tabla
+            }
+
+            // Acción del botón "Agregar"
+            btnAgregar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    getContentPane().remove(panelCancelarCita);
-                    getContentPane().repaint();
-                    cargarPanelAgregar();
+                    cargarPanelAgregar(); // Llamar la función para agregar nuevos usuarios
+                    limpiarPanel(panelCancelarCita);
+                }
+            });
+
+            // Acción del botón "Borrar"
+            btnBorrar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    cargarPanelBorrar();
+                    limpiarPanel(panelCancelarCita);
                 }
             });
 
@@ -364,6 +414,7 @@ public class Administrador extends JFrame {
     }
 
     private void cargarPanelAgregar() {
+
         JPanel panelAgregar = new JPanel();
         panelAgregar.setBackground(new Color(7, 29, 68));
         panelAgregar.setLayout(null);
@@ -390,12 +441,22 @@ public class Administrador extends JFrame {
                         JLabel lblNombreMedico = new JLabel("Nombre:");
                         lblNombreMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
                         lblNombreMedico.setForeground(Color.WHITE);
-                        lblNombreMedico.setBounds(310, 130, 180, 34);
+                        lblNombreMedico.setBounds(310, 30, 180, 34);
                         panelAgregar.add(lblNombreMedico);
 
                         JTextField textFieldNombreMedico = new JTextField();
-                        textFieldNombreMedico.setBounds(310, 180, 180, 30);
+                        textFieldNombreMedico.setBounds(310, 80, 180, 30);
                         panelAgregar.add(textFieldNombreMedico);
+
+                        JLabel lblApellidoMedico = new JLabel("Apellido:");
+                        lblApellidoMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
+                        lblApellidoMedico.setForeground(Color.WHITE);
+                        lblApellidoMedico.setBounds(310, 130, 180, 34);
+                        panelAgregar.add(lblApellidoMedico);
+
+                        JTextField textFieldApellidoMedico = new JTextField();
+                        textFieldApellidoMedico.setBounds(310, 180, 180, 30);
+                        panelAgregar.add(textFieldApellidoMedico);
 
                         JLabel lblDocumentoMedico = new JLabel("Documento:");
                         lblDocumentoMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -449,29 +510,28 @@ public class Administrador extends JFrame {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 String nombreMedico = textFieldNombreMedico.getText();
+                                String apellidoMedico = textFieldApellidoMedico.getText();
                                 String documentoMedico = new String(passwordFieldDocumentoMedico.getPassword());
                                 String especialidad = (String) menuDesplegableOpciones.getSelectedItem();
                                 String sede = (String) menuDesplegableSedes.getSelectedItem();
-                                String consultorio = textFieldConsultorio.getText();
-                                String cargo = "Medico";
+                                int consultorio = Integer.parseInt(textFieldConsultorio.getText());
+                                String cargo = "Médico";
 
-                                if (nombreMedico.isEmpty() || documentoMedico.isEmpty() || sede.isEmpty() || consultorio.isEmpty()) {
+                                if (nombreMedico.isEmpty() || apellidoMedico.isEmpty() || documentoMedico.isEmpty() || especialidad.isEmpty() || sede.isEmpty()) {
                                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
                                 } else {
-                                    // Crear un nuevo objeto Trabajador y agregarlo a la lista
-                                    Trabajador nuevoMedico = new Trabajador(nombreMedico, documentoMedico, cargo);
-                                    listaTrabajadores.add(nuevoMedico);
+                                    try {
+                                        usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, cargo);
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                    }
 
-                                    Medico medico = new Medico(nombreMedico, documentoMedico, especialidad, sede, consultorio, cargo);
-                                    listaMedico.add(medico);
+                                    try {
+                                        medicoServices.createMed(documentoMedico, especialidad, consultorio);
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                    }
 
-                                    // Imprimir los datos del médico (puedes eliminar estas líneas si no las necesitas)
-                                    System.out.println("Médico agregado:");
-                                    System.out.println("Nombre: " + nombreMedico);
-                                    System.out.println("Documento: " + documentoMedico);
-                                    System.out.println("Especialidad: " + especialidad);
-                                    System.out.println("Sede: " + sede);
-                                    System.out.println("Consultorio: " + consultorio);
                                 }
                             }
                         });
@@ -482,12 +542,22 @@ public class Administrador extends JFrame {
                         JLabel lblNombreAgente = new JLabel("Nombre:");
                         lblNombreAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
                         lblNombreAgente.setForeground(Color.WHITE);
-                        lblNombreAgente.setBounds(310, 130, 180, 34);
+                        lblNombreAgente.setBounds(310, 30, 180, 34);
                         panelAgregar.add(lblNombreAgente);
 
                         JTextField textFieldNombreAgente = new JTextField();
-                        textFieldNombreAgente.setBounds(310, 180, 180, 30);
+                        textFieldNombreAgente.setBounds(310, 80, 180, 30);
                         panelAgregar.add(textFieldNombreAgente);
+
+                        JLabel lblApellidoAgente = new JLabel("Apellido:");
+                        lblApellidoAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
+                        lblApellidoAgente.setForeground(Color.WHITE);
+                        lblApellidoAgente.setBounds(310, 130, 180, 34);
+                        panelAgregar.add(lblApellidoAgente);
+
+                        JTextField textFieldApellidoAgente = new JTextField();
+                        textFieldApellidoAgente.setBounds(310, 180, 180, 30);
+                        panelAgregar.add(textFieldApellidoAgente);
 
                         JLabel lblDocumentoAgente = new JLabel("Documento:");
                         lblDocumentoAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -499,27 +569,45 @@ public class Administrador extends JFrame {
                         passwordFieldDocumentoAgente.setBounds(310, 280, 180, 30);
                         panelAgregar.add(passwordFieldDocumentoAgente);
 
+                        JLabel lblSede1 = new JLabel("Sede:");
+                        lblSede1.setFont(new Font("Tahoma", Font.BOLD, 20));
+                        lblSede1.setForeground(Color.WHITE);
+                        lblSede1.setBounds(310, 330, 180, 34);
+                        panelAgregar.add(lblSede1);
+
+                        String[] sedes1 = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
+                        JComboBox<String> menuDesplegableSedes1 = new JComboBox<>(sedes1);
+                        menuDesplegableSedes1.setModel(new DefaultComboBoxModel<>(sedes1));
+                        menuDesplegableSedes1.setBounds(310, 380, 180, 30);
+                        panelAgregar.add(menuDesplegableSedes1);
+
                         JButton btnAgregarAgente = new JButton("Agregar");
                         btnAgregarAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
-                        btnAgregarAgente.setBounds(310, 330, 180, 40);
+                        btnAgregarAgente.setBounds(310, 430, 180, 40);
                         panelAgregar.add(btnAgregarAgente);
                         btnAgregarAgente.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 String nombreAgente = textFieldNombreAgente.getText();
+                                String apellidoAgente = textFieldApellidoAgente.getText();
                                 String documentoAgente = new String(passwordFieldDocumentoAgente.getPassword());
+                                String sede = (String) menuDesplegableSedes1.getSelectedItem();
 
-                                if (nombreAgente.isEmpty() || documentoAgente.isEmpty()) {
+                                String cargo = "Atención al paciente";
+
+                                if (nombreAgente.isEmpty() || apellidoAgente.isEmpty() || documentoAgente.isEmpty() || sede.isEmpty()) {
                                     JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
                                 } else {
-                                    // Crear un nuevo objeto Trabajador y agregarlo a la lista
-                                    Trabajador nuevoAgente = new Trabajador(nombreAgente, documentoAgente, "Agente de Atención al Paciente");
-                                    listaTrabajadores.add(nuevoAgente);
-
-                                    // Imprimir los datos del agente (puedes eliminar estas líneas si no las necesitas)
-                                    System.out.println("Agente de Atención al Paciente agregado:");
-                                    System.out.println("Nombre: " + nombreAgente);
-                                    System.out.println("Documento: " + documentoAgente);
+                                    try {
+                                        usuarioServices.createUsr(documentoAgente, nombreAgente, apellidoAgente, cargo);
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                    }
+                                    try {
+                                        personalAtencionServices.createPersonalAtencion(documentoAgente, sede);
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                    }
                                 }
                             }
                         });
@@ -542,15 +630,63 @@ public class Administrador extends JFrame {
         }
     }
 
+    private void cargarPanelBorrar() {
+        JPanel panelBorrar = new JPanel();
+        panelBorrar.setBackground(new Color(7, 29, 68));
+        panelBorrar.setLayout(null);
+        panelBorrar.setBounds(800, 0, 800, 900);
 
-    private void limpiarPanel(JPanel panel) {
-        panel.removeAll();
-        panel.revalidate();
-        panel.repaint();
+        JLabel lblDocumentoMedico = new JLabel("Documento:");
+        lblDocumentoMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDocumentoMedico.setForeground(Color.WHITE);
+        lblDocumentoMedico.setBounds(310, 230, 180, 34);
+        panelBorrar.add(lblDocumentoMedico);
+
+        JPasswordField passwordFieldDocumento = new JPasswordField();
+        passwordFieldDocumento.setBounds(310, 280, 180, 30);
+        panelBorrar.add(passwordFieldDocumento);
+
+        JButton btnEliminarUsuario = new JButton("Eliminar usuario");
+        btnEliminarUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnEliminarUsuario.setBounds(290, 330, 240, 40);
+        panelBorrar.add(btnEliminarUsuario);
+
+        btnEliminarUsuario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String documento = new String(passwordFieldDocumento.getPassword());
+                try {
+                    usuario = usuarioServices.searchPerID(documento);
+                    if(usuario.getCargo().equals("Médico")){
+                        medicoServices.delMed(documento);
+                    }
+                    if (usuario.getCargo().equals("Atención al paciente")){
+                        personalAtencionServices.deletePA(documento);
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+                try {
+                    usuarioServices.deleteUsr(documento);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        contentPane.add(panelBorrar);
+        contentPane.setComponentZOrder(panelBorrar, 0);
+
+        if (nuevoPanel != null) {
+            nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
+        }
     }
 
-    public ArrayList<Medico> getListaMedico() {
-        return listaMedico;
+    // Método para limpiar un panel
+    private void limpiarPanel(JPanel panel) {
+        panel.removeAll();
+        panel.revalidate(); // Revalidar el diseño
+        panel.repaint();   // Repintar el panel para aplicar cambios
     }
 
     public static void main(String[] args) {

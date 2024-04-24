@@ -1,5 +1,10 @@
 package co.edu.upb;
 
+import principal.dominio.PersonalAtencion.PersonalAtencion;
+import principal.dominio.administrador.Administrador;
+import principal.dominio.user.Usuario;
+import principal.dominio.user.UsuarioServices;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +14,17 @@ public class Login extends JFrame {
         private JTextField nombreUsuario;
         private JPasswordField passwordField;
 
+        private PersonalAtencion javaApplication = new PersonalAtencion();
+
+        private Usuario user = new Usuario("2101", "Sergio", "Mesa", "Médico");
+
+        private UsuarioServices usuarioServices;
+
+
+
+
         public Login() {
+                usuarioServices = new UsuarioServices();
                 // Configuración de la ventana
                 setTitle("IPS Salud Pro - Inicio de Sesión");
                 setExtendedState(JFrame.MAXIMIZED_BOTH); // Poner en pantalla completa
@@ -61,7 +76,10 @@ public class Login extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                                 String usuario = nombreUsuario.getText();
                                 String contrasena = new String(passwordField.getPassword());
-                                validarSesion(usuario, contrasena);
+                                try {
+                                        validarSesion(usuario, contrasena);
+                                } catch (Exception ex) {
+                                }
                         }
                 });
                 mainPanel.add(btnLogin);
@@ -80,39 +98,19 @@ public class Login extends JFrame {
                 setVisible(true);
         }
 
-        public void validarSesion(String usuario, String password) {
-                switch (usuario) {
-                        case "medico":
-                                if (password.equals("medico123")) {
-                                        Medico ventanaMedico = new Medico();
-                                        ventanaMedico.setVisible(true);
-                                        dispose();
+        public void validarSesion(String nombreUsuario, String password) throws Exception {
+                Usuario usuario = usuarioServices.searchPerID(password); // Se asume que el ID es la contraseña
 
-                                } else {
-                                        System.out.println("Contraseña incorrecta para el medico.");
-                                }
-                                break;
-                        case "operador":
-                                if (password.equals("operador123")) {
-                                        AgenteAtencionAlPaciente ventanaAgente = new AgenteAtencionAlPaciente();
-                                        ventanaAgente.setVisible(true);
-                                        dispose();
-                                } else {
-                                        System.out.println("Contraseña incorrecta para el operador.");
-                                }
-                                break;
-                        case "admin":
-                                if (password.equals("admin123")) {
-                                        Administrador ventanaAdministrador = new Administrador();
-                                        ventanaAdministrador.setVisible(true);
-                                        dispose();
-                                }
-                                else{
-                                        System.out.println("Contraseña incorrecta para el administrador.");
-                                }
-                        default:
-                                System.out.println("Usuario no reconocido.");
-                                break;
+                if (usuario != null && usuario.getNombre().equals(nombreUsuario)) {
+                        if (usuario.getCargo() == "Agente atención al paciente"){
+                                AgenteAtencionAlPaciente atencionAlPaciente = new AgenteAtencionAlPaciente();
+                                atencionAlPaciente.setVisible(true);
+                                dispose();
+                        }
+
+                } else {
+                        // Usuario o contraseña incorrectos
+                        JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
         }
 

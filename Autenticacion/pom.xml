@@ -16,19 +16,13 @@
     <dependencies>
         <dependency>
             <groupId>co.edu.upb</groupId>
-            <artifactId>Medico</artifactId>
+            <artifactId>JavaApplication</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>co.edu.upb</groupId>
             <artifactId>AgenteAtencionAlPaciente</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>co.edu.upb</groupId>
-            <artifactId>Administrador</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
