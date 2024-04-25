@@ -12,6 +12,7 @@
         <option value="$PROJECT_DIR$/ServiciosBD/pom.xml" />
         <option value="$PROJECT_DIR$/Intermediario/pom.xml" />
         <option value="$PROJECT_DIR$/IntermediarioFrame/pom.xml" />
+        <option value="$PROJECT_DIR$/ControladorCentral/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

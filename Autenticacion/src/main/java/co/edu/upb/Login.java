@@ -14,6 +14,9 @@ public class Login extends JFrame {
         private UsuarioServices usuarioServices; // Servicio para interactuar con la base de datos de usuarios
 
         public Login() {
+
+                FrameController.registerFrame("LoginFrame", this);
+
                 // Configuración de la ventana
                 setTitle("IPS Salud Pro - Inicio de Sesión");
                 setBounds(0, 0, 1600, 900);
@@ -98,7 +101,6 @@ public class Login extends JFrame {
                                 if (usuario.getNombre().equals(nombreUsuario)) {
                                         // Verifica el cargo del usuario y redirige a la ventana adecuada
                                         String cargo = usuario.getCargo();
-                                        System.out.println(cargo);
 
                                         switch (cargo) {
                                                 case "Administrador":

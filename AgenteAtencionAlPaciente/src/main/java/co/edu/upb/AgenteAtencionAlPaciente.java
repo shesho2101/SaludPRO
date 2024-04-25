@@ -68,6 +68,10 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private JTextField textFieldDateNew;
     
     public AgenteAtencionAlPaciente() throws Exception {
+
+        FrameController.registerFrame("AgenteFrame", this);
+
+
         this.cs = new CitaServices();
         this.ss = new SedeServices();
         this.ms = new MedicoServices();
@@ -104,6 +108,17 @@ public class AgenteAtencionAlPaciente extends JFrame {
         buttons[1] = createButton("Reprogramar cita", 660, 370);
         buttons[2] = createButton("Cancelar cita", 660, 450);
         buttons[3] = createButton("Activar cita", 660, 530);
+
+        // Añadir el botón de cerrar sesión
+        JButton btnCerrarSesion = new JButton("Cerrar sesión");
+        btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnCerrarSesion.setBounds(10, 790, 200, 40); // Posición en la parte inferior izquierda
+        btnCerrarSesion.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cerrarSesion(); // Llama a la función para cerrar sesión
+            }
+        });
+        contentPane.add(btnCerrarSesion);
 
         JLabel lblFondo = new JLabel("");
         ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/interfazBlanca.jpg")));
@@ -157,6 +172,12 @@ public class AgenteAtencionAlPaciente extends JFrame {
         });
         contentPane.add(button);
         return button;
+    }
+
+    private void cerrarSesion() {
+        FrameController.openFrame("LoginFrame");
+        FrameController.cerrarSesion(); // Llama al controlador para cerrar sesión
+
     }
 
     private void moverBotones() {

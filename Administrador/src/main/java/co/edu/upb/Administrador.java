@@ -42,6 +42,9 @@ public class Administrador extends JFrame {
         medicoServices = new MedicoServices();
         personalAtencionServices = new PersonalAtencionServices();
         usuario = new Usuario();
+
+        FrameController.registerFrame("AdministradorFrame", this);
+
         setTitle("IPS Salud Pro - Administrador");
         setSize(1600, 900);
         setResizable(false);
@@ -65,7 +68,7 @@ public class Administrador extends JFrame {
         btnCerrarSesion.setBounds(10, 790, 200, 40); // Posición en la parte inferior izquierda
         btnCerrarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //cerrarSesion(); // Llama a la función para cerrar sesión
+                cerrarSesion(); // Llama a la función para cerrar sesión
             }
         });
         contentPane.add(btnCerrarSesion);
@@ -75,11 +78,6 @@ public class Administrador extends JFrame {
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
     }
-
-    /*private void cerrarSesion() {
-        FrameManager frameManager = new FrameManager();
-        FrameManager.cerrarSesion(Administrador.this);
-    }*/
 
     private JButton createButton(final String text, int x, int y) {
         JButton button = new JButton(text);
@@ -120,6 +118,12 @@ public class Administrador extends JFrame {
         });
         contentPane.add(button);
         return button;
+    }
+
+    private void cerrarSesion() {
+        FrameController.openFrame("LoginFrame");
+        FrameController.cerrarSesion(); // Llama al controlador para cerrar sesión
+
     }
 
     private void moverBotones() {

@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>co.edu.upb</groupId>
-            <artifactId>Intermediario</artifactId>
+            <artifactId>ControladorCentral</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
