@@ -22,12 +22,6 @@
         </dependency>
         <dependency>
             <groupId>co.edu.upb</groupId>
-            <artifactId>autenticacion</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>co.edu.upb</groupId>
             <artifactId>ControladorCentral</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
