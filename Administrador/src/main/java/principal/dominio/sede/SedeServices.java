@@ -78,7 +78,7 @@ public class SedeServices {
         }
     }
     
-    public Sede searchSedePerCod(int cod) throws Exception{
+    public String searchSedePerCod(int cod) throws Exception{
         try {
             //Validacion
             if(cod == 0){

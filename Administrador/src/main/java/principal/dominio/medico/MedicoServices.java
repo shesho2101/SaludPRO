@@ -26,7 +26,7 @@ public class MedicoServices {
         this.us = new UsuarioServices();
     }
     
-    public void createMed(String id, String especializacion, int numHab) throws Exception{
+    public void createMed(String id, String especializacion, String numHab) throws Exception{
         try {
             //Validaciones
             if(id == null || id.trim().isEmpty()){
@@ -38,7 +38,7 @@ public class MedicoServices {
             if(searchPerId(id) != null){
                 throw new Exception("Ya esta registrado");
             }
-            if(cs.searchPerCod(numHab) == null){
+            if(numHab == null){
                 throw new Exception("No existe el consultorio");
             }
             
@@ -46,7 +46,7 @@ public class MedicoServices {
             Medico med = new Medico();
             med.setUsr(us.searchPerID(id));
             med.setEspecializacion(especializacion);
-            med.setCons(cs.searchPerCod(numHab));
+            med.setCons(numHab);
             cbd.saveDoctor(med);
             
         } catch (Exception e) {
@@ -54,18 +54,18 @@ public class MedicoServices {
         }
     }
     
-    public void modMed(String id, int numHab) throws Exception{
+    public void modMed(String id, String numHab) throws Exception{
         try {
             if(id == null || id.trim().isEmpty()){
                 throw new Exception("El id no puede ser nulo");
             }
-            if(cs.searchPerCod(numHab) == null){
+            if(cs.searchPerCod(Integer.parseInt(numHab)) == null){
                 throw new Exception("No existe el consultorio");
             }
             
             
             Medico med = searchPerId(id);
-            med.setCons(cs.searchPerCod(numHab));
+            med.setCons(numHab);
             cbd.modMedico(med);
             
         } catch (Exception e) {

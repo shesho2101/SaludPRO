@@ -34,7 +34,7 @@ public class MedicoDAO extends DAO{
             }
             
             String sql = "INSERT INTO Medico(ID_Medico, Especializacion, NumHab)" 
-                    + "VALUES ( '" + med.getUsr().getId()  + "' ,  '" + med.getEspecializacion()+ "' , " + med.getCons().getNumHab() + ");"; 
+                    + "VALUES ( '" + med.getUsr().getId()  + "' ,  '" + med.getEspecializacion()+ "' , " + med.getCons() + ");";
             
             insertModDel(sql);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class MedicoDAO extends DAO{
             if(med == null){
                 throw new Exception("Debe indicar un medico a modificar");
             }
-            String sql = "UPDATE medico SET NumHab = '" + med.getCons().getNumHab() + "'" + 
+            String sql = "UPDATE medico SET NumHab = '" + med.getCons() + "'" +
                          " WHERE ID_Medico = '" + med.getUsr().getId() + "'"; 
             insertModDel(sql);
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class MedicoDAO extends DAO{
                 med = new Medico();
                 med.setUsr(us.searchPerID(result.getString(1)));
                 med.setEspecializacion(result.getString(2));
-                med.setCons(cs.searchPerCod(result.getInt(3)));
+                med.setCons(result.getString(3));
             }
             desconectarBase();
             return med;
@@ -102,7 +102,7 @@ public class MedicoDAO extends DAO{
                 med = new Medico();
                 med.setUsr(us.searchPerID(result.getString(1)));
                 med.setEspecializacion(result.getString(2));
-                med.setCons(cs.searchPerCod(result.getInt(3)));
+                med.setCons(result.getString(3));
                 medicos.add(med);
             }
             desconectarBase();

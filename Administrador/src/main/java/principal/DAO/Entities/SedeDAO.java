@@ -53,7 +53,7 @@ public class SedeDAO extends DAO{
         }
     }
     
-    public Sede searchSedePerCod(int cod) throws Exception{
+    public String searchSedePerCod(int cod) throws Exception{
         try {
             
             String sql = "SELECT * FROM sede "
@@ -70,7 +70,7 @@ public class SedeDAO extends DAO{
                 sede.setDireccion(result.getString(3));
             }
             desconectarBase();
-            return sede;
+            return sede.getDireccion();
             
         } catch (Exception e) {
             desconectarBase();

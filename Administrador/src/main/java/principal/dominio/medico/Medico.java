@@ -15,7 +15,7 @@ public class Medico {
 
     private Usuario usr;
     private String especializacion;
-    private Consultorio cons;
+    private String cons;
 
     private String sede;
 
@@ -31,11 +31,11 @@ public class Medico {
         return getUsr().getId();
     }
 
-    public Consultorio getCons() {
+    public String getCons() {
         return cons;
     }
 
-    public void setCons(Consultorio cons) {
+    public void setCons(String cons) {
         this.cons = cons;
     }
 

@@ -115,7 +115,7 @@ public class Login extends JFrame {
                                                         ventanaMedico.setVisible(true);
                                                         break;
 
-                                                case "PA":
+                                                case "Agente de Atención al Paciente":
                                                         // Ventana del agente de atención al paciente
                                                         co.edu.upb.AgenteAtencionAlPaciente ventanaAgente = new AgenteAtencionAlPaciente();
                                                         ventanaAgente.setVisible(true);
@@ -130,6 +130,8 @@ public class Login extends JFrame {
                                                         );
                                                         break;
                                         }
+
+                                        limpiarCamposDeTexto();
 
                                         // Cerrar la ventana de login después de redirigir
                                         dispose();
@@ -160,6 +162,11 @@ public class Login extends JFrame {
                                 JOptionPane.ERROR_MESSAGE
                         );
                 }
+        }
+
+        private void limpiarCamposDeTexto() {
+                nombreUsuario.setText("");
+                passwordField.setText("");
         }
 
         // Método principal para ejecutar la aplicación
