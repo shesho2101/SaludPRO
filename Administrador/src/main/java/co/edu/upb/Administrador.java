@@ -59,11 +59,27 @@ public class Administrador extends JFrame {
         buttons[1] = createButton("Administrar consultorios", 610, 400);
         buttons[2] = createButton("Administrar usuarios", 610, 480);
 
+        // Añadir el botón de cerrar sesión
+        JButton btnCerrarSesion = new JButton("Cerrar sesión");
+        btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnCerrarSesion.setBounds(10, 790, 200, 40); // Posición en la parte inferior izquierda
+        btnCerrarSesion.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //cerrarSesion(); // Llama a la función para cerrar sesión
+            }
+        });
+        contentPane.add(btnCerrarSesion);
+
         JLabel lblFondo = new JLabel("");
         lblFondo.setIcon(new ImageIcon(getClass().getResource("/interfazBlanca.jpg")));
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
     }
+
+    /*private void cerrarSesion() {
+        FrameManager frameManager = new FrameManager();
+        FrameManager.cerrarSesion(Administrador.this);
+    }*/
 
     private JButton createButton(final String text, int x, int y) {
         JButton button = new JButton(text);

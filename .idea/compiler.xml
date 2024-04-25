@@ -13,5 +13,9 @@
         <module name="autenticacion" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Intermediario" target="20" />
+      <module name="IntermediarioFrame" target="20" />
+    </bytecodeTargetLevel>
   </component>
 </project>

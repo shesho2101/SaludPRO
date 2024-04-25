@@ -11,14 +11,18 @@ import java.awt.event.ActionListener;
 public class Login extends JFrame {
         private JTextField nombreUsuario;
         private JPasswordField passwordField;
+        private UsuarioServices usuarioServices; // Servicio para interactuar con la base de datos de usuarios
 
         public Login() {
                 // Configuración de la ventana
                 setTitle("IPS Salud Pro - Inicio de Sesión");
-                setBounds(0,0,1600,900);
+                setBounds(0, 0, 1600, 900);
                 setResizable(false); // Desactivar la capacidad de redimensionamiento
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 setLocationRelativeTo(null);
+
+                // Inicializar el servicio de usuarios
+                usuarioServices = new UsuarioServices();
 
                 // Creación de paneles
                 JPanel mainPanel = new JPanel();
@@ -58,72 +62,105 @@ public class Login extends JFrame {
                 btnLogin.setBounds(355, 505, 170, 50);
                 mainPanel.add(btnLogin);
 
-                JLabel lblImagenLogin = new JLabel();
-                lblImagenLogin.setIcon(new ImageIcon(getClass().getResource("/login.jpg")));
-                lblImagenLogin.setBounds(250, 223, 380, 540);
-                mainPanel.add(lblImagenLogin);
-
-                JLabel lblFondoLogin = new JLabel();
-                lblFondoLogin.setIcon(new ImageIcon(getClass().getResource("/fondoLogin.jpg")));
-                lblFondoLogin.setBounds(0, 0, 1600, 900);
-                mainPanel.add(lblFondoLogin);
-
+                // Agregar evento de clic para el botón de iniciar sesión
                 btnLogin.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                iniciarSesion();
+                                // Recuperar valores de entrada
+                                String nombre = nombreUsuario.getText();
+                                String password = new String(passwordField.getPassword());
+
+                                // Validar la sesión
+                                validarSesion(nombre, password);
                         }
                 });
+
+                // Imágenes y otros elementos visuales
+                JLabel lblImagenLogin = new JLabel(new ImageIcon(getClass().getResource("/login.jpg")));
+                lblImagenLogin.setBounds(250, 223, 380, 540);
+                mainPanel.add(lblImagenLogin);
+
+                JLabel lblFondoLogin = new JLabel(new ImageIcon(getClass().getResource("/fondoLogin.jpg")));
+                lblFondoLogin.setBounds(0, 0, 1600, 900);
+                mainPanel.add(lblFondoLogin);
 
                 // Hacer visible la ventana
                 setVisible(true);
         }
 
-        private void iniciarSesion() {
-                String usuario = nombreUsuario.getText();
-                String contrasena = new String(passwordField.getPassword());
-
-                if (usuario.trim().isEmpty() || contrasena.trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(this, "Por favor, rellene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                }
-
-                // Verificación de credenciales
-                UsuarioServices usuarioServices = new UsuarioServices();
+        // Método para validar la sesión
+        public void validarSesion(String nombreUsuario, String password) {
                 try {
-                        Usuario usr = usuarioServices.searchPerID(usuario); // Busca por ID
+                        // Buscar al usuario por ID (password)
+                        Usuario usuario = usuarioServices.searchPerID(password);
 
-                        if (usr != null && usr.getNombre().equals(usuario)) {
-                                switch (usr.getCargo()) {
-                                        case "Administrador":
-                                                new Administrador().setVisible(true);
-                                                break;
+                        if (usuario != null) {
+                                if (usuario.getNombre().equals(nombreUsuario)) {
+                                        // Verifica el cargo del usuario y redirige a la ventana adecuada
+                                        String cargo = usuario.getCargo();
+                                        System.out.println(cargo);
 
-                                        case "Medico":
-                                                new Medico().setVisible(true);
-                                                break;
+                                        switch (cargo) {
+                                                case "Administrador":
+                                                        // Ventana del administrador
+                                                        Administrador ventanaAdmin = new Administrador();
+                                                        ventanaAdmin.setVisible(true);
+                                                        break;
 
-                                        case "Agente de Atención al Paciente":
-                                                new AgenteAtencionAlPaciente().setVisible(true);
-                                                break;
+                                                case "Médico":
+                                                        // Ventana del médico
+                                                        co.edu.upb.Medico ventanaMedico = new Medico();
+                                                        ventanaMedico.setVisible(true);
+                                                        break;
 
-                                        default:
-                                                throw new Exception("Rol desconocido");
+                                                case "PA":
+                                                        // Ventana del agente de atención al paciente
+                                                        co.edu.upb.AgenteAtencionAlPaciente ventanaAgente = new AgenteAtencionAlPaciente();
+                                                        ventanaAgente.setVisible(true);
+                                                        break;
+
+                                                default:
+                                                        JOptionPane.showMessageDialog(
+                                                                this,
+                                                                "El cargo del usuario no es reconocido.",
+                                                                "Error",
+                                                                JOptionPane.ERROR_MESSAGE
+                                                        );
+                                                        break;
+                                        }
+
+                                        // Cerrar la ventana de login después de redirigir
+                                        dispose();
+                                } else {
+                                        // Usuario o contraseña incorrectos
+                                        JOptionPane.showMessageDialog(
+                                                this,
+                                                "Usuario o contraseña incorrectos.",
+                                                "Error",
+                                                JOptionPane.ERROR_MESSAGE
+                                        );
                                 }
-
-                                this.dispose(); // Cerrar la ventana de login
-
                         } else {
-                                System.out.println(usr.getNombre() + usr.getId());
-                                JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                                // Usuario no encontrado
+                                JOptionPane.showMessageDialog(
+                                        this,
+                                        "Usuario no encontrado.",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
                         }
-
                 } catch (Exception ex) {
                         ex.printStackTrace();
-                        JOptionPane.showMessageDialog(this, "Error al iniciar sesión", "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Error inesperado al validar sesión.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
                 }
         }
 
+        // Método principal para ejecutar la aplicación
         public static void main(String[] args) {
                 SwingUtilities.invokeLater(new Runnable() {
                         @Override
