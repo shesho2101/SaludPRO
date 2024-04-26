@@ -19,39 +19,39 @@ import principal.dominio.user.Usuario;
 @SuppressWarnings("unchecked")
 public class UsuarioDAO extends DAO{
 
-
-    public void saveUsr(Usuario usr) throws Exception {
+    
+    public void saveUsr(Usuario usr) throws Exception{
         try {
-            if (usr == null) {
+            if(usr == null){
                 throw new Exception("Debe indicar un usuario");
             }
-
-            String sql = "INSERT INTO usuario(ID, nombre, apellidos, cargo)"
-                    + "VALUES ('" + usr.getId() + "', '" + usr.getNombre() + "', '" + usr.getApellidos() + "', '" + usr.getCargo() + "')";
+            
+            String sql = "INSERT INTO usuario(ID, nombre, apellidos)" 
+                + "VALUES ( '" + usr.getId()  + "' , '" + usr.getNombre() + "', '" + usr.getApellidos()+ "')"; 
 
             insertModDel(sql);
         } catch (Exception e) {
             throw e;
         }
     }
-
-
-    public void modUsr(Usuario usr) throws Exception {
+    
+    /*
+    public void modUsr(Usr usr) throws Exception{
         try {
-            if (usr == null) {
+            String sql = "";
+            if(usr == null){
                 throw new Exception("Debe indicar un usuario a modificar");
             }
-
-            String sql = "UPDATE usuario SET nombre = '" + usr.getNombre() + "', apellidos = '" + usr.getApellidos() + "', cargo = '" + usr.getCargo() + "' WHERE ID = '" + usr.getId() + "'";
+            
+            sql = "UPDATE usuario SET usuario = '" + usr.getUsuario()+ "' WHERE contraseñaPaciente = '" + usr.getObj().getId()+ "'"; 
 
             insertModDel(sql);
         } catch (Exception e) {
             throw e;
         }
     }
-
-
-    public void delUsr(String idUsr) throws Exception{
+    */
+     public void delUsr(String idUsr) throws Exception{
         try {
 
             String sql = "DELETE FROM usuario WHERE ID = '" + idUsr + "'";
@@ -61,55 +61,57 @@ public class UsuarioDAO extends DAO{
             throw e;
         }
     }
-
-    public Usuario searchUsrPerId(String id) throws Exception {
+     
+    public Usuario searchUsrPerId(String id) throws Exception{
         try {
-            String sql = "SELECT * FROM usuario WHERE ID = '" + id + "'";
+            
+            String sql = "SELECT * FROM usuario "
+                + "WHERE ID = '" + id + "'";
 
+            
             consultarBase(sql);
 
             Usuario usr = null;
-            if (result.next()) {
+            while(result.next()){
                 usr = new Usuario();
                 usr.setId(result.getString(1));
                 usr.setNombre(result.getString(2));
                 usr.setApellidos(result.getString(3));
-                usr.setCargo(result.getString(4)); // Recuperar el cargo
             }
-
+            
             desconectarBase();
             return usr;
+            
         } catch (Exception e) {
             desconectarBase();
             throw e;
         }
     }
-
-
-    public List<Usuario> listUsr() throws Exception {
+    
+    public List<Usuario> listUsr() throws Exception{
         try {
+            
             String sql = "SELECT * FROM usuario";
-
+            
             consultarBase(sql);
-
-            List<Usuario> usuarios = new ArrayList<>();
-            while (result.next()) {
-                Usuario usr = new Usuario();
+            
+            List<Usuario> usuarios = new ArrayList();
+            Usuario usr = null;
+            while(result.next()){
+                usr = new Usuario();
                 usr.setId(result.getString(1));
                 usr.setNombre(result.getString(2));
                 usr.setApellidos(result.getString(3));
-                usr.setCargo(result.getString(4)); // Obtener el cargo
                 usuarios.add(usr);
             }
-
             desconectarBase();
             return usuarios;
+            
         } catch (Exception e) {
-            desconectarBase();
             e.printStackTrace();
+            desconectarBase();
             throw new Exception("Error de sistema");
         }
     }
-
-
+    
 }

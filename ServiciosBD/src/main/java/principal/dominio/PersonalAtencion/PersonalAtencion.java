@@ -12,13 +12,13 @@ import principal.dominio.user.Usuario;
  */
 public class PersonalAtencion {
     private Usuario user;
-    private String sede;
+    private String areaAtencion;
 
     public PersonalAtencion() {
     }
 
-    public PersonalAtencion(String sede) {
-        this.sede = sede;
+    public PersonalAtencion(String areaAtencion) {
+        this.areaAtencion = areaAtencion;
     }
     
     public String getID(){
@@ -33,17 +33,17 @@ public class PersonalAtencion {
         this.user = user;
     }
 
-    public String getSede() {
-        return sede;
+    public String getAreaAtencion() {
+        return areaAtencion;
     }
 
-    public void setSede(String sede) {
-        this.sede = sede;
+    public void setAreaAtencion(String areaAtencion) {
+        this.areaAtencion = areaAtencion;
     }
 
     @Override
     public String toString() {
-        return "PersonalAtencion{" + user + ", sede=" + sede + '}';
+        return "PersonalAtencion{" + user + ", areaAtencion=" + areaAtencion + '}';
     }
     
     

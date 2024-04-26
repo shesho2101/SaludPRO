@@ -13,13 +13,10 @@ public class Usuario{
     private String nombre;
     private String apellidos;
 
-    private String cargo;
-
-    public Usuario(String id, String nombre, String apellidos, String cargo) {
+    public Usuario(String id, String nombre, String apellidos) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
-        this.cargo = cargo;
     }
 
     public Usuario() {
@@ -49,17 +46,9 @@ public class Usuario{
         this.apellidos = apellidos;
     }
 
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
     @Override
     public String toString() {
-        return "id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", cargo=" + cargo;
+        return " id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + "";
     }
     
     

@@ -17,16 +17,13 @@ public class Medico {
     private String especializacion;
     private Consultorio cons;
 
-    private String sede;
-
-    public Medico(String especializacion, String sede) {
+    public Medico(String especializacion) {
         this.especializacion = especializacion;
-        this.sede = sede;
     }
     
     public Medico(){
     }
-
+    
     public String getID(){
         return getUsr().getId();
     }
@@ -65,12 +62,10 @@ public class Medico {
         return "Medico{" + usr + ", especializacion=" + especializacion + ", cons=" + cons + '}';
     }
 
+    
 
-    public String getSede() {
-        return sede;
-    }
-
-    public void setSede(String sede) {
-        this.sede = sede;
-    }
+    
+    
+    
+    
 }
