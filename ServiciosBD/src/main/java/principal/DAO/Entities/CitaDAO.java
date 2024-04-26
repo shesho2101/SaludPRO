@@ -72,6 +72,20 @@ public class CitaDAO extends DAO{
         }
     }
     
+    public void modAsistenciaPerIDAndDate(Cita cita) throws Exception{
+        try {
+            if(cita == null){
+                throw new Exception("Debe indicar una cita a modificar");
+            }
+            System.out.println(cita.getDate());
+            String sql = "UPDATE cita SET asistencia = '" + cita.isAsistencia()+
+                    "' WHERE ID_Paciente = '" + cita.getPac().getID() + "' and fecha LIKE '" + cita.getDate() + "%'"; 
+            insertModDel(sql);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public void delCita(int codCita) throws Exception{
         try {
             String sql = "DELETE FROM cita WHERE NumCita = '" + codCita + "'";
@@ -109,7 +123,7 @@ public class CitaDAO extends DAO{
         }
     }
     
-    public Cita searchPerPac(String id) throws Exception{
+    public List<Cita> searchPerPac(String id) throws Exception{
         try {
             
             String sql = "SELECT * FROM cita "
@@ -117,6 +131,7 @@ public class CitaDAO extends DAO{
             
             consultarBase(sql);
             
+            List<Cita> citas = new ArrayList<>();
             Cita cita = null;
             
             while(result.next()){
@@ -127,9 +142,10 @@ public class CitaDAO extends DAO{
                 cita.setDate(result.getDate(4).toString());
                 cita.setPac(ps.searchPerId(result.getString(5)));
                 cita.setAsistencia(result.getBoolean(6));
+                citas.add(cita);
             }
             desconectarBase();
-            return cita;
+            return citas;
             
         } catch (Exception e) {
             desconectarBase();

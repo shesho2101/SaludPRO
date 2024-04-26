@@ -102,6 +102,31 @@ public class CitaServices {
         }    
     }
     
+    public void modificarAsistencia(String id, String fecha, boolean asistencia) throws Exception{
+        try {
+            //Validaciones
+            if(id == null || id.trim().isEmpty()){
+                throw new Exception("El id no puede ser nulo");
+            }
+            if(fecha == null || fecha.trim().isEmpty()){
+                throw new Exception("La fecha no puede ser nula");
+            }
+            if(searchCita(id) == null){
+                throw new Exception("No existe esa cita");
+            }
+            
+            Cita cita = new Cita();
+            cita.setDate(fecha);
+            cita.setPac(ps.searchPerId(id));
+            cita.setAsistencia(asistencia);
+            System.out.println("sss");
+            //Call database
+            cbd.modAsistenciaPerIDAndDate(cita);
+        } catch (Exception e) {
+            throw e;
+        }    
+    }
+    
     public void deleteCita(int numCita) throws Exception{
         try {
             //Validaciones
@@ -131,7 +156,7 @@ public class CitaServices {
         }
     }
     
-    public Cita searchCita(String id) throws Exception{
+    public List<Cita> searchCita(String id) throws Exception{
         try {
             //Validacion
             if(id == null || id.trim().isEmpty()){
