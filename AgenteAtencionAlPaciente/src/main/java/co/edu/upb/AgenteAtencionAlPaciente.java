@@ -35,7 +35,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private final JPanel contentPane;
+    private JPanel contentPane;
     private JPanel panelActual; // Panel actual que se va a mostrar
     private final JButton[] buttons;
     private boolean movimiento = false;
@@ -213,8 +213,13 @@ public class AgenteAtencionAlPaciente extends JFrame {
     }
 
     private void crearNuevoPanel(int opcion) throws Exception {
+        if (panelActual != null) {
+            limpiarPanel(panelActual);
+        }
+
+        panelActual = new JPanel(); // Crear nuevo panel
         panelActual.setBackground(new Color(250, 250, 250));
-        panelActual.setBounds(panelPositionX, 0, 800, 900);
+        panelActual.setBounds(800, 0, 800, 900);
     
         contentPane.add(panelActual);
         contentPane.repaint();
@@ -247,15 +252,14 @@ public class AgenteAtencionAlPaciente extends JFrame {
         if (movimiento && panelActual != null) {
             limpiarPanel(panelActual);
 
-            JPanel panelAgendarCita = new JPanel();
-            panelAgendarCita.setBackground(new Color(7, 29, 68));
-            panelAgendarCita.setLayout(null);
-            panelAgendarCita.setBounds(800, 0, 800, 900);
+            panelActual.setBackground(new Color(7, 29, 68));
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);
 
             btnAgendarCita.setText("Agendar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnAgendarCita.setBounds(310, 700, 180, 40);
-            panelAgendarCita.add(btnAgendarCita);
+            panelActual.add(btnAgendarCita);
 
             String[] sedes = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
             String[] opciones = {"Medicina familiar", "Fisioterapia", "Medina interna", "Psicología"};
@@ -263,71 +267,67 @@ public class AgenteAtencionAlPaciente extends JFrame {
             menuDesplegableSedes = new JComboBox<>(sedes);
             menuDesplegableSedes.setModel(new DefaultComboBoxModel<>(sedes));
             menuDesplegableSedes.setBounds(310, 600, 180, 30);
-            panelAgendarCita.add(menuDesplegableSedes);
+            panelActual.add(menuDesplegableSedes);
 
             menuDesplegableOpciones = new JComboBox<>(opciones);
             menuDesplegableOpciones.setModel(new DefaultComboBoxModel<>(opciones));
             menuDesplegableOpciones.setBounds(310, 505, 180, 30);
-            panelAgendarCita.add(menuDesplegableOpciones);
+            panelActual.add(menuDesplegableOpciones);
 
             textFieldDocumentoPac = new JTextField();
             textFieldDocumentoPac.setBounds(310, 208, 180, 34);
-            panelAgendarCita.add(textFieldDocumentoPac);
+            panelActual.add(textFieldDocumentoPac);
 
             textFieldDocumentoDoc = new JTextField();
             textFieldDocumentoDoc.setBounds(310, 307, 180, 34);
-            panelAgendarCita.add(textFieldDocumentoDoc);
+            panelActual.add(textFieldDocumentoDoc);
 
             textFieldConsultorio = new JTextField();
             textFieldConsultorio.setBounds(440, 406, 180, 34);
-            panelAgendarCita.add(textFieldConsultorio);
+            panelActual.add(textFieldConsultorio);
             
             textFieldFecha = new JTextField();
             textFieldFecha.setBounds(175, 406, 180, 34);
-            panelAgendarCita.add(textFieldFecha);
+            panelActual.add(textFieldFecha);
 
             JLabel lblNombre = new JLabel("<html>Documento<p> Paciente<html>");
             lblNombre.setForeground(new Color(255, 255, 255));
             lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblNombre.setBounds(310, 153, 180, 45);
-            panelAgendarCita.add(lblNombre);
+            panelActual.add(lblNombre);
 
             JLabel lblApellido = new JLabel("<html>Documento<p> Doctor<html>");
             lblApellido.setForeground(new Color(255, 255, 255));
             lblApellido.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblApellido.setBounds(310, 252, 180, 45);
-            panelAgendarCita.add(lblApellido);
+            panelActual.add(lblApellido);
 
             JLabel lblDocumentoPac = new JLabel("Consultorio");
             lblDocumentoPac.setForeground(new Color(255, 255, 255));
             lblDocumentoPac.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumentoPac.setBounds(450, 351, 180, 45);
-            panelAgendarCita.add(lblDocumentoPac);
+            panelActual.add(lblDocumentoPac);
             
             JLabel lblDocumentoDoc = new JLabel("Fecha");
             lblDocumentoDoc.setForeground(new Color(255, 255, 255));
             lblDocumentoDoc.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumentoDoc.setBounds(200, 351, 180, 45);
-            panelAgendarCita.add(lblDocumentoDoc);
+            panelActual.add(lblDocumentoDoc);
 
-            contentPane.add(panelAgendarCita);
-            contentPane.setComponentZOrder(panelAgendarCita, 0);
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0);
 
             JLabel lblEspecialidad = new JLabel("Ciudad");
             lblEspecialidad.setForeground(new Color(255, 255, 255));
             lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblEspecialidad.setBounds(310, 545, 180, 45);
-            panelAgendarCita.add(lblEspecialidad);
+            panelActual.add(lblEspecialidad);
 
             JLabel lblCiudad = new JLabel("Especialidad");
             lblCiudad.setForeground(new Color(255, 255, 255));
             lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblCiudad.setBounds(310, 450, 180, 45);
-            panelAgendarCita.add(lblCiudad);
-            
-                
-            
-            //agregarCita(, , t, );
+            panelActual.add(lblCiudad);
             
         }
     }
@@ -364,47 +364,46 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelReprogramarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
-            
-            
-            JPanel panelCancelarCita = new JPanel();
-            panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            limpiarPanel(panelActual);
+
+            panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             btnCancelarCita.setText("Buscar citas");
             btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnCancelarCita.setBounds(200, 580, 180, 40);
-            panelCancelarCita.add(btnCancelarCita);
+            panelActual.add(btnCancelarCita);
             
             btnBRACita.setText("Reprogramar");
             btnBRACita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnBRACita.setBounds(415, 580, 180, 40);
-            panelCancelarCita.add(btnBRACita);
+            panelActual.add(btnBRACita);
             
-            panelCancelarCita.add(scroll);
+            panelActual.add(scroll);
             
             textFieldDocumentoPacCan = new JTextField();
             textFieldDocumentoPacCan.setBounds(200, 200, 180, 34);
-            panelCancelarCita.add(textFieldDocumentoPacCan);
+            panelActual.add(textFieldDocumentoPacCan);
             
             textFieldDateNew = new JTextField();
             textFieldDateNew.setBounds(415, 200, 180, 34);
-            panelCancelarCita.add(textFieldDateNew);
+            panelActual.add(textFieldDateNew);
 
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumento.setBounds(230, 160, 120, 45);
-            panelCancelarCita.add(lblDocumento);
+            panelActual.add(lblDocumento);
             
             JLabel lblDate = new JLabel("<html>Fecha<p> nueva<html>");
             lblDate.setForeground(new Color(255, 255, 255));
             lblDate.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDate.setBounds(465, 150, 120, 45);
-            panelCancelarCita.add(lblDate);
+            panelActual.add(lblDate);
 
-            contentPane.add(panelCancelarCita);
-            contentPane.setComponentZOrder(panelCancelarCita, 0);
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0);
 
             if (panelActual != null) {
                 panelActual.setLocation(panelPositionX, panelActual.getY());
@@ -415,36 +414,37 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelCancelarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
-            
-            JPanel panelCancelarCita = new JPanel();
-            panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            limpiarPanel(panelActual);
+
+
+            panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             btnCancelarCita.setText("Buscar citas");
             btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnCancelarCita.setBounds(200, 580, 180, 40);
-            panelCancelarCita.add(btnCancelarCita);
+            panelActual.add(btnCancelarCita);
             
             btnBRACita.setText("Borrar");
             btnBRACita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnBRACita.setBounds(415, 580, 180, 40);
-            panelCancelarCita.add(btnBRACita);
+            panelActual.add(btnBRACita);
             
-            panelCancelarCita.add(scroll);
+            panelActual.add(scroll);
             
             textFieldDocumentoPacCan = new JTextField();
             textFieldDocumentoPacCan.setBounds(305, 200, 180, 34);
-            panelCancelarCita.add(textFieldDocumentoPacCan);
+            panelActual.add(textFieldDocumentoPacCan);
 
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumento.setBounds(335, 160, 120, 45);
-            panelCancelarCita.add(lblDocumento);
+            panelActual.add(lblDocumento);
 
-            contentPane.add(panelCancelarCita);
-            contentPane.setComponentZOrder(panelCancelarCita, 0);
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0);
 
             if (panelActual != null) {
                 panelActual.setLocation(panelPositionX, panelActual.getY());
@@ -536,37 +536,36 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelActivarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
+            limpiarPanel(panelActual);
             
-            
-            JPanel panelCancelarCita = new JPanel();
-            panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
             
             btnCancelarCita.setText("Buscar citas");
             btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnCancelarCita.setBounds(200, 580, 180, 40);
-            panelCancelarCita.add(btnCancelarCita);
+            panelActual.add(btnCancelarCita);
             
             btnBRACita.setText("Activar");
             btnBRACita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnBRACita.setBounds(415, 580, 180, 40);
-            panelCancelarCita.add(btnBRACita);
+            panelActual.add(btnBRACita);
             
-            panelCancelarCita.add(scroll);
+            panelActual.add(scroll);
             
             textFieldDocumentoPacCan = new JTextField();
             textFieldDocumentoPacCan.setBounds(305, 200, 180, 34);
-            panelCancelarCita.add(textFieldDocumentoPacCan);
+            panelActual.add(textFieldDocumentoPacCan);
 
             JLabel lblDocumento = new JLabel("<html>Documento<p> Paciente<html>");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumento.setBounds(335, 150, 120, 45);
-            panelCancelarCita.add(lblDocumento);
+            panelActual.add(lblDocumento);
 
-            contentPane.add(panelCancelarCita);
-            contentPane.setComponentZOrder(panelCancelarCita, 0);
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0);
 
             if (panelActual != null) {
                 panelActual.setLocation(panelPositionX, panelActual.getY());

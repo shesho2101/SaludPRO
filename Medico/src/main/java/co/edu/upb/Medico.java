@@ -33,7 +33,6 @@ public class Medico extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JPanel panelActual; // Panel actual que se va a mostrar
-
     private JButton[] buttons;
     private boolean movimiento = false;
     private JPanel nuevoPanel;
@@ -175,10 +174,14 @@ public class Medico extends JFrame {
     }
 
     private void crearNuevoPanel(int opcion) {
-        nuevoPanel = new JPanel();
-        nuevoPanel.setBackground(new Color(250, 250, 250));
-        nuevoPanel.setBounds(panelPositionX, 0, 800, 900);
-    
+        if (panelActual != null) {
+            limpiarPanel(panelActual);
+        }
+
+        panelActual = new JPanel(); // Crear nuevo panel
+        panelActual.setBackground(new Color(250, 250, 250));
+        panelActual.setBounds(800, 0, 800, 900);
+
         contentPane.add(nuevoPanel);
         contentPane.repaint();
         movimiento = true;
@@ -203,34 +206,33 @@ public class Medico extends JFrame {
     }
     
     private void cargarPanelHistoriaClinica() {
-        if (movimiento) {
-            
+        if (movimiento && panelActual != null) {
+            limpiarPanel(panelActual);
+
             calendario.setVisible(false);
             btnCalendar.setVisible(false);
-
             
-            JPanel panelHistoriaClinica = new JPanel();
-            panelHistoriaClinica.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelHistoriaClinica.setLayout(null);
-            panelHistoriaClinica.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             btnHistorial.setText("Buscar historial");
             btnHistorial.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnHistorial.setBounds(305, 437, 200, 40);
-            panelHistoriaClinica.add(btnHistorial);
+            panelActual.add(btnHistorial);
 
             JLabel lblDocumento = new JLabel("<html>Documento<p> Paciente<html>");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumento.setBounds(340, 321, 120, 45);
-            panelHistoriaClinica.add(lblDocumento);
+            panelActual.add(lblDocumento);
 
             textFieldDocumentoHis.setBounds(305, 376, 200, 34);
             textFieldDocumentoHis.setFont(new Font("Tahoma", Font.BOLD, 17));
-            panelHistoriaClinica.add(textFieldDocumentoHis);
+            panelActual.add(textFieldDocumentoHis);
 
-            contentPane.add(panelHistoriaClinica);
-            contentPane.setComponentZOrder(panelHistoriaClinica, 0);
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0);
 
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
@@ -268,30 +270,30 @@ public class Medico extends JFrame {
     }
 
     private void cargarPanelVerAgenda() {
-        if (movimiento) {
+        if (movimiento && panelActual != null) {
             //movimiento = false;
+            limpiarPanel(panelActual);
 
             calendario.setVisible(true);
             btnCalendar.setVisible(true);
 
-            JPanel panelCancelarCita = new JPanel();
-            panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelCancelarCita.setLayout(null);
-            panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
             
             
             calendario.setBounds(150,150,500,400);
-            panelCancelarCita.add(calendario);
+            panelActual.add(calendario);
             
             btnCalendar.setText("Mostrar citas");
             btnCalendar.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnCalendar.setBounds(305, 600, 200, 40);
-            panelCancelarCita.add(btnCalendar);
+            panelActual.add(btnCalendar);
             
-            getContentPane().add(panelCancelarCita);
-            getContentPane().setComponentZOrder(panelCancelarCita, 0);
-            panelCancelarCita.revalidate();
-            panelCancelarCita.repaint();
+            getContentPane().add(panelActual);
+            getContentPane().setComponentZOrder(panelActual, 0);
+            panelActual.revalidate();
+            panelActual.repaint();
             
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
@@ -336,43 +338,42 @@ public class Medico extends JFrame {
     }
     
     private void cargarPanelReportar() {
-        if (movimiento) {
-            //movimiento = false;
+        if (movimiento && panelActual != null) {
+            limpiarPanel(panelActual);
             calendario.setVisible(false);
             btnCalendar.setVisible(false);
 
-            JPanel panelReportar = new JPanel();
-            panelReportar.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
-            panelReportar.setLayout(null);
-            panelReportar.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
+            panelActual.setLayout(null);
+            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
             btnReportarCita.setText("Reportar cita");
             btnReportarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnReportarCita.setBounds(305, 437, 180, 40);
-            panelReportar.add(btnReportarCita);
+            panelActual.add(btnReportarCita);
 
             textFieldDocumentoRep.setBounds(180, 376, 180, 34);
             textFieldDocumentoRep.setFont(new Font("Tahoma", Font.BOLD, 17));
-            panelReportar.add(textFieldDocumentoRep);
+            panelActual.add(textFieldDocumentoRep);
             
             dateRep.setBounds(430, 376, 180, 34);
             dateRep.setFont(new Font("Tahoma", Font.BOLD, 17));
-            panelReportar.add(dateRep);
+            panelActual.add(dateRep);
 
             JLabel lblDocumento = new JLabel("<html>Documento<p> Paciente<html>");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumento.setBounds(210, 321, 120, 45);
-            panelReportar.add(lblDocumento);
+            panelActual.add(lblDocumento);
             
             JLabel lblDocumento2 = new JLabel("Fecha Cita");
             lblDocumento2.setForeground(new Color(255, 255, 255));
             lblDocumento2.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumento2.setBounds(465, 321, 120, 45);
-            panelReportar.add(lblDocumento2);
+            panelActual.add(lblDocumento2);
             
-            contentPane.add(panelReportar);
-            contentPane.setComponentZOrder(panelReportar, 0);
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0);
 
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
