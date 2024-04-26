@@ -4,10 +4,10 @@
  */
 package principal.dominio.administrador;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.AdministradorDAO;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.List;
 
 /**
  *

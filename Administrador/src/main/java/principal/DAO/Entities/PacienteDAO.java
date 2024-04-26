@@ -5,12 +5,12 @@
 package principal.DAO.Entities;
 
 import principal.DAO.Abstract.DAO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import principal.dominio.paciente.GrupoSanguineo;
 import principal.dominio.paciente.Paciente;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

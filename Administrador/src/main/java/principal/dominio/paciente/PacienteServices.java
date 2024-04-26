@@ -1,10 +1,11 @@
 
 package principal.dominio.paciente;
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import principal.DAO.Entities.PacienteDAO;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.List;
 
 /**
  *

@@ -4,9 +4,9 @@
  */
 package principal.dominio.user;
 
-import principal.DAO.Entities.UsuarioDAO;
-
+import java.util.Collection;
 import java.util.List;
+import principal.DAO.Entities.UsuarioDAO;
 
 /**
  *
@@ -20,19 +20,13 @@ public class UsuarioServices {
         cbd = new UsuarioDAO();
     }
     
-    public void createUsr(String ID, String nombre, String apellidos, String cargo) throws Exception{
+    public void createUsr(String ID, String nombre, String apellidos) throws Exception{
         try {
             if(ID == null || ID.trim().isEmpty()){
                 throw new Exception("El id no puede ser nulo");
             }
             if(nombre == null || nombre.trim().isEmpty()){
                 throw new Exception("El nombre no puede ser nulo");
-            }
-            if(apellidos == null || apellidos.trim().isEmpty()){
-                throw new Exception("Los apellidos no pueden ser nulo");
-            }
-            if(cargo == null || cargo.trim().isEmpty()){
-                throw new Exception("El cargo no puede ser nulo");
             }
             if(searchPerID(ID) != null){
                 throw new Exception("El usuario ya existe");
@@ -42,7 +36,6 @@ public class UsuarioServices {
             usr.setId(ID);
             usr.setNombre(nombre);
             usr.setApellidos(apellidos);
-            usr.setCargo(cargo);
             cbd.saveUsr(usr);
             
         } catch (Exception e) {

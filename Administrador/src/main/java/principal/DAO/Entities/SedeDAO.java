@@ -5,10 +5,10 @@
 package principal.DAO.Entities;
 
 import principal.DAO.Abstract.DAO;
-import principal.dominio.sede.Sede;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import principal.dominio.sede.Sede;
 
 /**
  *
@@ -53,7 +53,7 @@ public class SedeDAO extends DAO{
         }
     }
     
-    public String searchSedePerCod(int cod) throws Exception{
+    public Sede searchSedePerCod(int cod) throws Exception{
         try {
             
             String sql = "SELECT * FROM sede "
@@ -70,7 +70,7 @@ public class SedeDAO extends DAO{
                 sede.setDireccion(result.getString(3));
             }
             desconectarBase();
-            return sede.getDireccion();
+            return sede;
             
         } catch (Exception e) {
             desconectarBase();

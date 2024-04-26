@@ -5,11 +5,11 @@
 package principal.DAO.Entities;
 
 import principal.DAO.Abstract.DAO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import principal.dominio.administrador.Administrador;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

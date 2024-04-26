@@ -4,10 +4,10 @@
  */
 package principal.dominio.tratamiento;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.TratamientoDAO;
 import principal.dominio.paciente.PacienteServices;
-
-import java.util.List;
 
 /**
  *

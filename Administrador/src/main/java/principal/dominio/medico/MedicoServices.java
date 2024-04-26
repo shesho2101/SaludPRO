@@ -4,11 +4,11 @@
  */
 package principal.dominio.medico;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.MedicoDAO;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.List;
 
 /**
  *
@@ -26,7 +26,7 @@ public class MedicoServices {
         this.us = new UsuarioServices();
     }
     
-    public void createMed(String id, String especializacion, String numHab) throws Exception{
+    public void createMed(String id, String especializacion, int numHab) throws Exception{
         try {
             //Validaciones
             if(id == null || id.trim().isEmpty()){
@@ -38,7 +38,7 @@ public class MedicoServices {
             if(searchPerId(id) != null){
                 throw new Exception("Ya esta registrado");
             }
-            if(numHab == null){
+            if(cs.searchPerCod(numHab) == null){
                 throw new Exception("No existe el consultorio");
             }
             
@@ -46,7 +46,7 @@ public class MedicoServices {
             Medico med = new Medico();
             med.setUsr(us.searchPerID(id));
             med.setEspecializacion(especializacion);
-            med.setCons(numHab);
+            med.setCons(cs.searchPerCod(numHab));
             cbd.saveDoctor(med);
             
         } catch (Exception e) {
@@ -54,18 +54,18 @@ public class MedicoServices {
         }
     }
     
-    public void modMed(String id, String numHab) throws Exception{
+    public void modMed(String id, int numHab) throws Exception{
         try {
             if(id == null || id.trim().isEmpty()){
                 throw new Exception("El id no puede ser nulo");
             }
-            if(cs.searchPerCod(Integer.parseInt(numHab)) == null){
+            if(cs.searchPerCod(numHab) == null){
                 throw new Exception("No existe el consultorio");
             }
             
             
             Medico med = searchPerId(id);
-            med.setCons(numHab);
+            med.setCons(cs.searchPerCod(numHab));
             cbd.modMedico(med);
             
         } catch (Exception e) {
@@ -93,6 +93,23 @@ public class MedicoServices {
             }
             
             Medico pac = cbd.searchDocPerId(id);
+            
+            return pac;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public Medico searchPerEspecializacion(String especializacion, String id) throws Exception{
+        try {
+            if(id == null || id.isEmpty()){
+                throw new Exception("El id no puede ser nulo");
+            }
+            if(especializacion == null || especializacion.isEmpty()){
+                throw new Exception("La especializacion no puede ser nula");
+            }
+            
+            Medico pac = cbd.searchDocPerEspe(especializacion,id);
             
             return pac;
         } catch (Exception e) {

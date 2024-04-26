@@ -4,9 +4,9 @@
  */
 package principal.dominio.sede;
 
-import principal.DAO.Entities.SedeDAO;
-
+import java.util.Collection;
 import java.util.List;
+import principal.DAO.Entities.SedeDAO;
 
 /**
  *
@@ -78,7 +78,7 @@ public class SedeServices {
         }
     }
     
-    public String searchSedePerCod(int cod) throws Exception{
+    public Sede searchSedePerCod(int cod) throws Exception{
         try {
             //Validacion
             if(cod == 0){

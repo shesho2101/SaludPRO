@@ -12,33 +12,30 @@ import principal.dominio.user.Usuario;
  * @author PC
  */
 public class Medico {
-
+     
     private Usuario usr;
     private String especializacion;
-    private String cons;
+    private Consultorio cons;
 
-    private String sede;
-
-    public Medico(String especializacion, String sede) {
+    public Medico(String especializacion) {
         this.especializacion = especializacion;
-        this.sede = sede;
     }
-
+    
     public Medico(){
     }
-
+    
     public String getID(){
         return getUsr().getId();
     }
 
-    public String getCons() {
+    public Consultorio getCons() {
         return cons;
     }
 
-    public void setCons(String cons) {
+    public void setCons(Consultorio cons) {
         this.cons = cons;
     }
-
+    
     public String getInstance(){
         return this.getClass().getSimpleName();
     }
@@ -51,7 +48,7 @@ public class Medico {
         this.usr = usr;
     }
 
-
+    
     public String getEspecializacion() {
         return especializacion;
     }
@@ -65,12 +62,10 @@ public class Medico {
         return "Medico{" + usr + ", especializacion=" + especializacion + ", cons=" + cons + '}';
     }
 
+    
 
-    public String getSede() {
-        return sede;
-    }
-
-    public void setSede(String sede) {
-        this.sede = sede;
-    }
+    
+    
+    
+    
 }
