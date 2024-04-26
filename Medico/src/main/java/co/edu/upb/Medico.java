@@ -71,8 +71,10 @@ public class Medico extends JFrame {
         this.btnReportarCita = new JButton();
         this.dateRep = new JTextField();
         this.textFieldDocumentoRep = new JTextField();
-        
-        
+
+        FrameController.registerFrame("MedicoFrame", this);
+
+
         setTitle("IPS Salud Pro - Medico");
         setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
@@ -90,7 +92,7 @@ public class Medico extends JFrame {
         buttons[1] = createButton("Ver agenda", 640, 400);
         buttons[2] = createButton("Reportar paciente", 640, 480);
         
-        /*
+
         // Añadir el botón de cerrar sesión
         JButton btnCerrarSesion = new JButton("Cerrar sesión");
         btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -101,7 +103,7 @@ public class Medico extends JFrame {
             }
         });
         contentPane.add(btnCerrarSesion);
-        */
+
         JLabel lblFondo = new JLabel("");
         lblFondo.setIcon(new ImageIcon(getClass().getResource("/interfazAzul.jpg")));
         lblFondo.setBounds(0, 0, 1600, 900);
@@ -387,6 +389,12 @@ public class Medico extends JFrame {
                 }
             }
         });
+    }
+
+    private void cerrarSesion() {
+        FrameController.openFrame("LoginFrame");
+        FrameController.cerrarSesion(); // Llama al controlador para cerrar sesión
+
     }
 
     private void limpiarPanel(JPanel panel) {

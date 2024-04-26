@@ -5,7 +5,8 @@ use ips;
 create table usuario(
 ID varchar(50) primary key not null,
 nombre varchar(50) not null,
-apellidos varchar(50)
+apellidos varchar(50),
+cargo varchar(50) not null
 );
 
 
@@ -32,7 +33,7 @@ ID_Paciente varchar(50) not null,
 fecha_nacimiento date not null,
 edad int not null default(year(current_date()) - year(fecha_nacimiento)),
 sexo char(10),
-grupoSanguineo enum("A_POSITIVO", "O_POSITIVO", "B_POSITIVO", "AB_POSITIVO", "A_NEGATIVO", "O_NEGATIVO", "B_NEGATIVO", "AB_NEGATIVO") not null,
+grupoSanguineo enum('A_POSITIVO', 'O_POSITIVO', 'B_POSITIVO', 'AB_POSITIVO', 'A_NEGATIVO', 'O_NEGATIVO', 'B_NEGATIVO', 'AB_NEGATIVO') not null,
 telefono varchar(100),
 correoElectronico varchar(100) not null
 );
@@ -68,7 +69,7 @@ cod_medicamento int not null
 create table medicamento(
 codigo int auto_increment primary key not null,
 nombre varchar(50) not null,
-descripcion text not null
+cantidad int not null
 );
 
 create table administrador(

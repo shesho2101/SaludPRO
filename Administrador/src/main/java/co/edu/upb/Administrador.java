@@ -3,6 +3,8 @@ package co.edu.upb;
 import principal.dominio.PersonalAtencion.PersonalAtencionServices;
 import principal.dominio.consultorio.Consultorio;
 import principal.dominio.consultorio.ConsultorioServices;
+import principal.dominio.medicamento.Medicamento;
+import principal.dominio.medicamento.MedicamentoServices;
 import principal.dominio.medico.Medico;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.user.Usuario;
@@ -41,12 +43,16 @@ public class Administrador extends JFrame {
 
     private Usuario usuario;
 
+    private MedicamentoServices medicamentoServices;
+
 
     public Administrador() {
         usuarioServices = new UsuarioServices();
         medicoServices = new MedicoServices();
+        cs = new ConsultorioServices();
         personalAtencionServices = new PersonalAtencionServices();
         usuario = new Usuario();
+        medicamentoServices = new MedicamentoServices();
 
         FrameController.registerFrame("AdministradorFrame", this);
 
@@ -134,7 +140,7 @@ public class Administrador extends JFrame {
     private void moverBotones() {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
-                int deltaX = 25;
+                int deltaX = 33;
                 int duration = 600;
                 long startTime = System.currentTimeMillis();
 
@@ -199,12 +205,56 @@ public class Administrador extends JFrame {
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);
 
-            JPanel panelMedicamentos = new JPanel();
-            panelMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 15));
-            panelMedicamentos.setBounds(40, 168, 700, 400);
-            panelMedicamentos.setFocusable(false);
-            panelActual.add(panelMedicamentos);
-            panelMedicamentos.setLayout(null);
+            JLabel lblNombreCategoria = new JLabel("Inventario medicamentos");
+            lblNombreCategoria.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblNombreCategoria.setForeground(new Color(255, 255, 255));
+            lblNombreCategoria.setBounds(257, 96, 267, 40);
+            panelActual.add(lblNombreCategoria);
+
+            JPanel jPanelTable = new JPanel();
+            jPanelTable.setLayout(null); // Usar null layout
+            jPanelTable.setBackground(Color.WHITE);
+            jPanelTable.setBounds(40, 168, 700, 400); // Ubicación y tamaño del área para la tabla
+            panelActual.add(jPanelTable);
+
+            // Ejemplo de lista de usuarios
+            List<Medicamento> medicamentos = null;
+            try {
+                medicamentos = medicamentoServices.listMedi();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            // Generación de filas para la tabla
+            int y = 10; // Posición inicial para la primera fila
+            for (Medicamento medicamento : medicamentos) {
+                JPanel panelRow = new JPanel();
+                panelRow.setVisible(true);
+                panelRow.setSize(700, 30); // Tamaño de cada fila
+                panelRow.setBackground(Color.WHITE); // Color de fondo para la fila
+                panelRow.setLayout(null); // Posicionamiento libre
+
+                // Etiquetas para mostrar información del usuario
+                JLabel codigo = new JLabel(String.valueOf(medicamento.getCodigo()));
+                codigo.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                codigo.setBounds(20, 5, 200, 25); // Posición y tamaño
+                panelRow.add(codigo);
+
+                JLabel nombre = new JLabel(medicamento.getNombre());
+                nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                nombre.setBounds(250, 5, 200, 25);
+                panelRow.add(nombre);
+
+                JLabel cantidad = new JLabel(String.valueOf(medicamento.getCantidad()));
+                cantidad.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                cantidad.setBounds(530, 5, 200, 25); // Posición para "cargo"
+                panelRow.add(cantidad);
+
+                panelRow.setLocation(0, y); // Posición vertical para cada fila
+                y += 40; // Incrementar para la siguiente fila
+
+                jPanelTable.add(panelRow); // Añadir la fila al panel de la tabla
+            }
 
             getContentPane().add(panelActual);
             getContentPane().setComponentZOrder(panelActual, 0);
@@ -224,11 +274,194 @@ public class Administrador extends JFrame {
             btnBorrar.setBounds(540, 618, 180, 40);
             panelActual.add(btnBorrar);
 
-            JLabel lblNombreCategoria = new JLabel("Inventario medicamentos");
-            lblNombreCategoria.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblNombreCategoria.setForeground(new Color(255, 255, 255));
-            lblNombreCategoria.setBounds(257, 96, 267, 40);
-            panelActual.add(lblNombreCategoria);
+            // Botón Agregar
+            btnAgendarCita.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Limpia el panel actual antes de agregar el contenido
+                    limpiarPanel(panelActual);
+
+                    panelActual.setBackground(new Color(7, 29, 68));
+                    panelActual.setLayout(null);
+
+                    JLabel lblNombre = new JLabel("Nombre:");
+                    lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblNombre.setForeground(Color.WHITE);
+                    lblNombre.setBounds(310, 80, 180, 30);
+                    panelActual.add(lblNombre);
+
+                    JTextField txtNombre = new JTextField();
+                    txtNombre.setBounds(310, 120, 180, 30);
+                    panelActual.add(txtNombre);
+
+                    JLabel lblCantidad = new JLabel("Cantidad:");
+                    lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblCantidad.setForeground(Color.WHITE);
+                    lblCantidad.setBounds(310, 160, 180, 30);
+                    panelActual.add(lblCantidad);
+
+                    JTextField txtCantidad = new JTextField();
+                    txtCantidad.setBounds(310, 200, 180, 30);
+                    panelActual.add(txtCantidad);
+
+                    JButton btnGuardar = new JButton("Guardar");
+                    btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    btnGuardar.setBounds(310, 260, 180, 40);
+                    panelActual.add(btnGuardar);
+
+                    btnGuardar.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String nombre = txtNombre.getText();
+                            String cantidad = txtCantidad.getText();
+
+                            if (nombre.isEmpty() || cantidad.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            try {
+                                medicamentoServices.createMedicamento(nombre, Integer.parseInt(cantidad));
+                                JOptionPane.showMessageDialog(null, "Medicamento agregado exitosamente.");
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, "Error al agregar el medicamento: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+
+                    panelActual.revalidate();
+                    panelActual.repaint();
+                }
+            });
+
+            // Botón Modificar
+            btnModificar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    limpiarPanel(panelActual);
+
+                    panelActual.setBackground(new Color(7, 29, 68));
+                    panelActual.setLayout(null);
+
+                    JLabel lblCodigo = new JLabel("Código del medicamento:");
+                    lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblCodigo.setForeground(Color.WHITE);
+                    lblCodigo.setBounds(310, 80, 180, 30);
+                    panelActual.add(lblCodigo);
+
+                    JTextField txtCodigo = new JTextField();
+                    txtCodigo.setBounds(310, 120, 180, 30);
+                    panelActual.add(txtCodigo);
+
+                    JButton btnBuscar = new JButton("Buscar");
+                    btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    btnBuscar.setBounds(310, 180, 180, 40);
+                    panelActual.add(btnBuscar);
+
+                    btnBuscar.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String codigo = txtCodigo.getText();
+
+                            if (codigo.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Por favor, ingrese el código del medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            try {
+                                Medicamento medicamento = medicamentoServices.searchPerCod(Integer.parseInt(codigo));
+                                if (medicamento == null) {
+                                    JOptionPane.showMessageDialog(null, "No se encontró el medicamento.");
+                                    return;
+                                }
+
+                                // Modificar detalles del medicamento
+                                JTextField txtNuevoNombre = new JTextField(medicamento.getNombre());
+                                txtNuevoNombre.setBounds(310, 260, 180, 30);
+                                panelActual.add(txtNuevoNombre);
+
+                                JTextField txtNuevaCantidad = new JTextField(String.valueOf(medicamento.getCantidad()));
+                                txtNuevaCantidad.setBounds(310, 320, 180, 30);
+                                panelActual.add(txtNuevaCantidad);
+
+                                JButton btnGuardarCambios = new JButton("Guardar Cambios");
+                                btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
+                                btnGuardarCambios.setBounds(310, 380, 180, 40);
+                                panelActual.add(btnGuardarCambios);
+
+                                btnGuardarCambios.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        medicamento.setNombre(txtNuevoNombre.getText());
+                                        medicamento.setCantidad(Integer.parseInt(txtNuevaCantidad.getText()));
+
+                                        try {
+                                            medicamentoServices.updateMedicamentoCantidad(Integer.parseInt(txtCodigo.getText()), Integer.parseInt(txtNuevaCantidad.getText()));
+                                            JOptionPane.showMessageDialog(null, "Cambios guardados exitosamente.");
+                                        } catch (Exception ex) {
+                                            JOptionPane.showMessageDialog(null, "Error al guardar cambios: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                                        }
+                                    }
+                                });
+
+                                panelActual.revalidate();
+                                panelActual.repaint();
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, "Error al buscar el medicamento: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Botón Borrar
+            btnBorrar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    limpiarPanel(panelActual);
+
+                    panelActual.setBackground(new Color(7, 29, 68));
+                    panelActual.setLayout(null);
+
+                    JLabel lblCodigo = new JLabel("Código del medicamento:");
+                    lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblCodigo.setForeground(Color.WHITE);
+                    lblCodigo.setBounds(310, 80, 180, 30);
+                    panelActual.add(lblCodigo);
+
+                    JTextField txtCodigo = new JTextField();
+                    txtCodigo.setBounds(310, 120, 180, 30);
+                    panelActual.add(txtCodigo);
+
+                    JButton btnBorrarMedicamento = new JButton("Borrar");
+                    btnBorrarMedicamento.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    btnBorrarMedicamento.setBounds(310, 180, 180, 40);
+                    panelActual.add(btnBorrarMedicamento);
+
+                    btnBorrarMedicamento.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String codigo = txtCodigo.getText();
+
+                            if (codigo.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Por favor, ingrese el código del medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            try {
+                                medicamentoServices.delMed(Integer.parseInt(codigo));
+                                JOptionPane.showMessageDialog(null, "Medicamento eliminado exitosamente.");
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, "Error al eliminar el medicamento: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+
+                    panelActual.revalidate();
+                    panelActual.repaint();
+                }
+            });
+
 
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
@@ -258,7 +491,6 @@ public class Administrador extends JFrame {
             int y = 10;
             for (int i = 0; i == 0; i++) {
 
-
                 JPanel panelRow = new JPanel();
                 panelRow.setVisible(true);
                 panelRow.setSize(1050, 30);
@@ -281,7 +513,7 @@ public class Administrador extends JFrame {
                 panelRow.add(documento);
                 documento.setLocation(170, 5);
 
-                JLabel sede = new JLabel(medico.getSede());
+                JLabel sede = new JLabel(medico.getCons().getSede().getNombre());
                 sede.setVisible(true);
                 sede.setSize(320, 30);
                 sede.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -401,7 +633,7 @@ public class Administrador extends JFrame {
 
                 JLabel cargo = new JLabel(usuario.getCargo());
                 cargo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                cargo.setBounds(480, 5, 200, 25); // Posición para "cargo"
+                cargo.setBounds(450, 5, 250, 25); // Posición para "cargo"
                 panelRow.add(cargo);
 
                 panelRow.setLocation(0, y); // Posición vertical para cada fila
@@ -555,8 +787,9 @@ public class Administrador extends JFrame {
 
                                     // Agregar el médico si todas las validaciones son correctas
                                     try {
-                                        usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, "Médico");
-                                        medicoServices.createMed(documentoMedico, especialidad, textoConsultorio);
+                                        //usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, "Médico");
+                                        //medicoServices.createMed(documentoMedico, especialidad, textoConsultorio);
+                                        JOptionPane.showMessageDialog(null, "Médico agregado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                                     } catch (Exception ex) {
                                         JOptionPane.showMessageDialog(null, "Error al crear el médico: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                                     }
@@ -593,7 +826,7 @@ public class Administrador extends JFrame {
                             lblDocumentoAgente.setBounds(310, 230, 180, 34);
                             panelActual.add(lblDocumentoAgente);
 
-                            JPasswordField passwordFieldDocumentoAgente = new JPasswordField();
+                            JTextField passwordFieldDocumentoAgente = new JTextField();
                             passwordFieldDocumentoAgente.setBounds(310, 280, 180, 30);
                             panelActual.add(passwordFieldDocumentoAgente);
 
@@ -618,7 +851,7 @@ public class Administrador extends JFrame {
                                 public void actionPerformed(ActionEvent e) {
                                     String nombreAgente = textFieldNombreAgente.getText();
                                     String apellidoAgente = textFieldApellidoAgente.getText();
-                                    String documentoAgente = new String(passwordFieldDocumentoAgente.getPassword());
+                                    String documentoAgente = new String(passwordFieldDocumentoAgente.getText());
                                     String sede = (String) menuDesplegableSedes1.getSelectedItem();
 
                                     String cargo = "Agente de Atención al Paciente";
@@ -633,6 +866,8 @@ public class Administrador extends JFrame {
                                         }
                                         try {
                                             personalAtencionServices.createPersonalAtencion(documentoAgente, sede);
+                                            JOptionPane.showMessageDialog(null, "Agente de Atención al Paciente agregado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
                                         } catch (Exception ex) {
                                             throw new RuntimeException(ex);
                                         }
@@ -665,7 +900,7 @@ public class Administrador extends JFrame {
             lblDocumentoMedico.setBounds(310, 230, 180, 34);
             panelActual.add(lblDocumentoMedico);
 
-            JPasswordField passwordFieldDocumento = new JPasswordField();
+            JTextField passwordFieldDocumento = new JTextField();
             passwordFieldDocumento.setBounds(310, 280, 180, 30);
             panelActual.add(passwordFieldDocumento);
 
@@ -677,14 +912,17 @@ public class Administrador extends JFrame {
             btnEliminarUsuario.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String documento = new String(passwordFieldDocumento.getPassword());
+                    String documento = new String(passwordFieldDocumento.getText());
                     try {
                         usuario = usuarioServices.searchPerID(documento);
                         if (usuario.getCargo().equals("Médico")) {
                             medicoServices.delMed(documento);
+                            JOptionPane.showMessageDialog(null, "Médico borrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                         }
-                        if (usuario.getCargo().equals("Atención al paciente")) {
+                        if (usuario.getCargo().equals("Agente de Atención al Paciente")) {
                             personalAtencionServices.deletePA(documento);
+                            JOptionPane.showMessageDialog(null, "Agente de Atención al Paciente borrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
                         }
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);

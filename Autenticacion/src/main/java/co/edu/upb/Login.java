@@ -105,7 +105,7 @@ public class Login extends JFrame {
                                         switch (cargo) {
                                                 case "Administrador":
                                                         // Ventana del administrador
-                                                        Administrador ventanaAdmin = new Administrador();
+                                                        co.edu.upb.Administrador ventanaAdmin = new Administrador();
                                                         ventanaAdmin.setVisible(true);
                                                         break;
 

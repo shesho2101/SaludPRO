@@ -19,19 +19,20 @@ import principal.dominio.user.Usuario;
 @SuppressWarnings("unchecked")
 public class UsuarioDAO extends DAO{
 
-    
-    public void saveUsr(Usuario usr) throws Exception{
+
+    public void saveUsr(Usuario usr) throws Exception {
         try {
-            if(usr == null){
+            if (usr == null) {
                 throw new Exception("Debe indicar un usuario");
             }
-            
-            String sql = "INSERT INTO usuario(ID, nombre, apellidos)" 
-                + "VALUES ( '" + usr.getId()  + "' , '" + usr.getNombre() + "', '" + usr.getApellidos()+ "')"; 
 
-            insertModDel(sql);
+            // SQL de inserción, asegúrate de cubrir todas las columnas requeridas
+            String sql = "INSERT INTO usuario (ID, nombre, apellidos, cargo) "
+                    + "VALUES ('" + usr.getId() + "', '" + usr.getNombre() + "', '" + usr.getApellidos() + "', '" + usr.getCargo() + "');";
+
+            insertModDel(sql); // Ejecuta el comando SQL
         } catch (Exception e) {
-            throw e;
+            throw new Exception("Error al guardar usuario", e);
         }
     }
     
@@ -77,6 +78,7 @@ public class UsuarioDAO extends DAO{
                 usr.setId(result.getString(1));
                 usr.setNombre(result.getString(2));
                 usr.setApellidos(result.getString(3));
+                usr.setCargo(result.getString(4));
             }
             
             desconectarBase();
@@ -102,6 +104,7 @@ public class UsuarioDAO extends DAO{
                 usr.setId(result.getString(1));
                 usr.setNombre(result.getString(2));
                 usr.setApellidos(result.getString(3));
+                usr.setCargo(result.getString(4));
                 usuarios.add(usr);
             }
             desconectarBase();

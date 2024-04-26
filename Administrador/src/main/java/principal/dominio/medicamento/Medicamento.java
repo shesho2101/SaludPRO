@@ -1,25 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package principal.dominio.medicamento;
 
-/**
- *
- * @author PC
- */
 public class Medicamento {
-    
+
     private int codigo;
     private String nombre;
-    private String descripcion;
+    private int cantidad; // Reemplazamos 'descripcion' por 'cantidad'
 
     public Medicamento() {
     }
 
-    public Medicamento(String nombre, String descripcion) {
+    public Medicamento(String nombre, int cantidad) { // Cambiamos el parámetro de 'descripcion' a 'cantidad'
         this.nombre = nombre;
-        this.descripcion = descripcion;
+        this.cantidad = cantidad;
     }
 
     public int getCodigo() {
@@ -28,7 +20,7 @@ public class Medicamento {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
-    } 
+    }
 
     public String getNombre() {
         return nombre;
@@ -38,19 +30,16 @@ public class Medicamento {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public int getCantidad() { // Cambiamos el getter
+        return cantidad;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCantidad(int cantidad) { // Cambiamos el setter
+        this.cantidad = cantidad;
     }
 
     @Override
-    public String toString() {
-        return "Medicamento{" + "codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
+    public String toString() { // Actualizamos el método `toString`
+        return "Medicamento{" + "codigo=" + codigo + ", nombre=" + nombre + ", cantidad=" + cantidad + '}';
     }
-    
-    
-    
 }

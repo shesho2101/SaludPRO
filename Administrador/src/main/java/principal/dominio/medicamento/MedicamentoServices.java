@@ -1,116 +1,129 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package principal.dominio.medicamento;
 
-import java.util.Collection;
 import java.util.List;
 import principal.DAO.Entities.MedicamentoDAO;
 
-/**
- *
- * @author PC
- */
 public class MedicamentoServices {
-    
+
     MedicamentoDAO cbd;
-    
-    public MedicamentoServices(){
+
+    public MedicamentoServices() {
         this.cbd = new MedicamentoDAO();
     }
-    
-    public void createMedicamento(String nombre, String descripcion) throws Exception{
+
+    // Cambiamos 'descripcion' por 'cantidad'
+    public void createMedicamento(String nombre, int cantidad) throws Exception {
         try {
-            //Validaciones
-            if(nombre == null || nombre.trim().isEmpty()){
+            // Validaciones
+            if (nombre == null || nombre.trim().isEmpty()) {
                 throw new Exception("El nombre no puede ser nulo");
             }
-            if(descripcion == null || descripcion.trim().isEmpty()){
-                throw new Exception("La descripcion no puede ser nula");
+            if (cantidad <= 0) { // Validamos que la cantidad sea positiva
+                throw new Exception("La cantidad debe ser mayor que cero");
             }
-            if(searchPerName(nombre) != null){
+            if (searchPerName(nombre) != null) {
                 throw new Exception("Ya existe ese medicamento");
             }
-            
-            Medicamento medi = new Medicamento();
-            medi.setNombre(nombre);
-            medi.setDescripcion(descripcion);
-            //Call
+
+            // Creamos el medicamento con el nuevo atributo 'cantidad'
+            Medicamento medi = new Medicamento(nombre, cantidad);
+
+            // Llamada al DAO para guardar el medicamento
             cbd.saveMedicamento(medi);
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    public void delMed(String name) throws Exception{
+
+    // Otros métodos sin cambios
+    public void delMed(String name) throws Exception {
         try {
-            if(name == null || name.trim().isEmpty()){
+            if (name == null || name.trim().isEmpty()) {
                 throw new Exception("El nombre no puede ser nulo");
             }
-            
+
             cbd.delMedicamento(name);
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    public void delMed(int cod) throws Exception{
+
+    public void delMed(int cod) throws Exception {
         try {
-            if(cod == 0){
-                throw new Exception("El codigo no puede ser 0");
+            if (cod == 0) {
+                throw new Exception("El código no puede ser cero");
             }
-            
+
             cbd.delMedicamento(cod);
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    public Medicamento searchPerName(String nombre) throws Exception{
+
+    // Método para modificar un medicamento existente
+    public void updateMedicamentoCantidad(int codigo, int nuevaCantidad) throws Exception {
         try {
-            if(nombre == null || nombre.trim().isEmpty()){
+            if (nuevaCantidad <= 0) {
+                throw new Exception("La cantidad debe ser mayor que cero");
+            }
+
+            Medicamento medicamento = cbd.searchPerCod(codigo);
+            if (medicamento == null) {
+                throw new Exception("El medicamento con el código " + codigo + " no existe.");
+            }
+
+            // Actualiza la cantidad
+            medicamento.setCantidad(nuevaCantidad);
+
+            // Llama al DAO para actualizar el campo 'cantidad'
+            cbd.updateCantidad(medicamento.getCodigo(), medicamento.getCantidad());
+        } catch (Exception e) {
+            throw new Exception("Error al actualizar la cantidad del medicamento: " + e.getMessage(), e);
+        }
+    }
+
+    public Medicamento searchPerName(String nombre) throws Exception {
+        try {
+            if (nombre == null || nombre.trim().isEmpty()) {
                 throw new Exception("El nombre no puede ser nulo");
             }
-            
+
             return cbd.searchPerName(nombre);
-            
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    public Medicamento searchPerCod(int cod) throws Exception{
+
+    public Medicamento searchPerCod(int cod) throws Exception {
         try {
-            if(cod == 0){
-                throw new Exception("El codigo no puede ser 0");
+            if (cod == 0) {
+                throw new Exception("El código no puede ser cero");
             }
-            
+
             return cbd.searchPerCod(cod);
-            
         } catch (Exception e) {
             throw e;
         }
     }
-    public List<Medicamento> listMedi() throws Exception{
+
+    public List<Medicamento> listMedi() throws Exception {
         try {
             return cbd.listMedi();
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    public void imprimir() throws Exception{
+
+    public void imprimir() throws Exception {
         try {
             List<Medicamento> medis = listMedi();
-            if(medis == null){
-                throw new Exception("La lista esta vacia");
+            if (medis == null || medis.isEmpty()) {
+                throw new Exception("La lista está vacía");
             }
-            
+
             System.out.println(medis.toString());
         } catch (Exception e) {
             throw e;
         }
     }
-    
 }

@@ -19,27 +19,28 @@ public class UsuarioServices {
     public UsuarioServices(){
         cbd = new UsuarioDAO();
     }
-    
-    public void createUsr(String ID, String nombre, String apellidos) throws Exception{
+
+    public void createUsr(String id, String nombre, String apellido, String cargo) throws Exception {
         try {
-            if(ID == null || ID.trim().isEmpty()){
-                throw new Exception("El id no puede ser nulo");
+            if (id == null || id.trim().isEmpty()) {
+                throw new Exception("El ID no puede ser nulo");
             }
-            if(nombre == null || nombre.trim().isEmpty()){
+            if (nombre == null || nombre.trim().isEmpty()) {
                 throw new Exception("El nombre no puede ser nulo");
             }
-            if(searchPerID(ID) != null){
-                throw new Exception("El usuario ya existe");
+            if (cargo == null || cargo.trim().isEmpty()) {
+                throw new Exception("El cargo no puede ser nulo");
             }
-            
-            Usuario usr = new Usuario();
-            usr.setId(ID);
-            usr.setNombre(nombre);
-            usr.setApellidos(apellidos);
-            cbd.saveUsr(usr);
-            
+
+            Usuario nuevoUsuario = new Usuario();
+            nuevoUsuario.setId(id);
+            nuevoUsuario.setNombre(nombre);
+            nuevoUsuario.setApellidos(apellido);
+            nuevoUsuario.setCargo(cargo);
+
+            cbd.saveUsr(nuevoUsuario); // Verifica que el DAO esté correcto
         } catch (Exception e) {
-            throw e;
+            throw new Exception("Error al crear usuario: " + e.getMessage(), e);
         }
     }
     
