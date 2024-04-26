@@ -7,6 +7,7 @@ import principal.dominio.medicamento.Medicamento;
 import principal.dominio.medicamento.MedicamentoServices;
 import principal.dominio.medico.Medico;
 import principal.dominio.medico.MedicoServices;
+import principal.dominio.sede.SedeServices;
 import principal.dominio.user.Usuario;
 import principal.dominio.user.UsuarioServices;
 
@@ -37,6 +38,8 @@ public class Administrador extends JFrame {
 
     private MedicoServices medicoServices;
 
+    private SedeServices sedeServices;
+
     private ConsultorioServices cs;
 
     private PersonalAtencionServices personalAtencionServices;
@@ -53,6 +56,7 @@ public class Administrador extends JFrame {
         personalAtencionServices = new PersonalAtencionServices();
         usuario = new Usuario();
         medicamentoServices = new MedicamentoServices();
+        sedeServices = new SedeServices();
 
         FrameController.registerFrame("AdministradorFrame", this);
 
@@ -789,7 +793,7 @@ public class Administrador extends JFrame {
                                     try {
                                         usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, "Médico");
 
-                                        //medicoServices.createMed(documentoMedico, especialidad, );
+                                        medicoServices.createMed(documentoMedico, especialidad, cs.searchPerSede(sedeServices.searchPerNombre(sede).getCod(), textoConsultorio).getNumHab());
                                         JOptionPane.showMessageDialog(null, "Médico agregado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                                     } catch (Exception ex) {
                                         JOptionPane.showMessageDialog(null, "Error al crear el médico: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
