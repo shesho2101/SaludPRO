@@ -5,11 +5,11 @@
 package principal.DAO.Entities;
 
 import principal.DAO.Abstract.DAO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import principal.dominio.PersonalAtencion.PersonalAtencion;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -29,7 +29,7 @@ public class PersonalAtencionDAO extends DAO{
                 throw new Exception("Debe indicar una personal de atencion");
             }
             
-            String sql = "INSERT INTO pa VALUES ('" + pa.getID() + "' , '" + pa.getSede() + "')";
+            String sql = "INSERT INTO pa VALUES ('" + pa.getID() + "' , '" + pa.getAreaAtencion() + "')";
             insertModDel(sql);
         } catch (Exception e) {
             throw e;
@@ -41,7 +41,7 @@ public class PersonalAtencionDAO extends DAO{
             if(pa == null){
                 throw new Exception("Debe indicar una persona de atencion a modificar");
             }
-            String sql = "UPDATE pa SET area_atencion = '" + pa.getSede()+
+            String sql = "UPDATE pa SET area_atencion = '" + pa.getAreaAtencion()+
                     "' WHERE ID_PA = '" + pa.getID() + "'"; 
             insertModDel(sql);
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class PersonalAtencionDAO extends DAO{
             while(result.next()){
                 pa = new PersonalAtencion();
                 pa.setUser(us.searchPerID(result.getString(1)));
-                pa.setSede(result.getString(2));
+                pa.setAreaAtencion(result.getString(2));
             }
             desconectarBase();
             return pa;
@@ -93,7 +93,7 @@ public class PersonalAtencionDAO extends DAO{
             while(result.next()){
                 pa = new PersonalAtencion();
                 pa.setUser(us.searchPerID(result.getString(1)));
-                pa.setSede(result.getString(2));
+                pa.setAreaAtencion(result.getString(2));
                 pas.add(pa);
             }
             desconectarBase();

@@ -4,9 +4,9 @@
  */
 package principal.dominio.sede;
 
-import principal.DAO.Entities.SedeDAO;
-
+import java.util.Collection;
 import java.util.List;
+import principal.DAO.Entities.SedeDAO;
 
 /**
  *

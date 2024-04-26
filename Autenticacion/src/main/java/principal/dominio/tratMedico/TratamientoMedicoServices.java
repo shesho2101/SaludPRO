@@ -4,11 +4,11 @@
  */
 package principal.dominio.tratMedico;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.TratMedicoDAO;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.tratamiento.TratamientoServices;
-
-import java.util.List;
 
 /**
  *

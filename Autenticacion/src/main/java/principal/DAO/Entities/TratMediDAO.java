@@ -5,13 +5,13 @@
  */
 package principal.DAO.Entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Abstract.DAO;
 import principal.dominio.medicamento.MedicamentoServices;
 import principal.dominio.tratMedicamento.TratamientoMedicamento;
 import principal.dominio.tratamiento.TratamientoServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

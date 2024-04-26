@@ -4,11 +4,11 @@
  */
 package principal.dominio.medico;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.MedicoDAO;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.List;
 
 /**
  *
@@ -93,6 +93,23 @@ public class MedicoServices {
             }
             
             Medico pac = cbd.searchDocPerId(id);
+            
+            return pac;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public Medico searchPerEspecializacion(String especializacion, String id) throws Exception{
+        try {
+            if(id == null || id.isEmpty()){
+                throw new Exception("El id no puede ser nulo");
+            }
+            if(especializacion == null || especializacion.isEmpty()){
+                throw new Exception("La especializacion no puede ser nula");
+            }
+            
+            Medico pac = cbd.searchDocPerEspe(especializacion,id);
             
             return pac;
         } catch (Exception e) {

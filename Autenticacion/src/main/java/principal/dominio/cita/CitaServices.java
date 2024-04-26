@@ -4,12 +4,12 @@
  */
 package principal.dominio.cita;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.CitaDAO;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.paciente.PacienteServices;
-
-import java.util.List;
 
 /**
  *
@@ -93,11 +93,10 @@ public class CitaServices {
             if(searchCita(numCita) == null){
                 throw new Exception("No existe esa cita");
             }
-            
             Cita cita = searchCita(numCita);
             cita.setAsistencia(asistencia);
             //Call database
-            cbd.modCita(cita);
+            cbd.modAsistencia(cita);
         } catch (Exception e) {
             throw e;
         }    

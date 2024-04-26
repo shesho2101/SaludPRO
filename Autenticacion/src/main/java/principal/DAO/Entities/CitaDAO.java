@@ -5,13 +5,13 @@
 package principal.DAO.Entities;
 
 import principal.DAO.Abstract.DAO;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import principal.dominio.cita.Cita;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.paciente.PacienteServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -85,7 +85,7 @@ public class CitaDAO extends DAO{
         try {
             
             String sql = "SELECT * FROM cita "
-                    + "WHERE NumHab = '" + cod + "'";
+                    + "WHERE NumCita = '" + cod + "'";
             
             consultarBase(sql);
             

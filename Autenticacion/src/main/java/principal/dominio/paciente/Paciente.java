@@ -4,6 +4,7 @@
  */
 package principal.dominio.paciente;
 
+import java.util.Date;
 import principal.dominio.user.Usuario;
 
 
@@ -93,7 +94,7 @@ public class Paciente {
 
     @Override
     public String toString() {
-        return "Paciente{" + usr + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", sexo=" + sexo + '}';
+        return "Paciente" + usr + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", sexo=" + sexo ;
     }
     
     

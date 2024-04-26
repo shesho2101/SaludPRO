@@ -4,10 +4,10 @@
  */
 package principal.dominio.PersonalAtencion;
 
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Entities.PersonalAtencionDAO;
 import principal.dominio.user.UsuarioServices;
-
-import java.util.List;
 
 /**
  *
@@ -23,14 +23,14 @@ public class PersonalAtencionServices {
         this.us = new UsuarioServices();
     }
     
-    public void createPersonalAtencion(String id, String sede) throws Exception{
+    public void createPersonalAtencion(String id, String areaAtencion) throws Exception{
         try {
             //Validaciones
             if(id == null || id.trim().isEmpty()){
                 throw new Exception("El id no puede ser nulo");
             }
-            if(sede == null || sede.trim().isEmpty()){
-                throw new Exception("La sede no puede ser nula");
+            if(areaAtencion == null || areaAtencion.trim().isEmpty()){
+                throw new Exception("La area de atencion no puede ser nula");
             }
             if(us.searchPerID(id) == null){
                 throw new Exception("El usuario no existe");
@@ -41,7 +41,7 @@ public class PersonalAtencionServices {
             
             PersonalAtencion pa = new PersonalAtencion();
             pa.setUser(us.searchPerID(id));
-            pa.setSede(sede);
+            pa.setAreaAtencion(areaAtencion);
             //Call database
             cbd.savePA(pa);
         } catch (Exception e) {
@@ -49,14 +49,14 @@ public class PersonalAtencionServices {
         }
     }
     
-    public void modificarPA(String id, String sede) throws Exception{
+    public void modificarPA(String id, String areaAtencion) throws Exception{
         try {
             //Validaciones
             if(id == null ||id.trim().isEmpty()){
                 throw new Exception("El id no puede ser nulo");
             }
-            if(sede == null || sede.trim().isEmpty()){
-                throw new Exception("La sede no puede ser nula");
+            if(areaAtencion == null || areaAtencion.trim().isEmpty()){
+                throw new Exception("La area de atencion no puede ser nula");
             }
             if(us.searchPerID(id) == null){
                 throw new Exception("El usuario no existe");
@@ -64,7 +64,7 @@ public class PersonalAtencionServices {
             
             PersonalAtencion pa = new PersonalAtencion();
             pa.setUser(us.searchPerID(id));
-            pa.setSede(sede);
+            pa.setAreaAtencion(areaAtencion);
             
             //Call database
             cbd.modPA(pa);

@@ -4,12 +4,12 @@
  */
 package principal.DAO.Entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import principal.DAO.Abstract.DAO;
 import principal.dominio.historialClinico.HistorialClinico;
 import principal.dominio.paciente.PacienteServices;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

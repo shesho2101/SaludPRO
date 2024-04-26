@@ -5,10 +5,10 @@
 package principal.DAO.Entities;
 
 import principal.DAO.Abstract.DAO;
-import principal.dominio.sede.Sede;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import principal.dominio.sede.Sede;
 
 /**
  *

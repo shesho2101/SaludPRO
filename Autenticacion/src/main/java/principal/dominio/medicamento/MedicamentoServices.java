@@ -4,9 +4,9 @@
  */
 package principal.dominio.medicamento;
 
-import principal.DAO.Entities.MedicamentoDAO;
-
+import java.util.Collection;
 import java.util.List;
+import principal.DAO.Entities.MedicamentoDAO;
 
 /**
  *
