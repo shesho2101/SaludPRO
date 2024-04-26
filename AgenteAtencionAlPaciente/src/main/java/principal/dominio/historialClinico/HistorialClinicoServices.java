@@ -27,7 +27,7 @@ public class HistorialClinicoServices {
         this.ps = new PacienteServices();
     }
 
-    private StringBuilder getCitas(String id) throws Exception{
+    public StringBuilder getCitas(String id) throws Exception{
         try {
             
             String sql = "SELECT NumHab, fecha, asistencia FROM cita "
@@ -75,7 +75,7 @@ public class HistorialClinicoServices {
         }
     }
     
-    private StringBuilder constructHis(String id) throws Exception{
+    public StringBuilder constructHis(String id) throws Exception{
         try {
             StringBuilder build = new StringBuilder();
             build.append(ps.searchPerId(id).toString());
