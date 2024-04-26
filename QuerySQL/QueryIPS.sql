@@ -41,7 +41,7 @@ create table cita(
 NumCita int auto_increment key not null,
 NumHab int not null,
 ID_Medico varchar(50) not null,
-fecha date not null,
+fecha datetime not null,
 ID_Paciente varchar(50) not null,
 asistencia boolean default(true)
 );
