@@ -137,6 +137,38 @@ public class CitaDAO extends DAO{
         }
     }
     
+    public StringBuilder getCitasLikeFecha(String fecha) throws Exception{
+        try {
+            String sql = "SELECT fecha, ID_Paciente FROM cita WHERE fecha LIKE '" + fecha + "%'";
+            
+            consultarBase(sql);
+            
+            StringBuilder builder = new StringBuilder();
+            builder.append("Citas del dia");
+            while(result.next()){
+                builder.append("\nHora: \n");
+                char[] fechaChar = result.getTimestamp(1).toString().toCharArray();
+                boolean hora = false;
+                for(Character c: fechaChar){
+                    if(hora){
+                        builder.append(c);
+                    }
+                    if(c.equals(' ')){
+                        hora = true;
+                    }
+                }
+                builder.append("\nPaciente: \n");
+                builder.append(ps.searchPerId(result.getString(2)).toString());
+            }
+            
+            desconectarBase();
+            return builder;
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public List<Cita> listCita() throws Exception{
         try {
             String sql = "SELECT * FROM cita";

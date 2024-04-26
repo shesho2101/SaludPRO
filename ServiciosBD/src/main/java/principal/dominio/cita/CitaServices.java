@@ -144,6 +144,19 @@ public class CitaServices {
         }
     }
     
+    public StringBuilder getCitasLikeFecha(String fecha) throws Exception{
+        try {
+            if(fecha == null || fecha.trim().isEmpty()){
+                throw new Exception("La fecha no puede estar vacia");
+            }
+            
+            return cbd.getCitasLikeFecha(fecha);
+            
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public List<Cita> listCita() throws Exception{
         try {
             

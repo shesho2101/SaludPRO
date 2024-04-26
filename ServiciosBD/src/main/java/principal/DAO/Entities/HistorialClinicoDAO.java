@@ -74,6 +74,34 @@ public class HistorialClinicoDAO extends DAO{
         }
     }
     
+    public StringBuilder getCitas(String id) throws Exception{
+        try {
+            
+            String sql = "SELECT NumHab, fecha, asistencia FROM cita "
+                    + "INNER JOIN paciente USING(ID_Paciente)"
+                    + "WHERE ID_Paciente = '" + id + "'";
+            
+            consultarBase(sql);
+            StringBuilder buildFinal = new StringBuilder();
+            StringBuilder builder = null;
+            while(result.next()){
+                builder = new StringBuilder();
+                builder.append("Numero del consultorio: ");
+                builder.append(String.valueOf(result.getInt(1)));
+                builder.append(" Fecha de la cita: ");
+                builder.append(result.getDate(2).toString());
+                builder.append(" Asistencia: ");
+                builder.append(result.getBoolean(3));
+                buildFinal.append(builder);
+                buildFinal.append("\n");
+            }
+
+            return buildFinal;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public List<HistorialClinico> listHistoriales() throws Exception{
         try {
             String sql = "SELECT * FROM historial_clinico";

@@ -29,27 +29,11 @@ public class HistorialClinicoServices {
 
     public StringBuilder getCitas(String id) throws Exception{
         try {
-            
-            String sql = "SELECT NumHab, fecha, asistencia FROM cita "
-                    + "INNER JOIN paciente USING(ID_Paciente)"
-                    + "WHERE ID_Paciente = '" + id + "'";
-            
-            ResultSet rs = cd.consultDataBase(sql);
-            StringBuilder buildFinal = new StringBuilder();
-            StringBuilder builder = null;
-            while(rs.next()){
-                builder = new StringBuilder();
-                builder.append("Numero del consultorio: ");
-                builder.append(String.valueOf(rs.getInt(1)));
-                builder.append(" Fecha de la cita: ");
-                builder.append(rs.getDate(2).toString());
-                builder.append(" Asistencia: ");
-                builder.append(rs.getBoolean(3));
-                buildFinal.append(builder);
-                buildFinal.append("\n");
+            if(id == null || id.trim().isEmpty()){
+                throw new Exception("El id no puede ser nulo");
             }
 
-            return buildFinal;
+            return cbd.getCitas(id);
         } catch (Exception e) {
             throw e;
         }
