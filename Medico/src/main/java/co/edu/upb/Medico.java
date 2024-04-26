@@ -1,23 +1,32 @@
 package co.edu.upb;
 
+import com.toedter.calendar.JCalendar;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.Date;
+import java.util.Calendar;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
+import principal.DAO.Abstract.CallDAO;
+import principal.dominio.cita.CitaServices;
+import principal.dominio.historialClinico.HistorialClinicoServices;
 
 public class Medico extends JFrame {
 
@@ -27,11 +36,36 @@ public class Medico extends JFrame {
     private boolean movimiento = false;
     private JPanel nuevoPanel;
     private int panelPositionX = 770;
-
+    //Base de datos
+    private HistorialClinicoServices hcs;
+    private CitaServices cs;
+    
+    //Historia Clinica
+    private JButton btnHistorial;
+    private JTextField textFieldDocumento;
+    
+    //Calendario
+    private JCalendar calendario;
+    private JButton btnCalendar;
+    
+    
     public Medico() {
-
-        FrameController.registerFrame("MedicoFrame", this);
-
+        //Inicializacion base de datos
+        this.hcs = new HistorialClinicoServices();
+        this.cs = new CitaServices();
+        
+        //Historial
+        this.btnHistorial = new JButton();
+        this.textFieldDocumento = new JTextField();
+        
+        //Calendario
+        this.calendario = new JCalendar();
+        this.btnCalendar = new JButton();
+        
+        
+        
+        
+        
         setTitle("IPS Salud Pro - Medico");
         setSize(1600, 900);
         setResizable(false); // Desactivar la capacidad de redimensionamiento
@@ -48,7 +82,8 @@ public class Medico extends JFrame {
         buttons[0] = createButton("Buscar historia clínica", 640, 320);
         buttons[1] = createButton("Ver agenda", 640, 400);
         buttons[2] = createButton("Reportar paciente", 640, 480);
-
+        
+        /*
         // Añadir el botón de cerrar sesión
         JButton btnCerrarSesion = new JButton("Cerrar sesión");
         btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -59,11 +94,13 @@ public class Medico extends JFrame {
             }
         });
         contentPane.add(btnCerrarSesion);
-        
+        */
         JLabel lblFondo = new JLabel("");
         lblFondo.setIcon(new ImageIcon(getClass().getResource("/interfazAzul.jpg")));
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
+        addActionHistorial();
+        addActionCalendar();
     }
 
     private JButton createButton(final String text, int x, int y) {
@@ -125,12 +162,6 @@ public class Medico extends JFrame {
         }
     }
 
-    private void cerrarSesion() {
-        FrameController.openFrame("LoginFrame");
-        FrameController.cerrarSesion(); // Llama al controlador para cerrar sesión
-
-    }
-
     private void crearNuevoPanel(int opcion) {
         nuevoPanel = new JPanel();
         nuevoPanel.setBackground(new Color(250, 250, 250));
@@ -161,26 +192,25 @@ public class Medico extends JFrame {
     
     private void cargarPanelHistoriaClinica() {
         if (movimiento) {
-            JTextField textFieldDocumento;
+            
             
             JPanel panelHistoriaClinica = new JPanel();
             panelHistoriaClinica.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelHistoriaClinica.setLayout(null);
             panelHistoriaClinica.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
 
-            JButton btnAgendarCita = new JButton("Buscar cita");
-            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(305, 437, 180, 40);
-            panelHistoriaClinica.add(btnAgendarCita);
+            btnHistorial.setText("Buscar historial");
+            btnHistorial.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnHistorial.setBounds(305, 437, 200, 40);
+            panelHistoriaClinica.add(btnHistorial);
 
             JLabel lblDocumento = new JLabel("Documento");
             lblDocumento.setForeground(new Color(255, 255, 255));
             lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(338, 321, 120, 45);
+            lblDocumento.setBounds(340, 321, 120, 45);
             panelHistoriaClinica.add(lblDocumento);
 
-            textFieldDocumento = new JTextField();
-            textFieldDocumento.setBounds(305, 376, 180, 34);
+            textFieldDocumento.setBounds(305, 376, 200, 34);
             textFieldDocumento.setFont(new Font("Tahoma", Font.BOLD, 17));
             panelHistoriaClinica.add(textFieldDocumento);
 
@@ -193,66 +223,102 @@ public class Medico extends JFrame {
 
         }
     }
+    
+    public void addActionHistorial(){
+        btnHistorial.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(textFieldDocumento.getText() == null || textFieldDocumento.getText().trim().isEmpty()){
+                    JOptionPane.showMessageDialog(rootPane, "No hay documento ingresado");
+                } else{
+                    JFrame frame = new JFrame();
+                    frame.setSize(1000, 600);
+                    frame.setVisible(true);
+
+                    JTextArea text = new JTextArea();
+                    text.setFont(new Font("Tahoma", Font.BOLD, 17));
+                    try {
+                        text.setText(hcs.constructHis(textFieldDocumento.getText()).toString());
+
+                        JScrollPane scroll = new JScrollPane(text);
+                        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                        frame.getContentPane().add(scroll, BorderLayout.CENTER);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            }
+        });
+    }
 
     private void cargarPanelVerAgenda() {
         if (movimiento) {
             //movimiento = false;
 
-            JTable table;
+            
 
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelCancelarCita.setLayout(null);
             panelCancelarCita.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
-
-            JButton btnAgendarCita = new JButton("Ver agenda");
-            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(306, 286, 180, 40);
-            panelCancelarCita.add(btnAgendarCita);
-
-            JLabel lblDocumento = new JLabel("Fecha");
-            lblDocumento.setForeground(new Color(255, 255, 255));
-            lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumento.setBounds(306, 170, 114, 45);
-            panelCancelarCita.add(lblDocumento);
-
-            String[] opciones = {"Día", "Semana", "Mes"};
-            JComboBox<String> menuDesplegable = new JComboBox<>(opciones);
-            menuDesplegable.setModel(new DefaultComboBoxModel<>(opciones));
-            menuDesplegable.setBounds(306, 225, 180, 30);
-            panelCancelarCita.add(menuDesplegable);
-
-            // Crear la tabla y su modelo de datos
-            DefaultTableModel model = new DefaultTableModel() {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false; // Hacer que todas las celdas sean no editables
-                }
-            };
-            model.addColumn("Nombre");
-            model.addColumn("Fecha");
-            model.addColumn("Hora");
-
-            // Llenar la tabla con datos de ejemplo
-            /*model.addRow(new Object[]{"Juan", "2024-03-17", "10:00"});
-            model.addRow(new Object[]{"María", "2024-03-18", "11:30"});
-            model.addRow(new Object[]{"Pedro", "2024-03-18", "14:00"});*/
-
-            table = new JTable(model);
-            table.setFont(new Font("Tahoma", Font.PLAIN, 15));
-            table.setBounds(40, 340, 700, 400);
-            table.setFocusable(false); // Deshabilitar la posibilidad de seleccionar celdas
-            panelCancelarCita.add(table);
-
+            
+            
+            calendario.setBounds(150,150,500,400);
+            panelCancelarCita.add(calendario);
+            
+            btnCalendar.setText("Mostrar citas");
+            btnCalendar.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnCalendar.setBounds(305, 600, 200, 40);
+            panelCancelarCita.add(btnCalendar);
+            
             getContentPane().add(panelCancelarCita);
             getContentPane().setComponentZOrder(panelCancelarCita, 0);
-
+            panelCancelarCita.revalidate();
+            panelCancelarCita.repaint();
+            
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
             }
         }
     }
-
+    
+    public void addActionCalendar(){
+        btnCalendar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+                JFrame frame = new JFrame();
+                frame.setSize(1000, 600);
+                frame.setVisible(true);
+                
+                Date fechaSelec = calendario.getDate();
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(fechaSelec);
+                
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaFormateada = sdf.format(fechaSelec);
+                
+                System.out.println(fechaFormateada);
+                
+                JTextArea text = new JTextArea();
+                text.setFont(new Font("Tahoma", Font.BOLD, 17));
+                try {
+                    text.setText(cs.getCitasLikeFecha(fechaFormateada).toString());
+                } catch (Exception ex) {
+                }
+                
+                
+                JScrollPane scroll = new JScrollPane(text);
+                scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                frame.getContentPane().add(scroll, BorderLayout.CENTER);
+                    
+                
+            }
+        });
+    }
+    
     private void cargarPanelReportar() {
         if (movimiento) {
             //movimiento = false;
@@ -304,4 +370,6 @@ public class Medico extends JFrame {
             }
         });
     }
+
 }
+
