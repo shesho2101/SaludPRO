@@ -92,7 +92,8 @@ public class ConsultorioServices {
             throw e;
         }
     }
-    
+
+
     public Consultorio searchPerSede(int codSede, String nombre) throws Exception{
         try {
             //Validaciones

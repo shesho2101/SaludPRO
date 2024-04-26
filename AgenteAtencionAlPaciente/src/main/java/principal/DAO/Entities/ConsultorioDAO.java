@@ -99,6 +99,7 @@ public class ConsultorioDAO extends DAO{
             throw e;
         }
     }
+
     
     public Consultorio searchPerSede(String nombre) throws Exception{
         try {

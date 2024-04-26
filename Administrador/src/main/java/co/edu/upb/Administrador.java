@@ -787,8 +787,9 @@ public class Administrador extends JFrame {
 
                                     // Agregar el médico si todas las validaciones son correctas
                                     try {
-                                        //usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, "Médico");
-                                        //medicoServices.createMed(documentoMedico, especialidad, textoConsultorio);
+                                        usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, "Médico");
+
+                                        //medicoServices.createMed(documentoMedico, especialidad, );
                                         JOptionPane.showMessageDialog(null, "Médico agregado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                                     } catch (Exception ex) {
                                         JOptionPane.showMessageDialog(null, "Error al crear el médico: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

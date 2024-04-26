@@ -29,6 +29,7 @@ import principal.DAO.Abstract.CallDAO;
 import principal.dominio.cita.Cita;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.consultorio.ConsultorioServices;
+import principal.dominio.historialClinico.HistorialClinicoServices;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.sede.SedeServices;
 
@@ -46,6 +47,8 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private SedeServices ss;
     private MedicoServices ms;
     private CallDAO cd;
+
+    private HistorialClinicoServices hcs;
     
     //Agendar cita variables
     private JTextField textFieldFecha;
@@ -77,6 +80,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
         this.ms = new MedicoServices();
         this.cd = new CallDAO();
         this.conSer = new ConsultorioServices();
+        this.hcs = new HistorialClinicoServices();
         
         //Agendar cita
         this.btnAgendarCita = new JButton();
@@ -349,7 +353,12 @@ public class AgenteAtencionAlPaciente extends JFrame {
             int codSede = ss.searchPerNombre(sede).getCod();
             if(ms.searchPerEspecializacion(especializacion, docMed) != null){
                 cs.createCita(conSer.searchPerSede(codSede,consultorio).getNumHab(), docMed, fecha, docPac);
-            }            
+                if(hcs.searchHC(docPac) == null){
+                    hcs.createHistorialClinico(docPac);
+                } else{
+                    hcs.modificarHistorial(docPac);
+                }
+            }
         } catch (Exception e) {
             throw e;
         }
@@ -409,7 +418,6 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelCancelarCita() {
         if (movimiento) {
             //movimiento = false;
-            
             
             JPanel panelCancelarCita = new JPanel();
             panelCancelarCita.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
