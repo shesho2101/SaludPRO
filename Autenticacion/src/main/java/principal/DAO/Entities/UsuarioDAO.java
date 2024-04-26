@@ -77,6 +77,7 @@ public class UsuarioDAO extends DAO{
                 usr.setId(result.getString(1));
                 usr.setNombre(result.getString(2));
                 usr.setApellidos(result.getString(3));
+                usr.setCargo(result.getString(4));
             }
             
             desconectarBase();

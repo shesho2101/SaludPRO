@@ -69,12 +69,8 @@ public class Login extends JFrame {
                 btnLogin.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                                // Recuperar valores de entrada
-                                String nombre = nombreUsuario.getText();
-                                String password = new String(passwordField.getPassword());
-
                                 // Validar la sesión
-                                validarSesion(nombre, password);
+                                validarSesion(nombreUsuario.getText(), new String(passwordField.getPassword()));
                         }
                 });
 

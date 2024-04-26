@@ -145,7 +145,7 @@ public class Administrador extends JFrame {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
                 int deltaX = 33;
-                int duration = 600;
+                int duration = 250;
                 long startTime = System.currentTimeMillis();
 
                 public void actionPerformed(ActionEvent e) {
@@ -204,7 +204,7 @@ public class Administrador extends JFrame {
 
     private void cargarInventario() {
         if (movimiento && panelActual != null) {
-            limpiarPanel(nuevoPanel);
+            limpiarPanel(panelActual);
             panelActual.setBackground(new Color(7, 29, 63));
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);
@@ -475,7 +475,7 @@ public class Administrador extends JFrame {
 
     private void cargarConsultorios() throws Exception {
         if (movimiento && panelActual != null) {
-            limpiarPanel(nuevoPanel);
+            limpiarPanel(panelActual);
 
             Medico medico;
             medico = new Medico();
@@ -569,7 +569,7 @@ public class Administrador extends JFrame {
 
     private void cargarUsuarios() {
         if (movimiento && panelActual != null) {
-            limpiarPanel(nuevoPanel);
+            limpiarPanel(panelActual);
             // Crear el panel de usuarios
             panelActual.setBackground(new Color(7, 29, 68));
             panelActual.setLayout(null); // Usar null layout
@@ -672,6 +672,7 @@ public class Administrador extends JFrame {
 
     private void cargarPanelAgregar() {
         if (movimiento && panelActual != null) {
+            limpiarPanel(panelActual);
             panelActual.setBackground(new Color(7, 29, 68));
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);
@@ -895,6 +896,7 @@ public class Administrador extends JFrame {
 
     private void cargarPanelBorrar() {
         if (movimiento && panelActual != null) {
+            limpiarPanel(panelActual);
             panelActual.setBackground(new Color(7, 29, 68));
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);

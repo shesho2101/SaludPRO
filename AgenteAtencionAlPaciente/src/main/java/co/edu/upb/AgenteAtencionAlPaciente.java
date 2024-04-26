@@ -1,7 +1,6 @@
 package co.edu.upb;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import principal.DAO.Abstract.CallDAO;
-import principal.dominio.cita.Cita;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.historialClinico.HistorialClinicoServices;
@@ -38,9 +36,9 @@ public class AgenteAtencionAlPaciente extends JFrame {
     @Serial
     private static final long serialVersionUID = 1L;
     private final JPanel contentPane;
+    private JPanel panelActual; // Panel actual que se va a mostrar
     private final JButton[] buttons;
     private boolean movimiento = false;
-    private JPanel nuevoPanel;
     private final int panelPositionX = 770;
     private CitaServices cs;
     private ConsultorioServices conSer;
@@ -215,11 +213,10 @@ public class AgenteAtencionAlPaciente extends JFrame {
     }
 
     private void crearNuevoPanel(int opcion) throws Exception {
-        nuevoPanel = new JPanel();
-        nuevoPanel.setBackground(new Color(250, 250, 250));
-        nuevoPanel.setBounds(panelPositionX, 0, 800, 900);
+        panelActual.setBackground(new Color(250, 250, 250));
+        panelActual.setBounds(panelPositionX, 0, 800, 900);
     
-        contentPane.add(nuevoPanel);
+        contentPane.add(panelActual);
         contentPane.repaint();
         movimiento = true;
     
@@ -247,8 +244,8 @@ public class AgenteAtencionAlPaciente extends JFrame {
     }
     
     private void cargarPanelAgendarCita() throws Exception {
-        if (movimiento) {
-            
+        if (movimiento && panelActual != null) {
+            limpiarPanel(panelActual);
 
             JPanel panelAgendarCita = new JPanel();
             panelAgendarCita.setBackground(new Color(7, 29, 68));
@@ -365,7 +362,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
     }
     
     private void cargarPanelReprogramarCita() {
-        if (movimiento) {
+        if (movimiento && panelActual != null) {
             //movimiento = false;
             
             
@@ -409,14 +406,14 @@ public class AgenteAtencionAlPaciente extends JFrame {
             contentPane.add(panelCancelarCita);
             contentPane.setComponentZOrder(panelCancelarCita, 0);
 
-            if (nuevoPanel != null) {
-                nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
+            if (panelActual != null) {
+                panelActual.setLocation(panelPositionX, panelActual.getY());
             }
         }
     }  
     
     private void cargarPanelCancelarCita() {
-        if (movimiento) {
+        if (movimiento && panelActual != null) {
             //movimiento = false;
             
             JPanel panelCancelarCita = new JPanel();
@@ -449,8 +446,8 @@ public class AgenteAtencionAlPaciente extends JFrame {
             contentPane.add(panelCancelarCita);
             contentPane.setComponentZOrder(panelCancelarCita, 0);
 
-            if (nuevoPanel != null) {
-                nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
+            if (panelActual != null) {
+                panelActual.setLocation(panelPositionX, panelActual.getY());
             }
         }
     }   
@@ -537,7 +534,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
     
 
     private void cargarPanelActivarCita() {
-        if (movimiento) {
+        if (movimiento && panelActual != null) {
             //movimiento = false;
             
             
@@ -571,18 +568,17 @@ public class AgenteAtencionAlPaciente extends JFrame {
             contentPane.add(panelCancelarCita);
             contentPane.setComponentZOrder(panelCancelarCita, 0);
 
-            if (nuevoPanel != null) {
-                nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
+            if (panelActual != null) {
+                panelActual.setLocation(panelPositionX, panelActual.getY());
             }
         }
     }
 
     private void limpiarPanel(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            panel.remove(component);
+        if (panel != null) {
+            panel.removeAll(); // Eliminar todos los componentes del panel
+            panel.repaint();   // Repintar para asegurar que todo esté limpio
         }
-        panel.repaint();
     }
     
     public static void main(String[] args) {

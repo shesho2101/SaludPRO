@@ -95,7 +95,7 @@ public class MedicamentoDAO extends DAO{
     
     public List<Medicamento> listMedi() throws Exception{
         try {
-            String sql = "SELECT * FROM medi";
+            String sql = "SELECT * FROM medicamento";
             
             consultarBase(sql);
             

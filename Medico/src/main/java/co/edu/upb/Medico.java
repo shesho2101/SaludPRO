@@ -32,6 +32,8 @@ public class Medico extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
+    private JPanel panelActual; // Panel actual que se va a mostrar
+
     private JButton[] buttons;
     private boolean movimiento = false;
     private JPanel nuevoPanel;
@@ -398,11 +400,10 @@ public class Medico extends JFrame {
     }
 
     private void limpiarPanel(JPanel panel) {
-        Component[] components = panel.getComponents();
-        for (Component component : components) {
-            panel.remove(component);
+        if (panel != null) {
+            panel.removeAll(); // Eliminar todos los componentes del panel
+            panel.repaint();   // Repintar para asegurar que todo esté limpio
         }
-        panel.repaint();
     }
     
     public static void main(String[] args) {
