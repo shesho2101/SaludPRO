@@ -161,30 +161,32 @@ public class Administrador extends JFrame {
     private void moverBotones() {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
+                // Posición final donde queremos que se detengan los botones
+                final int posicionFinal = 250; // Ajusta este valor a tu posición final deseada
                 int deltaX = 33;
-                int duration = 250;
                 long startTime = System.currentTimeMillis();
+                int positionLimit = -33; // Limite de posición para detener el desplazamiento
 
                 public void actionPerformed(ActionEvent e) {
-                    long currentTime = System.currentTimeMillis();
-                    long elapsedTime = currentTime - startTime;
+                    for (JButton button : buttons) {
+                        // Nueva posición
+                        int newPosX = button.getX() - deltaX;
 
-                    if (elapsedTime > duration) {
-                        ((Timer) e.getSource()).stop();
-                    } else {
-                        moveButtonsToLeft(deltaX);
+                        // Si la nueva posición es menor o igual a la posición final, detén el desplazamiento
+                        if (newPosX <= posicionFinal) {
+                            newPosX = posicionFinal; // Asegurar que no se pase de la posición final
+                            ((Timer) e.getSource()).stop(); // Detener el Timer
+                            movimiento = false; // Indicar que el movimiento ha terminado
+                        }
+
+                        // Asignar la nueva posición al botón
+                        button.setLocation(newPosX, button.getY());
                     }
                 }
             });
 
-            timer.start();
-            movimiento = true;
-        }
-    }
-
-    private void moveButtonsToLeft(int deltaX) {
-        for (JButton button : buttons) {
-            button.setLocation(button.getX() - deltaX, button.getY());
+            timer.start(); // Iniciar el Timer
+            movimiento = true; // Indicar que se está moviendo
         }
     }
 
@@ -371,7 +373,7 @@ public class Administrador extends JFrame {
                     JLabel lblCodigo = new JLabel("Código del medicamento:");
                     lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblCodigo.setForeground(Color.WHITE);
-                    lblCodigo.setBounds(310, 80, 180, 30);
+                    lblCodigo.setBounds(270, 80, 280, 30);
                     panelActual.add(lblCodigo);
 
                     JTextField txtCodigo = new JTextField();
@@ -411,7 +413,7 @@ public class Administrador extends JFrame {
 
                                 JButton btnGuardarCambios = new JButton("Guardar Cambios");
                                 btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
-                                btnGuardarCambios.setBounds(310, 380, 180, 40);
+                                btnGuardarCambios.setBounds(275, 380, 250, 40);
                                 panelActual.add(btnGuardarCambios);
 
                                 btnGuardarCambios.addActionListener(new ActionListener() {
@@ -451,7 +453,7 @@ public class Administrador extends JFrame {
                     JLabel lblCodigo = new JLabel("Código del medicamento:");
                     lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblCodigo.setForeground(Color.WHITE);
-                    lblCodigo.setBounds(310, 80, 180, 30);
+                    lblCodigo.setBounds(270, 80, 280, 30);
                     panelActual.add(lblCodigo);
 
                     JTextField txtCodigo = new JTextField();
@@ -533,12 +535,12 @@ public class Administrador extends JFrame {
 
             JLabel sede = new JLabel(consultorio.getSede().getNombre());
             sede.setFont(new Font("Tahoma", Font.PLAIN, 15));
-            sede.setBounds(250, 5, 200, 25);
+            sede.setBounds(280, 5, 200, 25);
             panelRow.add(sede);
 
             JLabel nombre = new JLabel(consultorio.getNombre());
             nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-            nombre.setBounds(450, 5, 200, 25);
+            nombre.setBounds(540, 5, 200, 25);
             panelRow.add(nombre);
 
             panelRow.setLocation(0, y);
@@ -721,7 +723,7 @@ public class Administrador extends JFrame {
 
         JButton btnBorrarConsultorio = new JButton("Borrar Consultorio");
         btnBorrarConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnBorrarConsultorio.setBounds(310, 120, 180, 40);
+        btnBorrarConsultorio.setBounds(310, 120, 250, 40);
         panelActual.add(btnBorrarConsultorio);
 
         btnBorrarConsultorio.addActionListener(e -> {
@@ -781,7 +783,7 @@ public class Administrador extends JFrame {
             JLabel lblNombreCategoria = new JLabel("Administrar Usuarios");
             lblNombreCategoria.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblNombreCategoria.setForeground(Color.WHITE);
-            lblNombreCategoria.setBounds(285, 96, 210, 40);
+            lblNombreCategoria.setBounds(275, 96, 260, 40);
             panelActual.add(lblNombreCategoria);
 
             // Ejemplo de lista de usuarios
@@ -803,7 +805,7 @@ public class Administrador extends JFrame {
                     panelRow.setLayout(null); // Posicionamiento libre
 
                     // Etiquetas para mostrar información del usuario
-                    JLabel nombre = new JLabel(usuario.getNombre());
+                    JLabel nombre = new JLabel(usuario.getNombre() +" "+ usuario.getApellidos());
                     nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
                     nombre.setBounds(20, 5, 200, 25); // Posición y tamaño
                     panelRow.add(nombre);
@@ -834,6 +836,15 @@ public class Administrador extends JFrame {
                 }
             });
 
+            btnModificar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    limpiarPanel(panelActual);
+                    cargarPanelModificarUsuario(); // Llamar la función para agregar nuevos usuarios
+                }
+            });
+
+
             // Acción del botón "Borrar"
             btnBorrar.addActionListener(new ActionListener() {
                 @Override
@@ -850,8 +861,6 @@ public class Administrador extends JFrame {
     }
 
     private void cargarPanelAgregar() {
-        if (movimiento && panelActual != null) {
-            limpiarPanel(panelActual);
             panelActual.setBackground(new Color(7, 29, 68));
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);
@@ -1070,11 +1079,120 @@ public class Administrador extends JFrame {
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
             }
-        }
+    }
+
+    private void cargarPanelModificarUsuario() {
+        limpiarPanel(panelActual);
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+
+        // Campo para buscar el usuario por ID
+        JLabel lblDocumento = new JLabel("Documento del usuario:");
+        lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDocumento.setForeground(Color.WHITE);
+        lblDocumento.setBounds(285, 30, 250, 34);
+        panelActual.add(lblDocumento);
+
+        JTextField textFieldDocumento = new JTextField();
+        textFieldDocumento.setBounds(310, 80, 180, 30);
+        panelActual.add(textFieldDocumento);
+
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnBuscar.setBounds(310, 120, 180, 40);
+        panelActual.add(btnBuscar);
+
+        btnBuscar.addActionListener(e -> {
+            String documento = textFieldDocumento.getText();
+
+            if (documento.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el documento del usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                Usuario usuario = usuarioServices.searchPerID(documento);
+
+                if (usuario == null) {
+                    JOptionPane.showMessageDialog(null, "No se encontró el usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                limpiarPanel(panelActual);
+
+                // Campos para modificar detalles del usuario
+                JLabel lblNuevoNombre = new JLabel("Nuevo nombre:");
+                lblNuevoNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
+                lblNuevoNombre.setForeground(Color.WHITE);
+                lblNuevoNombre.setBounds(310, 180, 180, 34);
+                panelActual.add(lblNuevoNombre);
+
+                JTextField textFieldNuevoNombre = new JTextField(usuario.getNombre());
+                textFieldNuevoNombre.setBounds(310, 230, 180, 30);
+                panelActual.add(textFieldNuevoNombre);
+
+                JLabel lblNuevoApellido = new JLabel("Nuevo apellido:");
+                lblNuevoApellido.setFont(new Font("Tahoma", Font.BOLD, 20));
+                lblNuevoApellido.setForeground(Color.WHITE);
+                lblNuevoApellido.setBounds(310, 280, 180, 34);
+                panelActual.add(lblNuevoApellido);
+
+                JTextField textFieldNuevoApellido = new JTextField(usuario.getApellidos());
+                textFieldNuevoApellido.setBounds(310, 330, 180, 30);
+                panelActual.add(textFieldNuevoApellido);
+
+                JLabel lblNuevoCargo = new JLabel("Nuevo cargo:");
+                lblNuevoCargo.setFont(new Font("Tahoma", Font.BOLD, 20));
+                lblNuevoCargo.setForeground(Color.WHITE);
+                lblNuevoCargo.setBounds(310, 380, 180, 34);
+                panelActual.add(lblNuevoCargo);
+
+                // Menú desplegable para seleccionar el cargo
+                JComboBox<String> comboBoxNuevoCargo = new JComboBox<>(new String[]{"Médico", "Agente de Atención al Paciente"});
+                comboBoxNuevoCargo.setSelectedItem(usuario.getCargo()); // Seleccionar el cargo actual
+                comboBoxNuevoCargo.setBounds(310, 430, 180, 30);
+                panelActual.add(comboBoxNuevoCargo);
+
+                JButton btnGuardarCambios = new JButton("Guardar Cambios");
+                btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
+                btnGuardarCambios.setBounds(280, 480, 230, 40);
+                panelActual.add(btnGuardarCambios);
+
+                btnGuardarCambios.addActionListener(a -> {
+                    String nuevoNombre = textFieldNuevoNombre.getText();
+                    String nuevoApellido = textFieldNuevoApellido.getText();
+                    String nuevoCargo = (String) comboBoxNuevoCargo.getSelectedItem(); // Obtener el cargo del menú desplegable
+
+                    if (nuevoNombre.isEmpty() || nuevoApellido.isEmpty() || nuevoCargo.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    try {
+                        usuario.setNombre(nuevoNombre);
+                        usuario.setApellidos(nuevoApellido);
+                        usuario.setCargo(nuevoCargo);
+
+                        usuarioServices.modificarUsuario(usuario); // Guardar cambios
+
+                        JOptionPane.showMessageDialog(null, "Cambios guardados exitosamente.");
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error al guardar cambios: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+
+                panelActual.revalidate();
+                panelActual.repaint();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al buscar el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint();
     }
 
     private void cargarPanelBorrar() {
-        if (movimiento && panelActual != null) {
             limpiarPanel(panelActual);
             panelActual.setBackground(new Color(7, 29, 68));
             panelActual.setLayout(null);
@@ -1092,7 +1210,7 @@ public class Administrador extends JFrame {
 
             JButton btnEliminarUsuario = new JButton("Eliminar usuario");
             btnEliminarUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnEliminarUsuario.setBounds(290, 330, 240, 40);
+            btnEliminarUsuario.setBounds(290, 330, 220, 40);
             panelActual.add(btnEliminarUsuario);
 
             btnEliminarUsuario.addActionListener(new ActionListener() {
@@ -1127,7 +1245,6 @@ public class Administrador extends JFrame {
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
             }
-        }
     }
 
     private void cargarPacientes() {
@@ -1177,10 +1294,15 @@ public class Administrador extends JFrame {
                 documento.setBounds(250, 5, 200, 25);
                 panelRow.add(documento);
 
-                JLabel edad = new JLabel(String.valueOf(paciente.getEdad()));
+                JLabel edad = new JLabel(String.valueOf(paciente.getFechaNacimiento()));
                 edad.setFont(new Font("Tahoma", Font.PLAIN, 15));
                 edad.setBounds(450, 5, 200, 25); // Posición para "edad"
                 panelRow.add(edad);
+
+                JLabel dato = new JLabel(String.valueOf(paciente.getTelefono()));
+                dato.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                dato.setBounds(620, 5, 200, 25); // Posición para "edad"
+                panelRow.add(dato);
 
                 panelRow.setLocation(0, y); // Posición vertical para cada fila
                 y += 40; // Incrementar para la siguiente fila
@@ -1273,7 +1395,7 @@ public class Administrador extends JFrame {
         JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento (YYYY-MM-DD):");
         lblFechaNacimiento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblFechaNacimiento.setForeground(Color.WHITE);
-        lblFechaNacimiento.setBounds(310, 330, 250, 34); // Posición y tamaño
+        lblFechaNacimiento.setBounds(310, 330, 380, 34); // Posición y tamaño
         panelActual.add(lblFechaNacimiento);
 
         JTextField textFieldFechaNacimiento = new JTextField();
@@ -1366,7 +1488,7 @@ public class Administrador extends JFrame {
         JLabel lblDocumento = new JLabel("Documento del paciente:");
         lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblDocumento.setForeground(Color.WHITE);
-        lblDocumento.setBounds(310, 30, 180, 34); // Posición y tamaño
+        lblDocumento.setBounds(310, 30, 250, 34); // Posición y tamaño
         panelActual.add(lblDocumento);
 
         JTextField textFieldDocumento = new JTextField();
@@ -1479,16 +1601,16 @@ public class Administrador extends JFrame {
         JLabel lblDocumento = new JLabel("Documento del paciente:");
         lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblDocumento.setForeground(Color.WHITE);
-        lblDocumento.setBounds(310, 30, 180, 34);
+        lblDocumento.setBounds(305, 400, 250, 34);
         panelActual.add(lblDocumento);
 
         JTextField textFieldDocumento = new JTextField();
-        textFieldDocumento.setBounds(310, 80, 180, 30);
+        textFieldDocumento.setBounds(330, 450, 180, 30);
         panelActual.add(textFieldDocumento);
 
         JButton btnBorrarPaciente = new JButton("Borrar Paciente");
         btnBorrarPaciente.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnBorrarPaciente.setBounds(320, 120, 180, 40);
+        btnBorrarPaciente.setBounds(305, 500, 235, 40);
         panelActual.add(btnBorrarPaciente);
 
         btnBorrarPaciente.addActionListener(new ActionListener() {
@@ -1514,7 +1636,6 @@ public class Administrador extends JFrame {
         panelActual.revalidate();
         panelActual.repaint();
     }
-
 
     // Método para limpiar el panel actual antes de agregar uno nuevo
     private void limpiarPanel(JPanel panel) {

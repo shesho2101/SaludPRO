@@ -40,34 +40,34 @@ public class Medico extends JFrame {
     //Base de datos
     private HistorialClinicoServices hcs;
     private CitaServices cs;
-    
+
     //Historia Clinica
     private JButton btnHistorial;
     private JTextField textFieldDocumentoHis;
-    
+
     //Calendario
     private JCalendar calendario;
     private JButton btnCalendar;
-    
+
     //Reporte
     private JButton btnReportarCita;
     private JTextField textFieldDocumentoRep;
     private JTextField dateRep;
-    
-    
+
+
     public Medico() {
         //Inicializacion base de datos
         this.hcs = new HistorialClinicoServices();
         this.cs = new CitaServices();
-        
+
         //Historial
         this.btnHistorial = new JButton();
         this.textFieldDocumentoHis = new JTextField();
-        
+
         //Calendario
         this.calendario = new JCalendar();
         this.btnCalendar = new JButton();
-        
+
         //Reporte
         this.btnReportarCita = new JButton();
         this.dateRep = new JTextField();
@@ -92,7 +92,7 @@ public class Medico extends JFrame {
         buttons[0] = createButton("Buscar historia clínica", 640, 320);
         buttons[1] = createButton("Ver agenda", 640, 400);
         buttons[2] = createButton("Reportar paciente", 640, 480);
-        
+
 
         // Añadir el botón de cerrar sesión
         JButton btnCerrarSesion = new JButton("Cerrar sesión");
@@ -146,36 +146,42 @@ public class Medico extends JFrame {
     private void moverBotones() {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
-                int deltaX = 30;
-                int duration = 240;
+                // Posición final donde queremos que se detengan los botones
+                final int posicionFinal = 250; // Ajusta este valor a tu posición final deseada
+                int deltaX = 33;
                 long startTime = System.currentTimeMillis();
+                int positionLimit = -33; // Limite de posición para detener el desplazamiento
 
                 public void actionPerformed(ActionEvent e) {
-                    long currentTime = System.currentTimeMillis();
-                    long elapsedTime = currentTime - startTime;
+                    for (JButton button : buttons) {
+                        // Nueva posición
+                        int newPosX = button.getX() - deltaX;
 
-                    if (elapsedTime > duration) {
-                        ((Timer) e.getSource()).stop();
-                    } else {
-                        moveButtonsToLeft(deltaX);
+                        // Si la nueva posición es menor o igual a la posición final, detén el desplazamiento
+                        if (newPosX <= posicionFinal) {
+                            newPosX = posicionFinal; // Asegurar que no se pase de la posición final
+                            ((Timer) e.getSource()).stop(); // Detener el Timer
+                            movimiento = false; // Indicar que el movimiento ha terminado
+                        }
+
+                        // Asignar la nueva posición al botón
+                        button.setLocation(newPosX, button.getY());
                     }
                 }
             });
 
-            timer.start();
-            movimiento = true;
-        }
-    }
-
-    private void moveButtonsToLeft(int deltaX) {
-        for (JButton button : buttons) {
-            button.setLocation(button.getX() - deltaX, button.getY());
+            timer.start(); // Iniciar el Timer
+            movimiento = true; // Indicar que se está moviendo
         }
     }
 
     private void crearNuevoPanel(int opcion) {
         if (panelActual != null) {
             limpiarPanel(panelActual);
+        }
+        // Asegúrate de inicializar nuevoPanel
+        if (nuevoPanel == null) {
+            nuevoPanel = new JPanel();
         }
 
         panelActual = new JPanel(); // Crear nuevo panel

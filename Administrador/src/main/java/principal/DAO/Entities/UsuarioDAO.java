@@ -35,24 +35,21 @@ public class UsuarioDAO extends DAO{
             throw new Exception("Error al guardar usuario", e);
         }
     }
-    
-    /*
-    public void modUsr(Usr usr) throws Exception{
-        try {
-            String sql = "";
-            if(usr == null){
-                throw new Exception("Debe indicar un usuario a modificar");
-            }
-            
-            sql = "UPDATE usuario SET usuario = '" + usr.getUsuario()+ "' WHERE contraseñaPaciente = '" + usr.getObj().getId()+ "'"; 
 
-            insertModDel(sql);
-        } catch (Exception e) {
-            throw e;
+    public void modUsr(Usuario usuario) throws Exception {
+        if (usuario == null) {
+            throw new Exception("Debe indicar un usuario para modificar.");
         }
+
+        String sql = "UPDATE usuario SET nombre = '" + usuario.getNombre() + "', "
+                + "apellidos = '" + usuario.getApellidos() + "', "
+                + "cargo = '" + usuario.getCargo() + "' "
+                + "WHERE ID = '" + usuario.getId() + "'";
+
+        insertModDel(sql); // Ejecutar el comando para modificar
     }
-    */
-     public void delUsr(String idUsr) throws Exception{
+
+    public void delUsr(String idUsr) throws Exception{
         try {
 
             String sql = "DELETE FROM usuario WHERE ID = '" + idUsr + "'";

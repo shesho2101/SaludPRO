@@ -55,7 +55,17 @@ public class UsuarioServices {
         } catch (Exception e) {
         }
     }
-    
+
+    // Modificar un usuario existente
+    public void modificarUsuario(Usuario usuario) throws Exception {
+        if (usuario == null) {
+            throw new Exception("Debe indicar un usuario para modificar.");
+        }
+
+        cbd.modUsr(usuario);
+    }
+
+
     public Usuario searchPerID(String ID) throws Exception{
         try {
             if(ID == null || ID.trim().isEmpty()){

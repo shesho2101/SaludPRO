@@ -185,24 +185,32 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void moverBotones() {
         if (!movimiento) {
             Timer timer = new Timer(10, new ActionListener() {
-                final int deltaX = 30;
-                final int duration = 215;
-                final long startTime = System.currentTimeMillis();
+                // Posición final donde queremos que se detengan los botones
+                final int posicionFinal = 290; // Ajusta este valor a tu posición final deseada
+                int deltaX = 33;
+                long startTime = System.currentTimeMillis();
+                int positionLimit = -33; // Limite de posición para detener el desplazamiento
 
                 public void actionPerformed(ActionEvent e) {
-                    long currentTime = System.currentTimeMillis();
-                    long elapsedTime = currentTime - startTime;
+                    for (JButton button : buttons) {
+                        // Nueva posición
+                        int newPosX = button.getX() - deltaX;
 
-                    if (elapsedTime > duration) {
-                        ((Timer) e.getSource()).stop();
-                    } else {
-                        moveButtonsToLeft();
+                        // Si la nueva posición es menor o igual a la posición final, detén el desplazamiento
+                        if (newPosX <= posicionFinal) {
+                            newPosX = posicionFinal; // Asegurar que no se pase de la posición final
+                            ((Timer) e.getSource()).stop(); // Detener el Timer
+                            movimiento = false; // Indicar que el movimiento ha terminado
+                        }
+
+                        // Asignar la nueva posición al botón
+                        button.setLocation(newPosX, button.getY());
                     }
                 }
             });
 
-            timer.start();
-            movimiento = true;
+            timer.start(); // Iniciar el Timer
+            movimiento = true; // Indicar que se está moviendo
         }
     }
 

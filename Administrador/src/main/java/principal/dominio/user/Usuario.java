@@ -12,7 +12,6 @@ public class Usuario{
     private String id;
     private String nombre;
     private String apellidos;
-
     private String cargo;
 
     public Usuario(String id, String nombre, String apellidos, String cargo) {
