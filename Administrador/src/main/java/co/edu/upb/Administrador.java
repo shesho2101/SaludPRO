@@ -7,6 +7,9 @@ import principal.dominio.medicamento.Medicamento;
 import principal.dominio.medicamento.MedicamentoServices;
 import principal.dominio.medico.Medico;
 import principal.dominio.medico.MedicoServices;
+import principal.dominio.paciente.GrupoSanguineo;
+import principal.dominio.paciente.Paciente;
+import principal.dominio.paciente.PacienteServices;
 import principal.dominio.sede.SedeServices;
 import principal.dominio.user.Usuario;
 import principal.dominio.user.UsuarioServices;
@@ -14,6 +17,7 @@ import principal.dominio.user.UsuarioServices;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +44,7 @@ public class Administrador extends JFrame {
 
     private SedeServices sedeServices;
 
-    private ConsultorioServices cs;
+    private ConsultorioServices consultorioServices;
 
     private PersonalAtencionServices personalAtencionServices;
 
@@ -48,15 +52,18 @@ public class Administrador extends JFrame {
 
     private MedicamentoServices medicamentoServices;
 
+    private PacienteServices pacienteServices;
+
 
     public Administrador() {
         usuarioServices = new UsuarioServices();
         medicoServices = new MedicoServices();
-        cs = new ConsultorioServices();
+        consultorioServices = new ConsultorioServices();
         personalAtencionServices = new PersonalAtencionServices();
         usuario = new Usuario();
         medicamentoServices = new MedicamentoServices();
         sedeServices = new SedeServices();
+        pacienteServices = new PacienteServices();
 
         FrameController.registerFrame("AdministradorFrame", this);
 
@@ -71,11 +78,13 @@ public class Administrador extends JFrame {
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        buttons = new JButton[3];
+        buttons = new JButton[4];
 
         buttons[0] = createButton("Inventario medicamentos", 610, 320);
         buttons[1] = createButton("Administrar consultorios", 610, 400);
         buttons[2] = createButton("Administrar usuarios", 610, 480);
+        buttons[3] = createButton("Administrar pacientes", 610, 560);
+
 
         // Añadir el botón de cerrar sesión
         JButton btnCerrarSesion = new JButton("Cerrar sesión");
@@ -124,6 +133,14 @@ public class Administrador extends JFrame {
                     case "Administrar usuarios":
                         try {
                             crearNuevoPanel(3);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        break;
+
+                    case "Administrar pacientes":
+                        try {
+                            crearNuevoPanel(4); // Panel para administrar pacientes
                         } catch (Exception ex) {
                             throw new RuntimeException(ex);
                         }
@@ -194,6 +211,10 @@ public class Administrador extends JFrame {
 
             case 3:
                 cargarUsuarios();
+                break;
+
+            case 4:
+                cargarPacientes(); // Llamada al método para cargar pacientes
                 break;
 
             default:
@@ -474,97 +495,253 @@ public class Administrador extends JFrame {
     }
 
     private void cargarConsultorios() throws Exception {
-        if (movimiento && panelActual != null) {
+        if (panelActual != null) {
             limpiarPanel(panelActual);
-
-            Medico medico;
-            medico = new Medico();
-            usuario = medico.getUsr();
-
-            panelActual.setBackground(new Color(7, 29, 68));
-            panelActual.setLayout(null);
-            panelActual.setBounds(800, 0, 800, 900);
-
-            JPanel jPanelTable = new JPanel();
-            jPanelTable.setLayout(null); // Usar null layout
-            jPanelTable.setBackground(Color.WHITE);
-            jPanelTable.setBounds(40, 168, 700, 400);
-            panelActual.add(jPanelTable);
-
-            // Generación de la tabla de trabajadores
-            int y = 10;
-            for (int i = 0; i == 0; i++) {
-
-                JPanel panelRow = new JPanel();
-                panelRow.setVisible(true);
-                panelRow.setSize(1050, 30);
-                panelRow.setBackground(Color.WHITE);
-                jPanelTable.add(panelRow);
-
-                panelRow.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cursor clickeable
-
-                JLabel nombre = new JLabel(usuario.getNombre());
-                nombre.setVisible(true);
-                nombre.setSize(250, 25);
-                nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(nombre);
-                nombre.setLocation(20, 5);
-
-                JLabel documento = new JLabel(medico.getID());
-                documento.setVisible(true);
-                documento.setSize(140, 30);
-                documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(documento);
-                documento.setLocation(170, 5);
-
-                JLabel sede = new JLabel(medico.getCons().getSede().getNombre());
-                sede.setVisible(true);
-                sede.setSize(320, 30);
-                sede.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(sede);
-                sede.setLocation(320, 5);
-
-                JLabel especialidad = new JLabel(medico.getEspecializacion());
-                especialidad.setVisible(true);
-                especialidad.setSize(320, 30);
-                especialidad.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(especialidad);
-                especialidad.setLocation(470, 5);
-
-                JLabel consultorio = new JLabel(String.valueOf(medico.getCons()));
-                consultorio.setVisible(true);
-                consultorio.setSize(320, 30);
-                consultorio.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                panelRow.add(consultorio);
-                consultorio.setLocation(620, 5);
-
-                panelRow.setLocation(0, y); // Establecer la posición vertical
-                y += 40; // Incrementar la posición vertical para la próxima fila
-            }
-
-            JButton btnModificar = new JButton("Modificar");
-            btnModificar.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnModificar.setBounds(210, 618, 180, 40);
-            panelActual.add(btnModificar);
-
-            JButton btnBorrar = new JButton("Borrar");
-            btnBorrar.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnBorrar.setBounds(430, 618, 180, 40);
-            panelActual.add(btnBorrar);
-
-            getContentPane().add(panelActual);
-            getContentPane().setComponentZOrder(panelActual, 0);
-
-            JLabel lblNombreCategoria = new JLabel("Control consultorios");
-            lblNombreCategoria.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblNombreCategoria.setForeground(new Color(255, 255, 255));
-            lblNombreCategoria.setBounds(289, 96, 202, 40);
-            panelActual.add(lblNombreCategoria);
-
-            if (nuevoPanel != null) {
-                nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
-            }
         }
+
+        panelActual = new JPanel();
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+        panelActual.setBounds(800, 0, 800, 900);
+
+        JLabel lblTitulo = new JLabel("Administrar Consultorios");
+        lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setBounds(285, 96, 250, 40);
+        panelActual.add(lblTitulo);
+
+        JPanel jPanelTable = new JPanel();
+        jPanelTable.setLayout(null);
+        jPanelTable.setBackground(Color.WHITE);
+        jPanelTable.setBounds(40, 168, 700, 400);
+        panelActual.add(jPanelTable);
+
+        List<Consultorio> consultorios = consultorioServices.listCons();
+
+        int y = 10;
+        for (Consultorio consultorio : consultorios) {
+            JPanel panelRow = new JPanel();
+            panelRow.setVisible(true);
+            panelRow.setSize(700, 30);
+            panelRow.setBackground(Color.WHITE);
+            panelRow.setLayout(null);
+
+            JLabel numHab = new JLabel(String.valueOf(consultorio.getNumHab()));
+            numHab.setFont(new Font("Tahoma", Font.PLAIN, 15));
+            numHab.setBounds(20, 5, 250, 25);
+            panelRow.add(numHab);
+
+            JLabel sede = new JLabel(consultorio.getSede().getNombre());
+            sede.setFont(new Font("Tahoma", Font.PLAIN, 15));
+            sede.setBounds(250, 5, 200, 25);
+            panelRow.add(sede);
+
+            JLabel nombre = new JLabel(consultorio.getNombre());
+            nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+            nombre.setBounds(450, 5, 200, 25);
+            panelRow.add(nombre);
+
+            panelRow.setLocation(0, y);
+            y += 40;
+
+            jPanelTable.add(panelRow);
+        }
+
+        JButton btnAgregar = new JButton("Agregar");
+        btnAgregar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnAgregar.setBounds(65, 618, 180, 40);
+        panelActual.add(btnAgregar);
+
+        JButton btnModificar = new JButton("Modificar");
+        btnModificar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnModificar.setBounds(300, 618, 180, 40);
+        panelActual.add(btnModificar);
+
+        JButton btnBorrar = new JButton("Borrar");
+        btnBorrar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnBorrar.setBounds(540, 618, 180, 40);
+        panelActual.add(btnBorrar);
+
+        btnAgregar.addActionListener(e -> cargarPanelAgregarConsultorio());
+
+        btnModificar.addActionListener(e -> cargarPanelModificarConsultorio());
+
+        btnBorrar.addActionListener(e -> cargarPanelBorrarConsultorio());
+
+        contentPane.add(panelActual);
+        contentPane.setComponentZOrder(panelActual, 0);
+    }
+
+    private void cargarPanelAgregarConsultorio() {
+        limpiarPanel(panelActual);
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+
+        JLabel lblNombre = new JLabel("Nombre del Consultorio:");
+        lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblNombre.setForeground(Color.WHITE);
+        lblNombre.setBounds(310, 30, 250, 34);
+        panelActual.add(lblNombre);
+
+        JTextField textFieldNombre = new JTextField();
+        textFieldNombre.setBounds(310, 80, 250, 30);
+        panelActual.add(textFieldNombre);
+
+        JLabel lblSede = new JLabel("Sede del Consultorio:");
+        lblSede.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblSede.setForeground(Color.WHITE);
+        lblSede.setBounds(310, 130, 250, 34);
+        panelActual.add(lblSede);
+
+        JTextField textFieldSede = new JTextField();
+        textFieldSede.setBounds(310, 180, 250, 30);
+        panelActual.add(textFieldSede);
+
+        JButton btnGuardar = new JButton("Guardar");
+        btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnGuardar.setBounds(310, 230, 180, 40);
+        panelActual.add(btnGuardar);
+
+        btnGuardar.addActionListener(e -> {
+            String nombre = textFieldNombre.getText();
+            String sede = textFieldSede.getText();
+
+            if (nombre.isEmpty() || sede.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                int codSede = sedeServices.searchPerNombre(sede).getCod(); // Buscar el código de la sede por su nombre
+                consultorioServices.saveConsultorio(nombre, codSede); // Guardar el nuevo consultorio
+                JOptionPane.showMessageDialog(null, "Consultorio agregado exitosamente.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al agregar el consultorio: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint();
+    }
+
+    private void cargarPanelModificarConsultorio() {
+        limpiarPanel(panelActual);
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+
+        JLabel lblNumHab = new JLabel("Número de Habitación:");
+        lblNumHab.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblNumHab.setForeground(Color.WHITE);
+        lblNumHab.setBounds(310, 30, 250, 34);
+        panelActual.add(lblNumHab);
+
+        JTextField textFieldNumHab = new JTextField();
+        textFieldNumHab.setBounds(310, 80, 250, 30);
+        panelActual.add(textFieldNumHab);
+
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnBuscar.setBounds(310, 120, 180, 40);
+        panelActual.add(btnBuscar);
+
+        btnBuscar.addActionListener(e -> {
+            String numHab = textFieldNumHab.getText();
+
+            if (numHab.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el número de habitación.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                Consultorio consultorio = consultorioServices.searchPerCod(Integer.parseInt(numHab));
+
+                if (consultorio == null) {
+                    JOptionPane.showMessageDialog(null, "No se encontró el consultorio.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                limpiarPanel(panelActual);
+
+                JLabel lblNuevoNombre = new JLabel("Nuevo Nombre:");
+                lblNuevoNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
+                lblNuevoNombre.setForeground(Color.WHITE);
+                lblNuevoNombre.setBounds(310, 180, 250, 34);
+                panelActual.add(lblNuevoNombre);
+
+                JTextField textFieldNuevoNombre = new JTextField(consultorio.getNombre());
+                textFieldNuevoNombre.setBounds(310, 230, 250, 30);
+                panelActual.add(textFieldNuevoNombre);
+
+                JButton btnGuardar = new JButton("Guardar Cambios");
+                btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
+                btnGuardar.setBounds(310, 280, 250, 40);
+                panelActual.add(btnGuardar);
+
+                btnGuardar.addActionListener(a -> {
+                    String nuevoNombre = textFieldNuevoNombre.getText();
+
+                    if (nuevoNombre.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    try {
+                        consultorioServices.modificarConsultorio(consultorio.getNumHab(), nuevoNombre);
+                        JOptionPane.showMessageDialog(null, "Cambios guardados exitosamente.");
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error al guardar cambios: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+
+                panelActual.revalidate();
+                panelActual.repaint();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al buscar el consultorio: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint();
+    }
+
+    private void cargarPanelBorrarConsultorio() {
+        limpiarPanel(panelActual);
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+
+        JLabel lblNumHab = new JLabel("Número de Habitación:");
+        lblNumHab.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblNumHab.setForeground(Color.WHITE);
+        lblNumHab.setBounds(310, 30, 250, 34);
+        panelActual.add(lblNumHab);
+
+        JTextField textFieldNumHab = new JTextField();
+        textFieldNumHab.setBounds(310, 80, 250, 30);
+        panelActual.add(textFieldNumHab);
+
+        JButton btnBorrarConsultorio = new JButton("Borrar Consultorio");
+        btnBorrarConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnBorrarConsultorio.setBounds(310, 120, 180, 40);
+        panelActual.add(btnBorrarConsultorio);
+
+        btnBorrarConsultorio.addActionListener(e -> {
+            String numHab = textFieldNumHab.getText();
+
+            if (numHab.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el número de habitación.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                consultorioServices.deleteConsultorio(Integer.parseInt(numHab));
+                JOptionPane.showMessageDialog(null, "Consultorio borrado exitosamente.");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error al borrar el consultorio: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint();
     }
 
     private void cargarUsuarios() {
@@ -618,32 +795,34 @@ public class Administrador extends JFrame {
             // Generación de filas para la tabla
             int y = 10; // Posición inicial para la primera fila
             for (Usuario usuario : usuarios) {
-                JPanel panelRow = new JPanel();
-                panelRow.setVisible(true);
-                panelRow.setSize(700, 30); // Tamaño de cada fila
-                panelRow.setBackground(Color.WHITE); // Color de fondo para la fila
-                panelRow.setLayout(null); // Posicionamiento libre
+                if(!Objects.equals(usuario.getCargo(), "Paciente")){
+                    JPanel panelRow = new JPanel();
+                    panelRow.setVisible(true);
+                    panelRow.setSize(700, 30); // Tamaño de cada fila
+                    panelRow.setBackground(Color.WHITE); // Color de fondo para la fila
+                    panelRow.setLayout(null); // Posicionamiento libre
 
-                // Etiquetas para mostrar información del usuario
-                JLabel nombre = new JLabel(usuario.getNombre());
-                nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                nombre.setBounds(20, 5, 200, 25); // Posición y tamaño
-                panelRow.add(nombre);
+                    // Etiquetas para mostrar información del usuario
+                    JLabel nombre = new JLabel(usuario.getNombre());
+                    nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                    nombre.setBounds(20, 5, 200, 25); // Posición y tamaño
+                    panelRow.add(nombre);
 
-                JLabel documento = new JLabel(usuario.getId());
-                documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                documento.setBounds(250, 5, 200, 25);
-                panelRow.add(documento);
+                    JLabel documento = new JLabel(usuario.getId());
+                    documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                    documento.setBounds(250, 5, 200, 25);
+                    panelRow.add(documento);
 
-                JLabel cargo = new JLabel(usuario.getCargo());
-                cargo.setFont(new Font("Tahoma", Font.PLAIN, 15));
-                cargo.setBounds(450, 5, 250, 25); // Posición para "cargo"
-                panelRow.add(cargo);
+                    JLabel cargo = new JLabel(usuario.getCargo());
+                    cargo.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                    cargo.setBounds(450, 5, 250, 25); // Posición para "cargo"
+                    panelRow.add(cargo);
 
-                panelRow.setLocation(0, y); // Posición vertical para cada fila
-                y += 40; // Incrementar para la siguiente fila
+                    panelRow.setLocation(0, y); // Posición vertical para cada fila
+                    y += 40; // Incrementar para la siguiente fila
 
-                jPanelTable.add(panelRow); // Añadir la fila al panel de la tabla
+                    jPanelTable.add(panelRow); // Añadir la fila al panel de la tabla
+                }
             }
 
             // Acción del botón "Agregar"
@@ -794,7 +973,7 @@ public class Administrador extends JFrame {
                                     try {
                                         usuarioServices.createUsr(documentoMedico, nombreMedico, apellidoMedico, "Médico");
 
-                                        medicoServices.createMed(documentoMedico, especialidad, cs.searchPerSede(sedeServices.searchPerNombre(sede).getCod(), textoConsultorio).getNumHab());
+                                        medicoServices.createMed(documentoMedico, especialidad, consultorioServices.searchPerSede(sedeServices.searchPerNombre(sede).getCod(), textoConsultorio).getNumHab());
                                         JOptionPane.showMessageDialog(null, "Médico agregado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                                     } catch (Exception ex) {
                                         JOptionPane.showMessageDialog(null, "Error al crear el médico: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -950,6 +1129,392 @@ public class Administrador extends JFrame {
             }
         }
     }
+
+    private void cargarPacientes() {
+        if (movimiento && panelActual != null) {
+            limpiarPanel(panelActual); // Limpia el panel existente
+            panelActual.setBackground(new Color(7, 29, 68));
+            panelActual.setLayout(null); // Usar null layout
+            panelActual.setBounds(800, 0, 800, 900);
+
+            // Título
+            JLabel lblTitulo = new JLabel("Administrar Pacientes");
+            lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblTitulo.setForeground(Color.WHITE);
+            lblTitulo.setBounds(285, 96, 250, 40);
+            panelActual.add(lblTitulo);
+
+            // Tabla de pacientes
+            JPanel jPanelTable = new JPanel();
+            jPanelTable.setLayout(null); // Usar null layout
+            jPanelTable.setBackground(Color.WHITE);
+            jPanelTable.setBounds(40, 168, 700, 400); // Ubicación y tamaño del área para la tabla
+            panelActual.add(jPanelTable);
+
+            // Aquí agregarías tu lógica para cargar la lista de pacientes desde tus servicios
+            List<Paciente> pacientes = null;
+            try {
+                pacientes = pacienteServices.listPac(); // Obtener la lista de pacientes
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            int y = 10; // Posición inicial para la primera fila
+            for (Paciente paciente : pacientes) {
+                JPanel panelRow = new JPanel();
+                panelRow.setVisible(true);
+                panelRow.setSize(700, 30); // Tamaño de cada fila
+                panelRow.setBackground(Color.WHITE); // Color de fondo para la fila
+                panelRow.setLayout(null); // Posicionamiento libre
+
+                JLabel nombre = new JLabel(paciente.getUsr().getNombre());
+                nombre.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                nombre.setBounds(20, 5, 200, 25);
+                panelRow.add(nombre);
+
+                JLabel documento = new JLabel(paciente.getID());
+                documento.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                documento.setBounds(250, 5, 200, 25);
+                panelRow.add(documento);
+
+                JLabel edad = new JLabel(String.valueOf(paciente.getEdad()));
+                edad.setFont(new Font("Tahoma", Font.PLAIN, 15));
+                edad.setBounds(450, 5, 200, 25); // Posición para "edad"
+                panelRow.add(edad);
+
+                panelRow.setLocation(0, y); // Posición vertical para cada fila
+                y += 40; // Incrementar para la siguiente fila
+
+                jPanelTable.add(panelRow); // Añadir la fila al panel de la tabla
+            }
+
+            // Botones para Agregar, Modificar y Borrar Pacientes
+            JButton btnAgregar = new JButton("Agregar");
+            btnAgregar.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnAgregar.setBounds(65, 618, 180, 40);
+            panelActual.add(btnAgregar);
+
+            JButton btnModificar = new JButton("Modificar");
+            btnModificar.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnModificar.setBounds(300, 618, 180, 40);
+            panelActual.add(btnModificar);
+
+            JButton btnBorrar = new JButton("Borrar");
+            btnBorrar.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnBorrar.setBounds(540, 618, 180, 40);
+            panelActual.add(btnBorrar);
+
+            // Agregar acciones para estos botones
+            btnAgregar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Aquí se implementaría el panel para agregar un nuevo paciente
+                    cargarPanelAgregarPaciente();
+                }
+            });
+
+            btnModificar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Aquí se implementaría el panel para modificar un paciente existente
+                    cargarPanelModificarPaciente();
+                }
+            });
+
+            btnBorrar.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Aquí se implementaría el panel para borrar un paciente
+                    cargarPanelBorrarPaciente();
+                }
+            });
+
+            contentPane.add(panelActual);
+            contentPane.setComponentZOrder(panelActual, 0); // Ubicar el nuevo panel al frente
+        }
+    }
+
+    private void cargarPanelAgregarPaciente() {
+        limpiarPanel(panelActual); // Limpia el panel existente
+        panelActual.setBackground(new Color(7, 29, 68)); // Color de fondo
+        panelActual.setLayout(null); // Layout absoluto para control de posiciones
+
+        // Campos para recoger información del paciente
+        JLabel lblNombre = new JLabel("Nombre:");
+        lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblNombre.setForeground(Color.WHITE);
+        lblNombre.setBounds(310, 30, 180, 34); // Posición y tamaño
+        panelActual.add(lblNombre);
+
+        JTextField textFieldNombre = new JTextField();
+        textFieldNombre.setBounds(310, 80, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldNombre);
+
+        JLabel lblApellidos = new JLabel("Apellidos:");
+        lblApellidos.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblApellidos.setForeground(Color.WHITE);
+        lblApellidos.setBounds(310, 130, 180, 34); // Posición y tamaño
+        panelActual.add(lblApellidos);
+
+        JTextField textFieldApellidos = new JTextField();
+        textFieldApellidos.setBounds(310, 180, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldApellidos);
+
+        JLabel lblDocumento = new JLabel("Documento:");
+        lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDocumento.setForeground(Color.WHITE);
+        lblDocumento.setBounds(310, 230, 180, 34); // Posición y tamaño
+        panelActual.add(lblDocumento);
+
+        JTextField textFieldDocumento = new JTextField();
+        textFieldDocumento.setBounds(310, 280, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldDocumento);
+
+        JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento (YYYY-MM-DD):");
+        lblFechaNacimiento.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblFechaNacimiento.setForeground(Color.WHITE);
+        lblFechaNacimiento.setBounds(310, 330, 250, 34); // Posición y tamaño
+        panelActual.add(lblFechaNacimiento);
+
+        JTextField textFieldFechaNacimiento = new JTextField();
+        textFieldFechaNacimiento.setBounds(310, 380, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldFechaNacimiento);
+
+        JLabel lblSexo = new JLabel("Sexo:");
+        lblSexo.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblSexo.setForeground(Color.WHITE);
+        lblSexo.setBounds(310, 430, 180, 34); // Posición y tamaño
+        panelActual.add(lblSexo);
+
+        JComboBox<String> comboBoxSexo = new JComboBox<>(new String[]{"Masculino", "Femenino"});
+        comboBoxSexo.setBounds(310, 480, 180, 30); // Posición y tamaño
+        panelActual.add(comboBoxSexo);
+
+        JLabel lblTelefono = new JLabel("Teléfono:");
+        lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblTelefono.setForeground(Color.WHITE);
+        lblTelefono.setBounds(310, 530, 180, 34); // Posición y tamaño
+        panelActual.add(lblTelefono);
+
+        JTextField textFieldTelefono = new JTextField();
+        textFieldTelefono.setBounds(310, 580, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldTelefono);
+
+        JLabel lblCorreo = new JLabel("Correo:");
+        lblCorreo.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblCorreo.setForeground(Color.WHITE);
+        lblCorreo.setBounds(310, 630, 180, 34); // Posición y tamaño
+        panelActual.add(lblCorreo);
+
+        JTextField textFieldCorreo = new JTextField();
+        textFieldCorreo.setBounds(310, 680, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldCorreo);
+
+        JLabel lblGrupoSanguineo = new JLabel("Grupo Sanguíneo:");
+        lblGrupoSanguineo.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblGrupoSanguineo.setForeground(Color.WHITE);
+        lblGrupoSanguineo.setBounds(310, 730, 250, 34); // Posición y tamaño
+        panelActual.add(lblGrupoSanguineo);
+
+        JComboBox<String> comboBoxGrupoSanguineo = new JComboBox<>(new String[]{"A_POSITIVO", "O_POSITIVO", "B_POSITIVO", "AB_POSITIVO", "A_NEGATIVO", "O_NEGATIVO", "B_NEGATIVO", "AB_NEGATIVO"});
+        comboBoxGrupoSanguineo.setBounds(310, 780, 180, 30); // Posición y tamaño
+        panelActual.add(comboBoxGrupoSanguineo);
+
+        JButton btnAgregarPaciente = new JButton("Agregar Paciente");
+        btnAgregarPaciente.setBounds(310, 830, 180, 40); // Posición y tamaño
+        panelActual.add(btnAgregarPaciente);
+
+// Lógica para agregar paciente
+        btnAgregarPaciente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = textFieldNombre.getText();
+                String apellidos = textFieldApellidos.getText();
+                String documento = textFieldDocumento.getText();
+                String fechaNacimiento = textFieldFechaNacimiento.getText();
+                String sexo = comboBoxSexo.getSelectedItem().toString();
+                String telefono = textFieldTelefono.getText();
+                String correo = textFieldCorreo.getText();
+                String grupoSanguineo = comboBoxGrupoSanguineo.getSelectedItem().toString();
+
+                if (nombre.isEmpty() || documento.isEmpty() || fechaNacimiento.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    usuarioServices.createUsr(documento, nombre, apellidos, "Paciente");
+                    pacienteServices.createPac(documento, fechaNacimiento, sexo, telefono, correo, GrupoSanguineo.valueOf(grupoSanguineo));
+
+                    JOptionPane.showMessageDialog(null, "Paciente agregado exitosamente.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al agregar el paciente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint(); // Repintar
+    }
+
+    private void cargarPanelModificarPaciente() {
+        limpiarPanel(panelActual); // Limpia el panel para reutilizarlo
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+
+        // Campo para buscar el paciente por ID
+        JLabel lblDocumento = new JLabel("Documento del paciente:");
+        lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDocumento.setForeground(Color.WHITE);
+        lblDocumento.setBounds(310, 30, 180, 34); // Posición y tamaño
+        panelActual.add(lblDocumento);
+
+        JTextField textFieldDocumento = new JTextField();
+        textFieldDocumento.setBounds(310, 80, 180, 30); // Posición y tamaño
+        panelActual.add(textFieldDocumento);
+
+        JButton btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnBuscar.setBounds(310, 120, 180, 40); // Posición y tamaño
+        panelActual.add(btnBuscar);
+
+        btnBuscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String documento = textFieldDocumento.getText();
+
+                if (documento.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el documento del paciente.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    Paciente paciente = pacienteServices.searchPerId(documento);
+
+                    if (paciente == null) {
+                        JOptionPane.showMessageDialog(null, "No se encontró el paciente.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    limpiarPanel(panelActual); // Limpia el panel para mostrar la información del paciente
+
+                    JLabel lblNombre = new JLabel("Nuevo nombre:");
+                    lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblNombre.setForeground(Color.WHITE);
+                    lblNombre.setBounds(310, 180, 180, 34); // Posición y tamaño
+                    panelActual.add(lblNombre);
+
+                    JTextField textFieldNuevoNombre = new JTextField(paciente.getUsr().getNombre());
+                    textFieldNuevoNombre.setBounds(310, 230, 180, 30); // Posición y tamaño
+                    panelActual.add(textFieldNuevoNombre);
+
+                    JLabel lblCorreo = new JLabel("Nuevo correo:");
+                    lblCorreo.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblCorreo.setForeground(Color.WHITE);
+                    lblCorreo.setBounds(310, 280, 180, 34); // Posición y tamaño
+                    panelActual.add(lblCorreo);
+
+                    JTextField textFieldNuevoCorreo = new JTextField(paciente.getCorreo());
+                    textFieldNuevoCorreo.setBounds(310, 330, 180, 30); // Posición y tamaño
+                    panelActual.add(textFieldNuevoCorreo);
+
+                    JLabel lblTelefono = new JLabel("Nuevo teléfono:");
+                    lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    lblTelefono.setForeground(Color.WHITE);
+                    lblTelefono.setBounds(310, 380, 180, 34); // Posición y tamaño
+                    panelActual.add(lblTelefono);
+
+                    JTextField textFieldNuevoTelefono = new JTextField(paciente.getTelefono());
+                    textFieldNuevoTelefono.setBounds(310, 430, 180, 30); // Posición y tamaño
+                    panelActual.add(textFieldNuevoTelefono);
+
+                    JButton btnGuardarCambios = new JButton("Guardar Cambios");
+                    btnGuardarCambios.setBounds(310, 480, 180, 40); // Posición y tamaño
+                    btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
+                    panelActual.add(btnGuardarCambios);
+
+                    btnGuardarCambios.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String nuevoNombre = textFieldNuevoNombre.getText();
+                            String nuevoCorreo = textFieldNuevoCorreo.getText();
+                            String nuevoTelefono = textFieldNuevoTelefono.getText();
+
+                            if (nuevoNombre.isEmpty() || nuevoCorreo.isEmpty() || nuevoTelefono.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                                return;
+                            }
+
+                            try {
+                                paciente.getUsr().setNombre(nuevoNombre);
+                                paciente.setCorreo(nuevoCorreo);
+                                paciente.setTelefono(nuevoTelefono);
+
+                                pacienteServices.modPaciente(paciente); // Llama al servicio para guardar los cambios
+
+                                JOptionPane.showMessageDialog(null, "Cambios guardados exitosamente.");
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null, "Error al guardar cambios: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+
+                    panelActual.revalidate();
+                    panelActual.repaint();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al buscar el paciente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint();
+    }
+
+    private void cargarPanelBorrarPaciente() {
+        limpiarPanel(panelActual); // Limpia el panel
+        panelActual.setBackground(new Color(7, 29, 68));
+        panelActual.setLayout(null);
+
+        JLabel lblDocumento = new JLabel("Documento del paciente:");
+        lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDocumento.setForeground(Color.WHITE);
+        lblDocumento.setBounds(310, 30, 180, 34);
+        panelActual.add(lblDocumento);
+
+        JTextField textFieldDocumento = new JTextField();
+        textFieldDocumento.setBounds(310, 80, 180, 30);
+        panelActual.add(textFieldDocumento);
+
+        JButton btnBorrarPaciente = new JButton("Borrar Paciente");
+        btnBorrarPaciente.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnBorrarPaciente.setBounds(320, 120, 180, 40);
+        panelActual.add(btnBorrarPaciente);
+
+        btnBorrarPaciente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String documento = textFieldDocumento.getText();
+
+                if (documento.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el documento del paciente.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                try {
+                    pacienteServices.delPac(documento);
+                    usuarioServices.deleteUsr(documento);
+                    JOptionPane.showMessageDialog(null, "Paciente borrado exitosamente.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error al borrar el paciente: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        panelActual.revalidate();
+        panelActual.repaint();
+    }
+
 
     // Método para limpiar el panel actual antes de agregar uno nuevo
     private void limpiarPanel(JPanel panel) {

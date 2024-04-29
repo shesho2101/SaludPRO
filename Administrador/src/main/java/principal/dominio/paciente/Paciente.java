@@ -96,9 +96,7 @@ public class Paciente {
     public String toString() {
         return "Paciente" + usr + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", sexo=" + sexo ;
     }
-    
-    
-    
+
     public String getInstance(){
         return this.getClass().getSimpleName();
     }

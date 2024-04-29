@@ -57,29 +57,26 @@ public class PacienteServices {
             throw e;
         }
     }
-    
-    /*
-    public void modPaciente(String id, String edadAct, String edadNew) throws Exception{
+
+    // Modificar un paciente existente
+    public void modPaciente(Paciente pac) throws Exception {
         try {
-            if(id == null || id.trim().isEmpty()){
+            if (pac == null) {
+                throw new Exception("Debe indicar un paciente a modificar");
+            }
+
+            // Validaciones para la modificación
+            if (pac.getUsr().getId() == null || pac.getUsr().getId().trim().isEmpty()) {
                 throw new Exception("El id no puede ser nulo");
             }
-            if(edadAct == null || edadAct.trim().isEmpty()){
-                throw new Exception("La edad puede ser nula");
-            }
-            if(edadNew == null || edadNew.trim().isEmpty()){
-                throw new Exception("La nueva edad no puede ser nula");
-            }
-            
-            Paciente pac = searchPerId(id);
-            pac.setEdad(edadNew);
-            cbd.modPaciente(pac);
-            
+
+            cbd.modPaciente(pac); // Llama al método DAO para modificar el paciente
+
         } catch (Exception e) {
-            throw e;
+            throw e; // Re-lanzar la excepción para su manejo
         }
     }
-    */
+
     public void delPac(String id) throws Exception{
         try {
             if(id == null || id.trim().isEmpty()){

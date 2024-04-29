@@ -18,43 +18,47 @@ import principal.dominio.user.UsuarioServices;
  */
 @SuppressWarnings("unchecked")
 public final class PacienteDAO extends DAO{
-    
+
     private final UsuarioServices us;
-    
+
     public PacienteDAO(){
         this.us = new UsuarioServices();
     }
-        
+
     public void savePaciente(Paciente pac) throws Exception{
         try {
             if(pac == null){
                 throw new Exception("Debe indicar un paciente");
             }
-            
-            String sql = "INSERT INTO Paciente(ID_Paciente, fecha_nacimiento, sexo, grupoSanguineo, telefono, correoElectronico)" 
+
+            String sql = "INSERT INTO Paciente(ID_Paciente, fecha_nacimiento, sexo, grupoSanguineo, telefono, correoElectronico)"
                     + "VALUES ( '" + pac.getUsr().getId()  + "' , ' " + pac.getFechaNacimiento() + "' , '" + pac.getSexo()+ "', '"
-                    + pac.getSangre() + "' , '" + pac.getTelefono() + "' , '" + pac.getCorreo() + "')"; 
+                    + pac.getSangre() + "' , '" + pac.getTelefono() + "' , '" + pac.getCorreo() + "')";
             insertModDel(sql);
         } catch (Exception e) {
             throw e;
         }
     }
-    
-    /*
-    public void modPaciente(Paciente pac) throws Exception{
+
+    public void modPaciente(Paciente pac) throws Exception {
         try {
-            if(pac == null){
-                throw new Exception("Debe indicar un paciente a modificar");
+            if (pac == null) {
+                throw new Exception("Debe indicar un paciente a modificar.");
             }
-            String sql = "UPDATE paciente SET nombre = '" + pac.getNombre()+ "' , "
-                    + "apellido = '" + pac.getApellido() + "' , edad = '" + pac.getEdad() + "' WHERE idPac = '" + pac.getId() + "'"; 
-            insertModDel(sql);
+
+            String sql = "UPDATE paciente SET " +
+                    "nombre = '" + pac.getUsr().getNombre() + "', " +
+                    "telefono = '" + pac.getTelefono() + "', " +
+                    "correoElectronico = '" + pac.getCorreo() + "' " +
+                    "WHERE ID_Paciente = '" + pac.getUsr().getId() + "';";
+
+            insertModDel(sql); // Ejecutar la consulta de modificación
         } catch (Exception e) {
             throw e;
         }
     }
-    */
-    
+
+
     public void delPac(String idPac) throws Exception{
         try {
             String sql = "DELETE FROM paciente WHERE ID_Paciente = '" + idPac + "'";
@@ -63,17 +67,17 @@ public final class PacienteDAO extends DAO{
             throw e;
         }
     }
-    
+
     public Paciente searchPacientePerId(String id) throws Exception{
         try {
-            
+
             String sql = "SELECT * FROM paciente "
                     + "WHERE ID_Paciente = '" + id + "';";
-            
+
             consultarBase(sql);
-            
+
             Paciente pac = null;
-            
+
             while(result.next()){
                 pac = new Paciente();
                 pac.setUsr(us.searchPerID(result.getString(1)));
@@ -87,19 +91,19 @@ public final class PacienteDAO extends DAO{
             }
             desconectarBase();
             return pac;
-            
+
         } catch (Exception e) {
             desconectarBase();
             throw e;
         }
     }
-    
+
     public List<Paciente> listPac() throws Exception{
         try {
             String sql = "SELECT * FROM paciente";
-            
+
             consultarBase(sql);
-            
+
             List<Paciente> pacientes = new ArrayList();
             Paciente pac = null;
             while(result.next()){
@@ -116,7 +120,7 @@ public final class PacienteDAO extends DAO{
             }
             desconectarBase();
             return pacientes;
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             desconectarBase();
