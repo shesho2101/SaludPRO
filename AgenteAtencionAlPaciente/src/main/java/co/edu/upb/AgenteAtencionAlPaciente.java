@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Serial;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +30,7 @@ import principal.DAO.Abstract.CallDAO;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.consultorio.ConsultorioServices;
 import principal.dominio.historialClinico.HistorialClinicoServices;
+import principal.dominio.medico.Medico;
 import principal.dominio.medico.MedicoServices;
 import principal.dominio.sede.SedeServices;
 
@@ -54,8 +57,9 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private JTextField textFieldDocumentoPac;
     private JTextField textFieldDocumentoDoc;
     private JButton btnAgendarCita;
-    private JComboBox<String> menuDesplegableOpciones;
     private JComboBox<String> menuDesplegableSedes;
+    private JComboBox<String> menuDesplegableOpciones;
+    private JComboBox<Medico> menuDesplegableMedicos;
     
     //Cancelar cita variables
     private JTextField textFieldDocumentoPacCan;
@@ -127,7 +131,6 @@ public class AgenteAtencionAlPaciente extends JFrame {
         lblFondo.setIcon(icon);
         lblFondo.setBounds(0, 0, 1600, 900);
         contentPane.add(lblFondo);
-        addActionAgregar();
         createTable();
         addActionSearch();
         addActionBRA();
@@ -214,12 +217,6 @@ public class AgenteAtencionAlPaciente extends JFrame {
         }
     }
 
-    private void moveButtonsToLeft() {
-        for (JButton button : buttons) {
-            button.setLocation(button.getX() - 40, button.getY());
-        }
-    }
-
     private void crearNuevoPanel(int opcion) throws Exception {
         if (panelActual != null) {
             limpiarPanel(panelActual);
@@ -255,104 +252,162 @@ public class AgenteAtencionAlPaciente extends JFrame {
                 break;
         }
     }
-    
-    private void cargarPanelAgendarCita() throws Exception {
-        if (movimiento && panelActual != null) {
+
+    public void cargarPanelAgendarCita() throws Exception {
+        if (panelActual != null) {
             limpiarPanel(panelActual);
 
             panelActual.setBackground(new Color(7, 29, 68));
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);
 
-            btnAgendarCita.setText("Agendar cita");
-            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(310, 700, 180, 40);
-            panelActual.add(btnAgendarCita);
-
             String[] sedes = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
-            String[] opciones = {"Medicina familiar", "Fisioterapia", "Medina interna", "Psicología"};
+            String[] opciones = {"Medicina familiar", "Fisioterapia", "Medicina interna", "Psicología"};
 
             menuDesplegableSedes = new JComboBox<>(sedes);
-            menuDesplegableSedes.setModel(new DefaultComboBoxModel<>(sedes));
             menuDesplegableSedes.setBounds(310, 600, 180, 30);
             panelActual.add(menuDesplegableSedes);
 
             menuDesplegableOpciones = new JComboBox<>(opciones);
-            menuDesplegableOpciones.setModel(new DefaultComboBoxModel<>(opciones));
             menuDesplegableOpciones.setBounds(310, 505, 180, 30);
             panelActual.add(menuDesplegableOpciones);
 
-            textFieldDocumentoPac = new JTextField();
-            textFieldDocumentoPac.setBounds(310, 208, 180, 34);
-            panelActual.add(textFieldDocumentoPac);
-
-            textFieldDocumentoDoc = new JTextField();
-            textFieldDocumentoDoc.setBounds(310, 307, 180, 34);
-            panelActual.add(textFieldDocumentoDoc);
+            menuDesplegableMedicos = new JComboBox<>();
+            menuDesplegableMedicos.setBounds(310, 406, 180, 34);
+            panelActual.add(menuDesplegableMedicos);
 
             textFieldConsultorio = new JTextField();
-            textFieldConsultorio.setBounds(440, 406, 180, 34);
+            textFieldConsultorio.setBounds(440, 307, 180, 34);
             panelActual.add(textFieldConsultorio);
-            
+
             textFieldFecha = new JTextField();
-            textFieldFecha.setBounds(175, 406, 180, 34);
+            textFieldFecha.setBounds(175, 307, 180, 34);
             panelActual.add(textFieldFecha);
 
-            JLabel lblNombre = new JLabel("<html>Documento<p> Paciente<html>");
-            lblNombre.setForeground(new Color(255, 255, 255));
-            lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblNombre.setBounds(310, 153, 180, 45);
-            panelActual.add(lblNombre);
+            // Agregar el nuevo campo de texto para el documento del paciente
+            textFieldDocumentoPac = new JTextField();
+            textFieldDocumentoPac.setBounds(310, 220, 180, 34); // Ajusta la posición según sea necesario
+            panelActual.add(textFieldDocumentoPac);
 
-            JLabel lblApellido = new JLabel("<html>Documento<p> Doctor<html>");
-            lblApellido.setForeground(new Color(255, 255, 255));
-            lblApellido.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblApellido.setBounds(310, 252, 180, 45);
-            panelActual.add(lblApellido);
+            // Agregar etiqueta para el documento del paciente
+            JLabel lblDocumentoPaciente = new JLabel("Documento Paciente");
+            lblDocumentoPaciente.setForeground(Color.WHITE);
+            lblDocumentoPaciente.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblDocumentoPaciente.setBounds(310, 175, 180, 45); // Ajusta la posición según sea necesario
+            panelActual.add(lblDocumentoPaciente);
 
-            JLabel lblDocumentoPac = new JLabel("Consultorio");
-            lblDocumentoPac.setForeground(new Color(255, 255, 255));
-            lblDocumentoPac.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumentoPac.setBounds(450, 351, 180, 45);
-            panelActual.add(lblDocumentoPac);
-            
-            JLabel lblDocumentoDoc = new JLabel("Fecha");
-            lblDocumentoDoc.setForeground(new Color(255, 255, 255));
-            lblDocumentoDoc.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumentoDoc.setBounds(200, 351, 180, 45);
-            panelActual.add(lblDocumentoDoc);
+            // Agregar otras etiquetas ya existentes
+            JLabel lblMedicos = new JLabel("Médico");
+            lblMedicos.setForeground(Color.WHITE);
+            lblMedicos.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblMedicos.setBounds(310, 351, 180, 45);
+            panelActual.add(lblMedicos);
+
+            JLabel lblConsultorio = new JLabel("Consultorio");
+            lblConsultorio.setForeground(Color.WHITE);
+            lblConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblConsultorio.setBounds(450, 252, 180, 45);
+            panelActual.add(lblConsultorio);
+
+            JLabel lblFecha = new JLabel("Fecha");
+            lblFecha.setForeground(Color.WHITE);
+            lblFecha.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblFecha.setBounds(200, 252, 180, 45);
+            panelActual.add(lblFecha);
+
+            JLabel lblEspecialidad = new JLabel("Especialidad");
+            lblEspecialidad.setForeground(Color.WHITE);
+            lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblEspecialidad.setBounds(310, 450, 180, 45);
+            panelActual.add(lblEspecialidad);
+
+            JLabel lblCiudad = new JLabel("Ciudad");
+            lblCiudad.setForeground(Color.WHITE);
+            lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblCiudad.setBounds(310, 545, 180, 45);
+            panelActual.add(lblCiudad);
+
+            btnAgendarCita = new JButton("Agendar cita");
+            btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnAgendarCita.setBounds(310, 700, 180, 40);
+            panelActual.add(btnAgendarCita);
+
+            // Eventos para actualizar el menú de médicos
+            menuDesplegableSedes.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String ciudadSeleccionada = (String) menuDesplegableSedes.getSelectedItem();
+                    String especialidadSeleccionada = (String) menuDesplegableOpciones.getSelectedItem();
+                    actualizarMenuDesplegableMedicos(ciudadSeleccionada, especialidadSeleccionada);
+                }
+            });
+
+            menuDesplegableOpciones.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String ciudadSeleccionada = (String) menuDesplegableSedes.getSelectedItem();
+                    String especialidadSeleccionada = (String) menuDesplegableOpciones.getSelectedItem();
+                    actualizarMenuDesplegableMedicos(ciudadSeleccionada, especialidadSeleccionada);
+                }
+            });
+
+            menuDesplegableMedicos.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Medico medicoSeleccionado = (Medico) menuDesplegableMedicos.getSelectedItem();
+
+                    if (medicoSeleccionado != null) {
+                        textFieldConsultorio.setText(medicoSeleccionado.getCons().getNombre());
+                    }
+                }
+            });
+
+            btnAgendarCita.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        System.out.println(1);
+                        Medico medico1 = (Medico) menuDesplegableMedicos.getSelectedItem();
+                        System.out.println(medico1.getID());
+
+                        agregarCita((String) menuDesplegableSedes.getSelectedItem(),textFieldConsultorio.getText(), medico1.getID() , textFieldDocumentoPac.getText(), textFieldFecha.getText(), (String) menuDesplegableOpciones.getSelectedItem());
+                    } catch (Exception ex) {
+                        Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
 
             contentPane.add(panelActual);
             contentPane.setComponentZOrder(panelActual, 0);
-
-            JLabel lblEspecialidad = new JLabel("Ciudad");
-            lblEspecialidad.setForeground(new Color(255, 255, 255));
-            lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblEspecialidad.setBounds(310, 545, 180, 45);
-            panelActual.add(lblEspecialidad);
-
-            JLabel lblCiudad = new JLabel("Especialidad");
-            lblCiudad.setForeground(new Color(255, 255, 255));
-            lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblCiudad.setBounds(310, 450, 180, 45);
-            panelActual.add(lblCiudad);
-            
         }
     }
-    
-    private void addActionAgregar(){
-        btnAgendarCita.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    agregarCita((String) menuDesplegableSedes.getSelectedItem(),textFieldConsultorio.getText(),textFieldDocumentoDoc.getText() , textFieldDocumentoPac.getText(), textFieldFecha.getText(), (String) menuDesplegableOpciones.getSelectedItem());
-                } catch (Exception ex) {
-                    Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
+
+
+    private void actualizarMenuDesplegableMedicos(String ciudad, String especialidad) {
+        try {
+            List<Medico> medicos = ms.listMed();
+            List<Medico> medicosFiltrados = new ArrayList<>();
+
+            for (Medico medico : medicos) {
+                if (medico.getEspecializacion().equals(especialidad) &&
+                        medico.getCons().getSede().getNombre().equals(ciudad)) {
+                    medicosFiltrados.add(medico);
                 }
             }
-        });
+
+            // Convierte la lista de Médicos a un array de Medico y usa este array para crear el DefaultComboBoxModel
+            Medico[] medicosArray = new Medico[medicosFiltrados.size()]; // Crea un array de tipo Medico
+            medicosFiltrados.toArray(medicosArray); // Convierte la lista a un array de Medico
+
+            // Usa el array de Medico para crear el DefaultComboBoxModel
+            DefaultComboBoxModel<Medico> modeloMedicos = new DefaultComboBoxModel<>(medicosArray);
+            menuDesplegableMedicos.setModel(modeloMedicos); // Asigna el modelo al JComboBox
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
-    
+
     private void agregarCita(String sede, String consultorio, String docMed, String docPac, String fecha, String especializacion) throws Exception{
         try {
             int codSede = ss.searchPerNombre(sede).getCod();
@@ -368,7 +423,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             throw e;
         }
     }
-    
+
     private void cargarPanelReprogramarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;

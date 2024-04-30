@@ -59,7 +59,7 @@ public class Medico {
 
     @Override
     public String toString() {
-        return "Medico{" + usr + ", especializacion=" + especializacion + ", cons=" + cons + '}';
+        return usr.getNombre() + ' ' + usr.getApellidos();
     }
 
     

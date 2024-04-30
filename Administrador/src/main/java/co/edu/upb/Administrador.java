@@ -30,30 +30,19 @@ public class Administrador extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-
     private JPanel panelActual; // Panel actual que se va a mostrar
-
     private JButton[] buttons;
     private boolean movimiento = false;
     private JPanel nuevoPanel;
     private int panelPositionX = 770;
-
     private UsuarioServices usuarioServices;
-
     private MedicoServices medicoServices;
-
     private SedeServices sedeServices;
-
     private ConsultorioServices consultorioServices;
-
     private PersonalAtencionServices personalAtencionServices;
-
     private Usuario usuario;
-
     private MedicamentoServices medicamentoServices;
-
     private PacienteServices pacienteServices;
-
 
     public Administrador() {
         usuarioServices = new UsuarioServices();
@@ -1637,7 +1626,6 @@ public class Administrador extends JFrame {
         panelActual.repaint();
     }
 
-    // Método para limpiar el panel actual antes de agregar uno nuevo
     private void limpiarPanel(JPanel panel) {
         if (panel != null) {
             panel.removeAll(); // Eliminar todos los componentes del panel
