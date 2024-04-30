@@ -948,7 +948,7 @@ public class Administrador extends JFrame {
 
                             JButton btnAgregarMedico = new JButton("Agregar Médico");
                             btnAgregarMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
-                            btnAgregarMedico.setBounds(320, 764, 180, 40);
+                            btnAgregarMedico.setBounds(300, 764, 210, 40);
                             panelActual.add(btnAgregarMedico);
                             btnAgregarMedico.addActionListener(new ActionListener() {
                                 @Override
@@ -1215,13 +1215,21 @@ public class Administrador extends JFrame {
                         if (usuario.getCargo().equals("Agente de Atención al Paciente")) {
                             personalAtencionServices.deletePA(documento);
                             JOptionPane.showMessageDialog(null, "Agente de Atención al Paciente borrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
+                        }
+                        if (usuario.getCargo().equals("Administrador")) {
+                            personalAtencionServices.deletePA(documento);
+                            JOptionPane.showMessageDialog(null, "No es posible eliminar el administrador", "Error", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
                     try {
-                        usuarioServices.deleteUsr(documento);
+                        if (usuario.getCargo().equals("Administrador")) {
+                            //nada
+                        }
+                        else{
+                            usuarioServices.deleteUsr(documento);
+                        }
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
