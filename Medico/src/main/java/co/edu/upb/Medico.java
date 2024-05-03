@@ -83,7 +83,7 @@ public class Medico extends JFrame {
         this.dateRep = new JTextField();
         this.textFieldDocumentoRep = new JTextField();
 
-        //FrameController.registerFrame("MedicoFrame", this);
+        FrameController.registerFrame("MedicoFrame", this);
 
 
         setTitle("IPS Salud Pro - Medico");
