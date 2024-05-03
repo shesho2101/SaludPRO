@@ -7,11 +7,13 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Date;
 import java.util.Calendar;
+import javax.swing.BorderFactory;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,10 +22,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import principal.DAO.Abstract.CallDAO;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.historialClinico.HistorialClinicoServices;
@@ -48,6 +52,9 @@ public class Medico extends JFrame {
     //Calendario
     private JCalendar calendario;
     private JButton btnCalendar;
+    private JTable tablaCitas;
+    private DefaultTableModel dt;
+    private JScrollPane scroll;
 
     //Reporte
     private JButton btnReportarCita;
@@ -67,13 +74,16 @@ public class Medico extends JFrame {
         //Calendario
         this.calendario = new JCalendar();
         this.btnCalendar = new JButton();
+        this.tablaCitas = new JTable();
+        this.scroll = new JScrollPane(tablaCitas);
+        this.dt = new DefaultTableModel();
 
         //Reporte
         this.btnReportarCita = new JButton();
         this.dateRep = new JTextField();
         this.textFieldDocumentoRep = new JTextField();
 
-        FrameController.registerFrame("MedicoFrame", this);
+        //FrameController.registerFrame("MedicoFrame", this);
 
 
         setTitle("IPS Salud Pro - Medico");
@@ -93,7 +103,7 @@ public class Medico extends JFrame {
         buttons[1] = createButton("Ver agenda", 640, 400);
         buttons[2] = createButton("Reportar paciente", 640, 480);
 
-
+        
         // Añadir el botón de cerrar sesión
         JButton btnCerrarSesion = new JButton("Cerrar sesión");
         btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -104,6 +114,7 @@ public class Medico extends JFrame {
             }
         });
         contentPane.add(btnCerrarSesion);
+
 
         JLabel lblFondo = new JLabel("");
         lblFondo.setIcon(new ImageIcon(getClass().getResource("/interfazAzul.jpg")));
@@ -278,8 +289,10 @@ public class Medico extends JFrame {
     private void cargarPanelVerAgenda() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
+            
             limpiarPanel(panelActual);
-
+            createTable();
+            
             calendario.setVisible(true);
             btnCalendar.setVisible(true);
 
@@ -288,13 +301,15 @@ public class Medico extends JFrame {
             panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
             
             
-            calendario.setBounds(150,150,500,400);
+            calendario.setBounds(150,40,500,400);
             panelActual.add(calendario);
             
             btnCalendar.setText("Mostrar citas");
             btnCalendar.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnCalendar.setBounds(305, 600, 200, 40);
+            btnCalendar.setBounds(305, 480, 200, 40);
             panelActual.add(btnCalendar);
+            
+            panelActual.add(scroll);
             
             getContentPane().add(panelActual);
             getContentPane().setComponentZOrder(panelActual, 0);
@@ -307,14 +322,22 @@ public class Medico extends JFrame {
         }
     }
     
+    private void createTable(){
+        String[] nombreC = {"Numero Cita", "Consultorio", "Fecha", "ID Paciente"};
+        dt.setColumnIdentifiers(nombreC);
+        tablaCitas.setDefaultEditor(Object.class, null);
+        tablaCitas.setModel(dt);
+        tablaCitas.getTableHeader().setReorderingAllowed(false);
+        scroll.setBounds(225, 550, 350, 250);
+        scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        scroll.setBackground(Color.blue);
+    }
+    
+    
     private void addActionCalendar(){
         btnCalendar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               
-                JFrame frame = new JFrame();
-                frame.setSize(1000, 600);
-                frame.setVisible(true);
                 
                 Date fechaSelec = calendario.getDate();
                 Calendar calendar = Calendar.getInstance();
@@ -324,23 +347,41 @@ public class Medico extends JFrame {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaFormateada = sdf.format(fechaSelec);
                 
-                System.out.println(fechaFormateada);
                 
-                JTextArea text = new JTextArea();
-                text.setFont(new Font("Tahoma", Font.BOLD, 17));
-                try {
-                    text.setText(cs.getCitasLikeFecha(fechaFormateada).toString());
-                } catch (Exception ex) {
-                }
-                
-                
-                JScrollPane scroll = new JScrollPane(text);
-                scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                frame.getContentPane().add(scroll, BorderLayout.CENTER);
-                    
-                
+                if(fechaFormateada != null){
+                    try {
+                        addCita(fechaFormateada);
+                    } catch (Exception ex) {
+                        Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }    
             }
         });
+    }
+    
+    public void addCita(String fecha) throws Exception{
+        try {
+            String sql = "SELECT NumCita, NumHab, fecha, ID_Paciente FROM cita WHERE fecha LIKE '" + fecha + "%'";
+            
+            CallDAO cbd = new CallDAO();
+            
+            ResultSet rs = cbd.consultDataBase(sql);
+            
+           
+            if(tablaCitas.getRowCount() != 0){
+                dt.setNumRows(0);
+            } else{
+                while(rs.next()){
+                    dt.addRow(new Object[] {rs.getInt(1), rs.getInt(2), rs.getTimestamp(3).toString(), rs.getString(4)});
+                }
+            }
+            
+            
+            cbd.desconnect();
+            
+        } catch (Exception e) {
+            throw e;
+        }
     }
     
     private void cargarPanelReportar() {
@@ -399,13 +440,14 @@ public class Medico extends JFrame {
             }
         });
     }
-
+    
+    
     private void cerrarSesion() {
         FrameController.openFrame("LoginFrame");
         FrameController.cerrarSesion(); // Llama al controlador para cerrar sesión
 
     }
-
+    
     private void limpiarPanel(JPanel panel) {
         if (panel != null) {
             panel.removeAll(); // Eliminar todos los componentes del panel

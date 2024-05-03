@@ -24,6 +24,10 @@ public class CallDAO extends DAO{
             throw e;
         }
     }
+    
+    public void desconnect() throws Exception{
+        desconectarBase();
+    }
 
     
 }
