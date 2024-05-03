@@ -11,20 +11,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
+import javax.swing.*;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import principal.DAO.Abstract.CallDAO;
 import principal.dominio.cita.CitaServices;
@@ -265,7 +253,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             String[] opciones = {"Medicina familiar", "Fisioterapia", "Medicina interna", "Psicología"};
 
             menuDesplegableSedes = new JComboBox<>(sedes);
-            menuDesplegableSedes.setBounds(310, 600, 180, 30);
+            menuDesplegableSedes.setBounds(310, 406, 180, 30);
             panelActual.add(menuDesplegableSedes);
 
             menuDesplegableOpciones = new JComboBox<>(opciones);
@@ -273,7 +261,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             panelActual.add(menuDesplegableOpciones);
 
             menuDesplegableMedicos = new JComboBox<>();
-            menuDesplegableMedicos.setBounds(310, 406, 180, 34);
+            menuDesplegableMedicos.setBounds(310, 600, 180, 34);
             panelActual.add(menuDesplegableMedicos);
 
             textFieldConsultorio = new JTextField();
@@ -293,14 +281,14 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JLabel lblDocumentoPaciente = new JLabel("Documento Paciente");
             lblDocumentoPaciente.setForeground(Color.WHITE);
             lblDocumentoPaciente.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumentoPaciente.setBounds(310, 175, 180, 45); // Ajusta la posición según sea necesario
+            lblDocumentoPaciente.setBounds(310, 175, 210, 45); // Ajusta la posición según sea necesario
             panelActual.add(lblDocumentoPaciente);
 
             // Agregar otras etiquetas ya existentes
             JLabel lblMedicos = new JLabel("Médico");
             lblMedicos.setForeground(Color.WHITE);
             lblMedicos.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblMedicos.setBounds(310, 351, 180, 45);
+            lblMedicos.setBounds(310, 545, 180, 45);
             panelActual.add(lblMedicos);
 
             JLabel lblConsultorio = new JLabel("Consultorio");
@@ -324,7 +312,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
             JLabel lblCiudad = new JLabel("Ciudad");
             lblCiudad.setForeground(Color.WHITE);
             lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblCiudad.setBounds(310, 545, 180, 45);
+            lblCiudad.setBounds(310, 351, 180, 45);
             panelActual.add(lblCiudad);
 
             btnAgendarCita = new JButton("Agendar cita");
@@ -371,6 +359,8 @@ public class AgenteAtencionAlPaciente extends JFrame {
                         System.out.println(medico1.getID());
 
                         agregarCita((String) menuDesplegableSedes.getSelectedItem(),textFieldConsultorio.getText(), medico1.getID() , textFieldDocumentoPac.getText(), textFieldFecha.getText(), (String) menuDesplegableOpciones.getSelectedItem());
+                        JOptionPane.showMessageDialog(null, "Cita agendada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
                     } catch (Exception ex) {
                         Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -575,18 +565,23 @@ public class AgenteAtencionAlPaciente extends JFrame {
                         int numCita = (int) dt.getValueAt(row, 0);
                         dt.removeRow(row);
                         cs.deleteCita(numCita);
+                        JOptionPane.showMessageDialog(null, "Cita borrada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     }
                     if(btnBRACita.getText().equals("Reprogramar")){
                         int row = tablaCitas.getSelectedRow();
                         int numCita = (int) dt.getValueAt(row, 0);
                         dt.setValueAt(textFieldDateNew.getText(), row, 2);
                         cs.modificarCita(numCita, textFieldDateNew.getText());
+                        JOptionPane.showMessageDialog(null, "Cita reprogramada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
                     }
                     if(btnBRACita.getText().equals("Activar")){
                         int row = tablaCitas.getSelectedRow();
                         int numCita = (int) dt.getValueAt(row, 0);
                         dt.setValueAt(true, row, 3);
                         cs.modificarAsistencia(numCita, true);
+                        JOptionPane.showMessageDialog(null, "Cita activada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
