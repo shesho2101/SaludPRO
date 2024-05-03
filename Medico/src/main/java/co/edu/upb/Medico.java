@@ -1,10 +1,8 @@
 package co.edu.upb;
 
 import com.toedter.calendar.JCalendar;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -13,20 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Date;
 import java.util.Calendar;
-import javax.swing.BorderFactory;
+import javax.swing.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import principal.DAO.Abstract.CallDAO;
 import principal.dominio.cita.CitaServices;
@@ -103,7 +89,7 @@ public class Medico extends JFrame {
         buttons[1] = createButton("Ver agenda", 640, 400);
         buttons[2] = createButton("Reportar paciente", 640, 480);
 
-        
+
         // Añadir el botón de cerrar sesión
         JButton btnCerrarSesion = new JButton("Cerrar sesión");
         btnCerrarSesion.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -257,71 +243,181 @@ public class Medico extends JFrame {
 
         }
     }
-    
-    private void addActionHistorial(){
+
+    private void addActionHistorial() {
         btnHistorial.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(textFieldDocumentoHis.getText() == null || textFieldDocumentoHis.getText().trim().isEmpty()){
-                    JOptionPane.showMessageDialog(rootPane, "No hay documento ingresado");
-                } else{
-                    JFrame frame = new JFrame();
-                    frame.setSize(1000, 600);
-                    frame.setVisible(true);
-
-                    JTextArea text = new JTextArea();
-                    text.setFont(new Font("Tahoma", Font.BOLD, 17));
-                    try {
-                        text.setText(hcs.constructHis(textFieldDocumentoHis.getText()).toString());
-
-                        JScrollPane scroll = new JScrollPane(text);
-                        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-                        frame.getContentPane().add(scroll, BorderLayout.CENTER);
-                    } catch (Exception ex) {
-                        Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                // Validar que el documento del paciente esté disponible
+                String documentoPaciente = textFieldDocumentoHis.getText();
+                if (documentoPaciente == null || documentoPaciente.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese el documento del paciente.");
+                    return;
                 }
 
+                // Crear la ventana para mostrar la información del paciente y la tabla de citas
+                JFrame frame = new JFrame("Información del Paciente y Citas");
+                frame.setSize(1000, 600);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setLayout(new BorderLayout());
+
+                // Obtener la información del paciente
+                try {
+                    CallDAO callDAO = new CallDAO();
+                    String queryPaciente = "SELECT " +
+                            "usuario.nombre, " +
+                            "usuario.apellidos, " +
+                            "paciente.fecha_nacimiento, " +
+                            "paciente.edad, " +
+                            "paciente.sexo, " +
+                            "paciente.grupoSanguineo, " +
+                            "paciente.telefono, " +
+                            "paciente.correoElectronico " +
+                            "FROM paciente " +
+                            "JOIN usuario ON paciente.ID_Paciente = usuario.ID " +
+                            "WHERE paciente.ID_Paciente = '" + documentoPaciente + "'";
+
+                    ResultSet rsPaciente = callDAO.consultDataBase(queryPaciente);
+
+                    if (rsPaciente.next()) {
+                        String nombre = rsPaciente.getString("nombre") + " " + rsPaciente.getString("apellidos");
+                        String fechaNacimiento = rsPaciente.getDate("fecha_nacimiento").toString();
+                        int edad = rsPaciente.getInt("edad");
+                        String sexo = rsPaciente.getString("sexo");
+                        String grupoSanguíneo = rsPaciente.getString("grupoSanguineo");
+                        String telefono = rsPaciente.getString("telefono");
+                        String correoElectronico = rsPaciente.getString("correoElectronico");
+
+                        // Crear un panel con la información del paciente
+                        JPanel panelPaciente = new JPanel();
+                        panelPaciente.setLayout(new GridLayout(4, 1));
+
+                        panelPaciente.add(new JLabel("Nombre:"));
+                        panelPaciente.add(new JLabel(nombre));
+
+                        panelPaciente.add(new JLabel("Fecha de Nacimiento:"));
+                        panelPaciente.add(new JLabel(fechaNacimiento));
+
+                        panelPaciente.add(new JLabel("Edad:"));
+                        panelPaciente.add(new JLabel(String.valueOf(edad)));
+
+                        panelPaciente.add(new JLabel("Sexo:"));
+                        panelPaciente.add(new JLabel(sexo));
+
+                        panelPaciente.add(new JLabel("Grupo Sanguíneo:"));
+                        panelPaciente.add(new JLabel(grupoSanguíneo));
+
+                        panelPaciente.add(new JLabel("Teléfono:"));
+                        panelPaciente.add(new JLabel(telefono));
+
+                        panelPaciente.add(new JLabel("Correo Electrónico:"));
+                        panelPaciente.add(new JLabel(correoElectronico));
+
+                        frame.getContentPane().add(panelPaciente, BorderLayout.NORTH); // Agregar la info del paciente en la parte superior
+                    }
+
+                    callDAO.desconnect(); // Desconectar la base de datos
+                } catch (Exception ex) {
+                    Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(frame, "Error al obtener la información del paciente.");
+                    return;
+                }
+
+                // Crear la tabla con la información de las citas del paciente
+                DefaultTableModel modeloTabla = new DefaultTableModel();
+                modeloTabla.setColumnIdentifiers(new String[]{
+                        "Día", "Médico", "Sede", "Especialidad", "Consultorio"
+                });
+
+                JTable tablaCitas = new JTable(modeloTabla);
+                JScrollPane scrollPane = new JScrollPane(tablaCitas);
+
+                // Consultar la base de datos para obtener las citas del paciente
+                try {
+                    String queryCitas = "SELECT " +
+                            "cita.fecha, " +
+                            "usuario.nombre AS medico, " +
+                            "sede.nombre AS sede, " +
+                            "medico.Especializacion AS especialidad, " +
+                            "cita.NumHab, " +
+                            "consultorio.Nombre AS consultorio, " +
+                            "cita.fecha AS hora " +
+                            "FROM cita " +
+                            "JOIN medico ON cita.ID_Medico = medico.ID_Medico " +
+                            "JOIN usuario ON medico.ID_Medico = usuario.ID " +
+                            "JOIN consultorio ON cita.NumHab = consultorio.NumHab " +
+                            "JOIN sede ON consultorio.CodSede = sede.Codigo " +
+                            "WHERE cita.ID_Paciente = '" + documentoPaciente + "'";
+
+                    CallDAO callDAO = new CallDAO();
+                    ResultSet rs = callDAO.consultDataBase(queryCitas);
+
+                    // Llenar la tabla con los datos obtenidos
+                    while (rs.next()) {
+                        modeloTabla.addRow(new Object[]{
+                                rs.getTimestamp("fecha").toString(), // Día y hora de la cita
+                                rs.getString("medico"), // Médico
+                                rs.getString("sede"), // Sede
+                                rs.getString("especialidad"), // Especialidad
+                                rs.getString("consultorio"), // Consultorio
+                        });
+                    }
+
+                    callDAO.desconnect(); // Desconectar la base de datos
+                } catch (Exception ex) {
+                    Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(frame, "Error al obtener las citas del paciente.");
+                    return;
+                }
+
+                frame.getContentPane().add(scrollPane, BorderLayout.CENTER); // Agregar la tabla al centro
+                frame.setVisible(true); // Mostrar la ventana
             }
         });
     }
 
+
+
+
+
+
+
     private void cargarPanelVerAgenda() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
-            
+
             limpiarPanel(panelActual);
             createTable();
-            
+
             calendario.setVisible(true);
             btnCalendar.setVisible(true);
 
             panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelActual.setLayout(null);
             panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
-            
-            
+
+
             calendario.setBounds(150,40,500,400);
             panelActual.add(calendario);
-            
+
             btnCalendar.setText("Mostrar citas");
             btnCalendar.setFont(new Font("Tahoma", Font.BOLD, 20));
             btnCalendar.setBounds(305, 480, 200, 40);
             panelActual.add(btnCalendar);
-            
+
             panelActual.add(scroll);
-            
+
             getContentPane().add(panelActual);
             getContentPane().setComponentZOrder(panelActual, 0);
             panelActual.revalidate();
             panelActual.repaint();
-            
+
             if (nuevoPanel != null) {
                 nuevoPanel.setLocation(panelPositionX, nuevoPanel.getY());
             }
         }
     }
-    
+
     private void createTable(){
         String[] nombreC = {"Numero Cita", "Consultorio", "Fecha", "ID Paciente"};
         dt.setColumnIdentifiers(nombreC);
@@ -332,8 +428,8 @@ public class Medico extends JFrame {
         scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         scroll.setBackground(Color.blue);
     }
-    
-    
+
+
     private void addActionCalendar(){
         btnCalendar.addActionListener(new ActionListener() {
             @Override
@@ -440,8 +536,8 @@ public class Medico extends JFrame {
             }
         });
     }
-    
-    
+
+
     private void cerrarSesion() {
         FrameController.openFrame("LoginFrame");
         FrameController.cerrarSesion(); // Llama al controlador para cerrar sesión
