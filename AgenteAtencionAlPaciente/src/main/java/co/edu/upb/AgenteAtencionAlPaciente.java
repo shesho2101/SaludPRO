@@ -362,6 +362,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
                         JOptionPane.showMessageDialog(null, "Cita agendada con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
                     } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "La cita no se ha podido agendar", "Error", JOptionPane.INFORMATION_MESSAGE);
                         Logger.getLogger(AgenteAtencionAlPaciente.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
