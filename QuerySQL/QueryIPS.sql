@@ -121,6 +121,9 @@ insert into sede(nombre, direccion) values
 ('Pamplona', 'Cll'),
 ('Rionegro', 'Cra');
 
+insert into usuario(ID, nombre, apellidos, cargo) value
+('1052837141','Sergio','Mesa','Administrador');
+
 select * from consultorio;
 -- Valores Consultorios
 insert into consultorio(nombre, CodSede) values
