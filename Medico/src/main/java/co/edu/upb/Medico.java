@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import principal.DAO.Abstract.CallDAO;
 import principal.dominio.cita.CitaServices;
 import principal.dominio.historialClinico.HistorialClinicoServices;
+import principal.dominio.medicamento.Medicamento;
+import principal.dominio.medicamento.MedicamentoServices;
 
 public class Medico extends JFrame {
 
@@ -46,6 +48,9 @@ public class Medico extends JFrame {
     private JButton btnReportarCita;
     private JTextField textFieldDocumentoRep;
     private JTextField dateRep;
+
+    MedicamentoServices medicamentoServices = new MedicamentoServices();
+
 
 
     public Medico() {
@@ -316,7 +321,6 @@ public class Medico extends JFrame {
                         frame.getContentPane().add(panelPaciente, BorderLayout.NORTH); // Agregar la info del paciente en la parte superior
                     }
 
-                    callDAO.desconnect(); // Desconectar la base de datos
                 } catch (Exception ex) {
                     Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(frame, "Error al obtener la información del paciente.");
@@ -363,7 +367,6 @@ public class Medico extends JFrame {
                         });
                     }
 
-                    callDAO.desconnect(); // Desconectar la base de datos
                 } catch (Exception ex) {
                     Logger.getLogger(Medico.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(frame, "Error al obtener las citas del paciente.");
@@ -375,12 +378,6 @@ public class Medico extends JFrame {
             }
         });
     }
-
-
-
-
-
-
 
     private void cargarPanelVerAgenda() {
         if (movimiento && panelActual != null) {
@@ -402,10 +399,28 @@ public class Medico extends JFrame {
 
             btnCalendar.setText("Mostrar citas");
             btnCalendar.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnCalendar.setBounds(305, 480, 200, 40);
+            btnCalendar.setBounds(305, 450, 200, 40);
             panelActual.add(btnCalendar);
 
             panelActual.add(scroll);
+
+            // Crear el botón de generar tratamiento
+            JButton btnGenerarTratamiento = new JButton("Generar tratamiento");
+            btnGenerarTratamiento.setFont(new Font("Tahoma", Font.BOLD, 20));
+            btnGenerarTratamiento.setBounds(280, 760, 250, 40);
+            panelActual.add(btnGenerarTratamiento);
+
+            // Agregar ActionListener al botón de generar tratamiento
+            btnGenerarTratamiento.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Llamar al método para cargar el panel de selección de medicamentos
+                    cargarPanelSeleccionMedicamento();
+                }
+            });
+
+
+
 
             getContentPane().add(panelActual);
             getContentPane().setComponentZOrder(panelActual, 0);
@@ -424,7 +439,7 @@ public class Medico extends JFrame {
         tablaCitas.setDefaultEditor(Object.class, null);
         tablaCitas.setModel(dt);
         tablaCitas.getTableHeader().setReorderingAllowed(false);
-        scroll.setBounds(225, 550, 350, 250);
+        scroll.setBounds(225, 500, 350, 250);
         scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         scroll.setBackground(Color.blue);
     }
@@ -479,7 +494,61 @@ public class Medico extends JFrame {
             throw e;
         }
     }
-    
+
+    private void cargarPanelSeleccionMedicamento() {
+        // Limpiar el panel actual
+        limpiarPanel(panelActual);
+
+        // Crear el panel de selección de medicamentos
+        panelActual.setBackground(new Color(7, 29, 68)); // Mismo color que el panel actual
+        panelActual.setLayout(null);
+        panelActual.setBounds(800, 0, 800, 900); // Mismas dimensiones que el panel actual
+
+        java.util.List<Medicamento> medicamentos = null;
+        try {
+            medicamentos = medicamentoServices.listMedi();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // Crear un array de nombres de medicamentos para usar en el menú desplegable
+        String[] nombresMedicamentos = new String[medicamentos.size()];
+        for (int i = 0; i < medicamentos.size(); i++) {
+            nombresMedicamentos[i] = medicamentos.get(i).getNombre();
+        }
+
+        // Crear el menú desplegable con los nombres de los medicamentos
+        JComboBox<String> comboBoxMedicamentos = new JComboBox<>(nombresMedicamentos);
+        comboBoxMedicamentos.setBounds(310, 350, 200, 40);
+        panelActual.add(comboBoxMedicamentos);
+
+        // Crear el botón de aceptar
+        JButton btnAceptar = new JButton("Aceptar");
+        btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 20));
+        btnAceptar.setBounds(330, 400, 150, 40);
+        panelActual.add(btnAceptar);
+
+        getContentPane().remove(panelActual); // Remover el panel actual
+        getContentPane().add(panelActual); // Agregar el nuevo panel
+        getContentPane().setComponentZOrder(panelActual, 0);
+        panelActual.revalidate();
+        panelActual.repaint();
+
+        // Acción del botón de aceptar
+        btnAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener el medicamento seleccionado
+                String nombreMedicamentoSeleccionado = (String) comboBoxMedicamentos.getSelectedItem();
+
+                // Realizar la lógica para usar el medicamento seleccionado
+                // Por ejemplo, puedes imprimir el nombre del medicamento seleccionado
+                JOptionPane.showMessageDialog(null, "Medicamento seleccionado: " + nombreMedicamentoSeleccionado);
+            }
+        });
+    }
+
+
     private void cargarPanelReportar() {
         if (movimiento && panelActual != null) {
             limpiarPanel(panelActual);

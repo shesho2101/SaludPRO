@@ -15,10 +15,9 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>co.edu.upb</groupId>
-            <artifactId>ServiciosBD</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
         <dependency>
             <groupId>co.edu.upb</groupId>

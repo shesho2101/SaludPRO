@@ -45,14 +45,14 @@ public class Administrador extends JFrame {
     private PacienteServices pacienteServices;
 
     public Administrador() {
-        usuarioServices = new UsuarioServices();
-        medicoServices = new MedicoServices();
-        consultorioServices = new ConsultorioServices();
-        personalAtencionServices = new PersonalAtencionServices();
-        usuario = new Usuario();
-        medicamentoServices = new MedicamentoServices();
-        sedeServices = new SedeServices();
-        pacienteServices = new PacienteServices();
+        this.usuarioServices = new UsuarioServices();
+        this.medicoServices = new MedicoServices();
+        this.consultorioServices = new ConsultorioServices();
+        this.personalAtencionServices = new PersonalAtencionServices();
+        this.usuario = new Usuario();
+        this.medicamentoServices = new MedicamentoServices();
+        this.sedeServices = new SedeServices();
+        this.pacienteServices = new PacienteServices();
 
         FrameController.registerFrame("AdministradorFrame", this);
 
@@ -104,35 +104,19 @@ public class Administrador extends JFrame {
 
                 switch (text) {
                     case "Inventario medicamentos":
-                        try {
-                            crearNuevoPanel(1);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        crearNuevoPanel(1);
                         break;
 
                     case "Administrar consultorios":
-                        try {
-                            crearNuevoPanel(2);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        crearNuevoPanel(2);
                         break;
 
                     case "Administrar usuarios":
-                        try {
-                            crearNuevoPanel(3);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        crearNuevoPanel(3);
                         break;
 
                     case "Administrar pacientes":
-                        try {
-                            crearNuevoPanel(4); // Panel para administrar pacientes
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        crearNuevoPanel(4); // Panel para administrar pacientes
                         break;
                 }
             }
@@ -179,7 +163,7 @@ public class Administrador extends JFrame {
         }
     }
 
-    private void crearNuevoPanel(int opcion) throws Exception {
+    private void crearNuevoPanel(int opcion) {
         if (panelActual != null) {
             limpiarPanel(panelActual);
         }
@@ -485,7 +469,7 @@ public class Administrador extends JFrame {
         }
     }
 
-    private void cargarConsultorios() throws Exception {
+    private void cargarConsultorios() {
         if (panelActual != null) {
             limpiarPanel(panelActual);
         }
@@ -507,7 +491,12 @@ public class Administrador extends JFrame {
         jPanelTable.setBounds(40, 168, 700, 400);
         panelActual.add(jPanelTable);
 
-        List<Consultorio> consultorios = consultorioServices.listCons();
+        List<Consultorio> consultorios = null;
+        try {
+            consultorios = consultorioServices.listCons();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         int y = 10;
         for (Consultorio consultorio : consultorios) {
@@ -1210,29 +1199,21 @@ public class Administrador extends JFrame {
                         usuario = usuarioServices.searchPerID(documento);
                         if (usuario.getCargo().equals("Médico")) {
                             medicoServices.delMed(documento);
+                            usuarioServices.deleteUsr(documento);
                             JOptionPane.showMessageDialog(null, "Médico borrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                         }
                         if (usuario.getCargo().equals("Agente de Atención al Paciente")) {
                             personalAtencionServices.deletePA(documento);
+                            usuarioServices.deleteUsr(documento);
                             JOptionPane.showMessageDialog(null, "Agente de Atención al Paciente borrado exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                         }
                         if (usuario.getCargo().equals("Administrador")) {
-                            personalAtencionServices.deletePA(documento);
                             JOptionPane.showMessageDialog(null, "No es posible eliminar el administrador", "Error", JOptionPane.INFORMATION_MESSAGE);
                         }
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
-                    try {
-                        if (usuario.getCargo().equals("Administrador")) {
-                            //nada
-                        }
-                        else{
-                            usuarioServices.deleteUsr(documento);
-                        }
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
+
                 }
             });
 
