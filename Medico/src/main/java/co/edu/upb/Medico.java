@@ -330,22 +330,21 @@ public class Medico extends JFrame {
                 // Crear la tabla con la información de las citas del paciente
                 DefaultTableModel modeloTabla = new DefaultTableModel();
                 modeloTabla.setColumnIdentifiers(new String[]{
-                        "Día", "Médico", "Sede", "Especialidad", "Consultorio"
+                        "Día", "Médico", "Sede", "Especialidad", "Consultorio", "Asistencia"
                 });
 
                 JTable tablaCitas = new JTable(modeloTabla);
                 JScrollPane scrollPane = new JScrollPane(tablaCitas);
 
-                // Consultar la base de datos para obtener las citas del paciente
+// Consultar la base de datos para obtener las citas del paciente
                 try {
                     String queryCitas = "SELECT " +
                             "cita.fecha, " +
                             "usuario.nombre AS medico, " +
                             "sede.nombre AS sede, " +
                             "medico.Especializacion AS especialidad, " +
-                            "cita.NumHab, " +
                             "consultorio.Nombre AS consultorio, " +
-                            "cita.fecha AS hora " +
+                            "cita.asistencia " + // Agregar la columna de asistencia
                             "FROM cita " +
                             "JOIN medico ON cita.ID_Medico = medico.ID_Medico " +
                             "JOIN usuario ON medico.ID_Medico = usuario.ID " +
@@ -364,6 +363,7 @@ public class Medico extends JFrame {
                                 rs.getString("sede"), // Sede
                                 rs.getString("especialidad"), // Especialidad
                                 rs.getString("consultorio"), // Consultorio
+                                rs.getBoolean("asistencia") ? "Asistió" : "No asistió" // Estado de asistencia
                         });
                     }
 
@@ -372,6 +372,7 @@ public class Medico extends JFrame {
                     JOptionPane.showMessageDialog(frame, "Error al obtener las citas del paciente.");
                     return;
                 }
+
 
                 frame.getContentPane().add(scrollPane, BorderLayout.CENTER); // Agregar la tabla al centro
                 frame.setVisible(true); // Mostrar la ventana
@@ -522,6 +523,12 @@ public class Medico extends JFrame {
         comboBoxMedicamentos.setBounds(310, 350, 200, 40);
         panelActual.add(comboBoxMedicamentos);
 
+        JLabel lblDocumento2 = new JLabel("Medicamento");
+        lblDocumento2.setForeground(new Color(255, 255, 255));
+        lblDocumento2.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblDocumento2.setBounds(310, 300, 180, 45);
+        panelActual.add(lblDocumento2);
+
         // Crear el botón de aceptar
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -599,8 +606,9 @@ public class Medico extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     cs.modificarAsistencia(textFieldDocumentoRep.getText(), dateRep.getText(), true);
+                    JOptionPane.showMessageDialog(null, "El paciente asistió a la cita");
                 } catch (Exception ex) {
-                    
+
                 }
             }
         });

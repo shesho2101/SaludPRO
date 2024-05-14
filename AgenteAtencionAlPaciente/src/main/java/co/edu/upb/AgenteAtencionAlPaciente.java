@@ -252,56 +252,37 @@ public class AgenteAtencionAlPaciente extends JFrame {
             String[] sedes = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
             String[] opciones = {"Medicina familiar", "Fisioterapia", "Medicina interna", "Psicología"};
 
-            menuDesplegableSedes = new JComboBox<>(sedes);
-            menuDesplegableSedes.setBounds(310, 406, 180, 30);
-            panelActual.add(menuDesplegableSedes);
-
-            menuDesplegableOpciones = new JComboBox<>(opciones);
-            menuDesplegableOpciones.setBounds(310, 505, 180, 30);
-            panelActual.add(menuDesplegableOpciones);
-
-            menuDesplegableMedicos = new JComboBox<>();
-            menuDesplegableMedicos.setBounds(310, 600, 180, 34);
-            panelActual.add(menuDesplegableMedicos);
-
-            textFieldConsultorio = new JTextField();
-            textFieldConsultorio.setBounds(440, 307, 180, 34);
-            panelActual.add(textFieldConsultorio);
-
-            textFieldFecha = new JTextField();
-            textFieldFecha.setBounds(175, 307, 180, 34);
-            panelActual.add(textFieldFecha);
-
-            // Agregar el nuevo campo de texto para el documento del paciente
-            textFieldDocumentoPac = new JTextField();
-            textFieldDocumentoPac.setBounds(310, 220, 180, 34); // Ajusta la posición según sea necesario
-            panelActual.add(textFieldDocumentoPac);
-
             // Agregar etiqueta para el documento del paciente
             JLabel lblDocumentoPaciente = new JLabel("Documento Paciente");
             lblDocumentoPaciente.setForeground(Color.WHITE);
             lblDocumentoPaciente.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblDocumentoPaciente.setBounds(310, 175, 210, 45); // Ajusta la posición según sea necesario
+            lblDocumentoPaciente.setBounds(310, 150, 210, 45); // Ajusta la posición según sea necesario
             panelActual.add(lblDocumentoPaciente);
 
-            // Agregar otras etiquetas ya existentes
-            JLabel lblMedicos = new JLabel("Médico");
-            lblMedicos.setForeground(Color.WHITE);
-            lblMedicos.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblMedicos.setBounds(310, 545, 180, 45);
-            panelActual.add(lblMedicos);
-
-            JLabel lblConsultorio = new JLabel("Consultorio");
-            lblConsultorio.setForeground(Color.WHITE);
-            lblConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblConsultorio.setBounds(450, 252, 180, 45);
-            panelActual.add(lblConsultorio);
+            // Agregar el nuevo campo de texto para el documento del paciente
+            textFieldDocumentoPac = new JTextField();
+            textFieldDocumentoPac.setBounds(310, 200, 180, 34); // Ajusta la posición según sea necesario
+            panelActual.add(textFieldDocumentoPac);
 
             JLabel lblFecha = new JLabel("Fecha");
             lblFecha.setForeground(Color.WHITE);
             lblFecha.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblFecha.setBounds(200, 252, 180, 45);
+            lblFecha.setBounds(310, 250, 180, 45);
             panelActual.add(lblFecha);
+
+            textFieldFecha = new JTextField();
+            textFieldFecha.setBounds(310, 300, 180, 34);
+            panelActual.add(textFieldFecha);
+
+            JLabel lblCiudad = new JLabel("Ciudad");
+            lblCiudad.setForeground(Color.WHITE);
+            lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblCiudad.setBounds(310, 350, 180, 45);
+            panelActual.add(lblCiudad);
+
+            menuDesplegableSedes = new JComboBox<>(sedes);
+            menuDesplegableSedes.setBounds(310, 400, 180, 30);
+            panelActual.add(menuDesplegableSedes);
 
             JLabel lblEspecialidad = new JLabel("Especialidad");
             lblEspecialidad.setForeground(Color.WHITE);
@@ -309,15 +290,34 @@ public class AgenteAtencionAlPaciente extends JFrame {
             lblEspecialidad.setBounds(310, 450, 180, 45);
             panelActual.add(lblEspecialidad);
 
-            JLabel lblCiudad = new JLabel("Ciudad");
-            lblCiudad.setForeground(Color.WHITE);
-            lblCiudad.setFont(new Font("Tahoma", Font.BOLD, 20));
-            lblCiudad.setBounds(310, 351, 180, 45);
-            panelActual.add(lblCiudad);
+            menuDesplegableOpciones = new JComboBox<>(opciones);
+            menuDesplegableOpciones.setBounds(310, 500, 180, 30);
+            panelActual.add(menuDesplegableOpciones);
+
+            // Agregar otras etiquetas ya existentes
+            JLabel lblMedicos = new JLabel("Médico");
+            lblMedicos.setForeground(Color.WHITE);
+            lblMedicos.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblMedicos.setBounds(310, 550, 180, 45);
+            panelActual.add(lblMedicos);
+
+            menuDesplegableMedicos = new JComboBox<>();
+            menuDesplegableMedicos.setBounds(310, 600, 180, 34);
+            panelActual.add(menuDesplegableMedicos);
+
+            JLabel lblConsultorio = new JLabel("Consultorio");
+            lblConsultorio.setForeground(Color.WHITE);
+            lblConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
+            lblConsultorio.setBounds(310, 650, 180, 45);
+            panelActual.add(lblConsultorio);
+
+            textFieldConsultorio = new JTextField();
+            textFieldConsultorio.setBounds(310, 700, 180, 34);
+            panelActual.add(textFieldConsultorio);
 
             btnAgendarCita = new JButton("Agendar cita");
             btnAgendarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnAgendarCita.setBounds(310, 700, 180, 40);
+            btnAgendarCita.setBounds(310, 750, 180, 40);
             panelActual.add(btnAgendarCita);
 
             // Eventos para actualizar el menú de médicos
@@ -373,7 +373,6 @@ public class AgenteAtencionAlPaciente extends JFrame {
         }
     }
 
-
     private void actualizarMenuDesplegableMedicos(String ciudad, String especialidad) {
         try {
             List<Medico> medicos = ms.listMed();
@@ -418,11 +417,12 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelReprogramarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
+            dt.setNumRows(0);
             limpiarPanel(panelActual);
 
             panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelActual.setLayout(null);
-            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBounds(800, 0, 850, 900);  // Cambiado el límite inferior a 0
 
             btnCancelarCita.setText("Buscar citas");
             btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -468,12 +468,12 @@ public class AgenteAtencionAlPaciente extends JFrame {
     private void cargarPanelCancelarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
+            dt.setNumRows(0);
             limpiarPanel(panelActual);
-
 
             panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelActual.setLayout(null);
-            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBounds(800, 0, 850, 900);  // Cambiado el límite inferior a 0
 
             btnCancelarCita.setText("Buscar citas");
             btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -510,7 +510,7 @@ public class AgenteAtencionAlPaciente extends JFrame {
         String[] nombreC = {"Numero Cita","Consultorio", "Fecha", "Asistencia"};
         dt.setColumnIdentifiers(nombreC);
         tablaCitas.setDefaultEditor(Object.class, null);
-        tablaCitas.setModel(dt);
+        tablaCitas.setModel(dt);;
         tablaCitas.getTableHeader().setReorderingAllowed(false);
         scroll.setBounds(225, 280, 350, 250);
         scroll.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -590,16 +590,16 @@ public class AgenteAtencionAlPaciente extends JFrame {
             }
         });
     }
-    
 
     private void cargarPanelActivarCita() {
         if (movimiento && panelActual != null) {
             //movimiento = false;
+            dt.setNumRows(0);
             limpiarPanel(panelActual);
             
             panelActual.setBackground(new Color(7, 29, 68)); // Cambiado a fondo claro
             panelActual.setLayout(null);
-            panelActual.setBounds(800, 0, 800, 900);  // Cambiado el límite inferior a 0
+            panelActual.setBounds(800, 0, 850, 900);  // Cambiado el límite inferior a 0
             
             btnCancelarCita.setText("Buscar citas");
             btnCancelarCita.setFont(new Font("Tahoma", Font.BOLD, 20));

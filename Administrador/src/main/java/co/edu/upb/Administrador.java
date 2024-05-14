@@ -287,26 +287,26 @@ public class Administrador extends JFrame {
                     JLabel lblNombre = new JLabel("Nombre:");
                     lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblNombre.setForeground(Color.WHITE);
-                    lblNombre.setBounds(310, 80, 180, 30);
+                    lblNombre.setBounds(310, 300, 180, 30);
                     panelActual.add(lblNombre);
 
                     JTextField txtNombre = new JTextField();
-                    txtNombre.setBounds(310, 120, 180, 30);
+                    txtNombre.setBounds(310, 350, 180, 30);
                     panelActual.add(txtNombre);
 
                     JLabel lblCantidad = new JLabel("Cantidad:");
                     lblCantidad.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblCantidad.setForeground(Color.WHITE);
-                    lblCantidad.setBounds(310, 160, 180, 30);
+                    lblCantidad.setBounds(310, 400, 180, 30);
                     panelActual.add(lblCantidad);
 
                     JTextField txtCantidad = new JTextField();
-                    txtCantidad.setBounds(310, 200, 180, 30);
+                    txtCantidad.setBounds(310, 450, 180, 30);
                     panelActual.add(txtCantidad);
 
                     JButton btnGuardar = new JButton("Guardar");
                     btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
-                    btnGuardar.setBounds(310, 260, 180, 40);
+                    btnGuardar.setBounds(310, 500, 180, 40);
                     panelActual.add(btnGuardar);
 
                     btnGuardar.addActionListener(new ActionListener() {
@@ -346,16 +346,16 @@ public class Administrador extends JFrame {
                     JLabel lblCodigo = new JLabel("Código del medicamento:");
                     lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblCodigo.setForeground(Color.WHITE);
-                    lblCodigo.setBounds(270, 80, 280, 30);
+                    lblCodigo.setBounds(270, 300, 280, 30);
                     panelActual.add(lblCodigo);
 
                     JTextField txtCodigo = new JTextField();
-                    txtCodigo.setBounds(310, 120, 180, 30);
+                    txtCodigo.setBounds(310, 350, 180, 30);
                     panelActual.add(txtCodigo);
 
                     JButton btnBuscar = new JButton("Buscar");
                     btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
-                    btnBuscar.setBounds(310, 180, 180, 40);
+                    btnBuscar.setBounds(310, 400, 180, 40);
                     panelActual.add(btnBuscar);
 
                     btnBuscar.addActionListener(new ActionListener() {
@@ -377,16 +377,16 @@ public class Administrador extends JFrame {
 
                                 // Modificar detalles del medicamento
                                 JTextField txtNuevoNombre = new JTextField(medicamento.getNombre());
-                                txtNuevoNombre.setBounds(310, 260, 180, 30);
+                                txtNuevoNombre.setBounds(310, 500, 180, 30);
                                 panelActual.add(txtNuevoNombre);
 
                                 JTextField txtNuevaCantidad = new JTextField(String.valueOf(medicamento.getCantidad()));
-                                txtNuevaCantidad.setBounds(310, 320, 180, 30);
+                                txtNuevaCantidad.setBounds(310, 550, 180, 30);
                                 panelActual.add(txtNuevaCantidad);
 
                                 JButton btnGuardarCambios = new JButton("Guardar Cambios");
                                 btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
-                                btnGuardarCambios.setBounds(275, 380, 250, 40);
+                                btnGuardarCambios.setBounds(275, 600, 250, 40);
                                 panelActual.add(btnGuardarCambios);
 
                                 btnGuardarCambios.addActionListener(new ActionListener() {
@@ -426,16 +426,16 @@ public class Administrador extends JFrame {
                     JLabel lblCodigo = new JLabel("Código del medicamento:");
                     lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblCodigo.setForeground(Color.WHITE);
-                    lblCodigo.setBounds(270, 80, 280, 30);
+                    lblCodigo.setBounds(270, 350, 280, 30);
                     panelActual.add(lblCodigo);
 
                     JTextField txtCodigo = new JTextField();
-                    txtCodigo.setBounds(310, 120, 180, 30);
+                    txtCodigo.setBounds(310, 400, 180, 30);
                     panelActual.add(txtCodigo);
 
                     JButton btnBorrarMedicamento = new JButton("Borrar");
                     btnBorrarMedicamento.setFont(new Font("Tahoma", Font.BOLD, 20));
-                    btnBorrarMedicamento.setBounds(310, 180, 180, 40);
+                    btnBorrarMedicamento.setBounds(310, 450, 180, 40);
                     panelActual.add(btnBorrarMedicamento);
 
                     btnBorrarMedicamento.addActionListener(new ActionListener() {
@@ -560,26 +560,26 @@ public class Administrador extends JFrame {
         JLabel lblNombre = new JLabel("Nombre del Consultorio:");
         lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblNombre.setForeground(Color.WHITE);
-        lblNombre.setBounds(310, 30, 250, 34);
+        lblNombre.setBounds(310, 300, 250, 34);
         panelActual.add(lblNombre);
 
         JTextField textFieldNombre = new JTextField();
-        textFieldNombre.setBounds(310, 80, 250, 30);
+        textFieldNombre.setBounds(310, 350, 250, 30);
         panelActual.add(textFieldNombre);
 
         JLabel lblSede = new JLabel("Sede del Consultorio:");
         lblSede.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblSede.setForeground(Color.WHITE);
-        lblSede.setBounds(310, 130, 250, 34);
+        lblSede.setBounds(310, 400, 250, 34);
         panelActual.add(lblSede);
 
         JTextField textFieldSede = new JTextField();
-        textFieldSede.setBounds(310, 180, 250, 30);
+        textFieldSede.setBounds(310, 450, 250, 30);
         panelActual.add(textFieldSede);
 
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnGuardar.setBounds(310, 230, 180, 40);
+        btnGuardar.setBounds(345, 500, 180, 40);
         panelActual.add(btnGuardar);
 
         btnGuardar.addActionListener(e -> {
@@ -612,16 +612,16 @@ public class Administrador extends JFrame {
         JLabel lblNumHab = new JLabel("Número de Habitación:");
         lblNumHab.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblNumHab.setForeground(Color.WHITE);
-        lblNumHab.setBounds(310, 30, 250, 34);
+        lblNumHab.setBounds(310, 300, 250, 34);
         panelActual.add(lblNumHab);
 
         JTextField textFieldNumHab = new JTextField();
-        textFieldNumHab.setBounds(310, 80, 250, 30);
+        textFieldNumHab.setBounds(310, 350, 250, 30);
         panelActual.add(textFieldNumHab);
 
         JButton btnBuscar = new JButton("Buscar");
         btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnBuscar.setBounds(310, 120, 180, 40);
+        btnBuscar.setBounds(340, 400, 180, 40);
         panelActual.add(btnBuscar);
 
         btnBuscar.addActionListener(e -> {
@@ -640,21 +640,19 @@ public class Administrador extends JFrame {
                     return;
                 }
 
-                limpiarPanel(panelActual);
-
                 JLabel lblNuevoNombre = new JLabel("Nuevo Nombre:");
                 lblNuevoNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
                 lblNuevoNombre.setForeground(Color.WHITE);
-                lblNuevoNombre.setBounds(310, 180, 250, 34);
+                lblNuevoNombre.setBounds(310, 470, 250, 34);
                 panelActual.add(lblNuevoNombre);
 
                 JTextField textFieldNuevoNombre = new JTextField(consultorio.getNombre());
-                textFieldNuevoNombre.setBounds(310, 230, 250, 30);
+                textFieldNuevoNombre.setBounds(310, 520, 250, 30);
                 panelActual.add(textFieldNuevoNombre);
 
                 JButton btnGuardar = new JButton("Guardar Cambios");
                 btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 20));
-                btnGuardar.setBounds(310, 280, 250, 40);
+                btnGuardar.setBounds(310, 570, 250, 40);
                 panelActual.add(btnGuardar);
 
                 btnGuardar.addActionListener(a -> {
@@ -692,16 +690,16 @@ public class Administrador extends JFrame {
         JLabel lblNumHab = new JLabel("Número de Habitación:");
         lblNumHab.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblNumHab.setForeground(Color.WHITE);
-        lblNumHab.setBounds(310, 30, 250, 34);
+        lblNumHab.setBounds(310, 350, 250, 34);
         panelActual.add(lblNumHab);
 
         JTextField textFieldNumHab = new JTextField();
-        textFieldNumHab.setBounds(310, 80, 250, 30);
+        textFieldNumHab.setBounds(310, 400, 250, 30);
         panelActual.add(textFieldNumHab);
 
         JButton btnBorrarConsultorio = new JButton("Borrar Consultorio");
         btnBorrarConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnBorrarConsultorio.setBounds(310, 120, 250, 40);
+        btnBorrarConsultorio.setBounds(310, 450, 250, 40);
         panelActual.add(btnBorrarConsultorio);
 
         btnBorrarConsultorio.addActionListener(e -> {
@@ -874,70 +872,70 @@ public class Administrador extends JFrame {
                             JLabel lblNombreMedico = new JLabel("Nombre:");
                             lblNombreMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblNombreMedico.setForeground(Color.WHITE);
-                            lblNombreMedico.setBounds(310, 30, 180, 34);
+                            lblNombreMedico.setBounds(310, 80, 180, 34);
                             panelActual.add(lblNombreMedico);
 
                             JTextField textFieldNombreMedico = new JTextField();
-                            textFieldNombreMedico.setBounds(310, 80, 180, 30);
+                            textFieldNombreMedico.setBounds(310, 130, 180, 30);
                             panelActual.add(textFieldNombreMedico);
 
                             JLabel lblApellidoMedico = new JLabel("Apellido:");
                             lblApellidoMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblApellidoMedico.setForeground(Color.WHITE);
-                            lblApellidoMedico.setBounds(310, 130, 180, 34);
+                            lblApellidoMedico.setBounds(310, 180, 180, 34);
                             panelActual.add(lblApellidoMedico);
 
                             JTextField textFieldApellidoMedico = new JTextField();
-                            textFieldApellidoMedico.setBounds(310, 180, 180, 30);
+                            textFieldApellidoMedico.setBounds(310, 230, 180, 30);
                             panelActual.add(textFieldApellidoMedico);
 
                             JLabel lblDocumentoMedico = new JLabel("Documento:");
                             lblDocumentoMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblDocumentoMedico.setForeground(Color.WHITE);
-                            lblDocumentoMedico.setBounds(310, 230, 180, 34);
+                            lblDocumentoMedico.setBounds(310, 280, 180, 34);
                             panelActual.add(lblDocumentoMedico);
 
-                            JPasswordField passwordFieldDocumentoMedico = new JPasswordField();
-                            passwordFieldDocumentoMedico.setBounds(310, 280, 180, 30);
+                            JTextField passwordFieldDocumentoMedico = new JTextField();
+                            passwordFieldDocumentoMedico.setBounds(310, 330, 180, 30);
                             panelActual.add(passwordFieldDocumentoMedico);
 
                             JLabel lblEspecialidad = new JLabel("Especialidad:");
                             lblEspecialidad.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblEspecialidad.setForeground(Color.WHITE);
-                            lblEspecialidad.setBounds(310, 330, 180, 34);
+                            lblEspecialidad.setBounds(310, 380, 180, 34);
                             panelActual.add(lblEspecialidad);
 
                             String[] opciones = {"Medicina familiar", "Fisioterapia", "Medicina interna", "Psicología"};
                             JComboBox<String> menuDesplegableOpciones = new JComboBox<>(opciones);
                             menuDesplegableOpciones.setModel(new DefaultComboBoxModel<>(opciones));
-                            menuDesplegableOpciones.setBounds(310, 380, 180, 30);
+                            menuDesplegableOpciones.setBounds(310, 430, 180, 30);
                             panelActual.add(menuDesplegableOpciones);
 
                             JLabel lblSede = new JLabel("Sede:");
                             lblSede.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblSede.setForeground(Color.WHITE);
-                            lblSede.setBounds(310, 430, 180, 34);
+                            lblSede.setBounds(310, 480, 180, 34);
                             panelActual.add(lblSede);
 
                             String[] sedes = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
                             JComboBox<String> menuDesplegableSedes = new JComboBox<>(sedes);
                             menuDesplegableSedes.setModel(new DefaultComboBoxModel<>(sedes));
-                            menuDesplegableSedes.setBounds(310, 480, 180, 30);
+                            menuDesplegableSedes.setBounds(310, 530, 180, 30);
                             panelActual.add(menuDesplegableSedes);
 
                             JLabel lblConsultorio = new JLabel("Consultorio:");
                             lblConsultorio.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblConsultorio.setForeground(Color.WHITE);
-                            lblConsultorio.setBounds(310, 530, 180, 34);
+                            lblConsultorio.setBounds(310, 580, 180, 34);
                             panelActual.add(lblConsultorio);
 
                             JTextField textFieldConsultorio = new JTextField();
-                            textFieldConsultorio.setBounds(310, 580, 180, 30);
+                            textFieldConsultorio.setBounds(310, 630, 180, 30);
                             panelActual.add(textFieldConsultorio);
 
                             JButton btnAgregarMedico = new JButton("Agregar Médico");
                             btnAgregarMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
-                            btnAgregarMedico.setBounds(300, 764, 210, 40);
+                            btnAgregarMedico.setBounds(300, 690, 210, 40);
                             panelActual.add(btnAgregarMedico);
                             btnAgregarMedico.addActionListener(new ActionListener() {
                                 @Override
@@ -945,7 +943,7 @@ public class Administrador extends JFrame {
                                     // Obtener valores de los campos de texto
                                     String nombreMedico = textFieldNombreMedico.getText();
                                     String apellidoMedico = textFieldApellidoMedico.getText();
-                                    String documentoMedico = new String(passwordFieldDocumentoMedico.getPassword());
+                                    String documentoMedico = new String(passwordFieldDocumentoMedico.getText());
                                     String especialidad = (String) menuDesplegableOpciones.getSelectedItem();
                                     String sede = (String) menuDesplegableSedes.getSelectedItem();
                                     String textoConsultorio = textFieldConsultorio.getText(); // Obteniendo el valor del consultorio
@@ -975,48 +973,48 @@ public class Administrador extends JFrame {
                             JLabel lblNombreAgente = new JLabel("Nombre:");
                             lblNombreAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblNombreAgente.setForeground(Color.WHITE);
-                            lblNombreAgente.setBounds(310, 30, 180, 34);
+                            lblNombreAgente.setBounds(310, 250, 180, 34);
                             panelActual.add(lblNombreAgente);
 
                             JTextField textFieldNombreAgente = new JTextField();
-                            textFieldNombreAgente.setBounds(310, 80, 180, 30);
+                            textFieldNombreAgente.setBounds(310, 300, 180, 30);
                             panelActual.add(textFieldNombreAgente);
 
                             JLabel lblApellidoAgente = new JLabel("Apellido:");
                             lblApellidoAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblApellidoAgente.setForeground(Color.WHITE);
-                            lblApellidoAgente.setBounds(310, 130, 180, 34);
+                            lblApellidoAgente.setBounds(310, 350, 180, 34);
                             panelActual.add(lblApellidoAgente);
 
                             JTextField textFieldApellidoAgente = new JTextField();
-                            textFieldApellidoAgente.setBounds(310, 180, 180, 30);
+                            textFieldApellidoAgente.setBounds(310, 400, 180, 30);
                             panelActual.add(textFieldApellidoAgente);
 
                             JLabel lblDocumentoAgente = new JLabel("Documento:");
                             lblDocumentoAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblDocumentoAgente.setForeground(Color.WHITE);
-                            lblDocumentoAgente.setBounds(310, 230, 180, 34);
+                            lblDocumentoAgente.setBounds(310, 450, 180, 34);
                             panelActual.add(lblDocumentoAgente);
 
                             JTextField passwordFieldDocumentoAgente = new JTextField();
-                            passwordFieldDocumentoAgente.setBounds(310, 280, 180, 30);
+                            passwordFieldDocumentoAgente.setBounds(310, 500, 180, 30);
                             panelActual.add(passwordFieldDocumentoAgente);
 
                             JLabel lblSede1 = new JLabel("Sede:");
                             lblSede1.setFont(new Font("Tahoma", Font.BOLD, 20));
                             lblSede1.setForeground(Color.WHITE);
-                            lblSede1.setBounds(310, 330, 180, 34);
+                            lblSede1.setBounds(310, 550, 180, 34);
                             panelActual.add(lblSede1);
 
                             String[] sedes1 = {"Bucaramanga", "Floridablanca", "Piedecuesta", "Girón", "Lebrija", "Pamplona", "Rionegro"};
                             JComboBox<String> menuDesplegableSedes1 = new JComboBox<>(sedes1);
                             menuDesplegableSedes1.setModel(new DefaultComboBoxModel<>(sedes1));
-                            menuDesplegableSedes1.setBounds(310, 380, 180, 30);
+                            menuDesplegableSedes1.setBounds(310, 600, 180, 30);
                             panelActual.add(menuDesplegableSedes1);
 
                             JButton btnAgregarAgente = new JButton("Agregar");
                             btnAgregarAgente.setFont(new Font("Tahoma", Font.BOLD, 20));
-                            btnAgregarAgente.setBounds(310, 430, 180, 40);
+                            btnAgregarAgente.setBounds(310, 650, 180, 40);
                             panelActual.add(btnAgregarAgente);
                             btnAgregarAgente.addActionListener(new ActionListener() {
                                 @Override
@@ -1068,16 +1066,16 @@ public class Administrador extends JFrame {
         JLabel lblDocumento = new JLabel("Documento del usuario:");
         lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblDocumento.setForeground(Color.WHITE);
-        lblDocumento.setBounds(285, 30, 250, 34);
+        lblDocumento.setBounds(285, 350, 250, 34);
         panelActual.add(lblDocumento);
 
         JTextField textFieldDocumento = new JTextField();
-        textFieldDocumento.setBounds(310, 80, 180, 30);
+        textFieldDocumento.setBounds(310, 400, 180, 30);
         panelActual.add(textFieldDocumento);
 
         JButton btnBuscar = new JButton("Buscar");
         btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnBuscar.setBounds(310, 120, 180, 40);
+        btnBuscar.setBounds(310, 450, 180, 40);
         panelActual.add(btnBuscar);
 
         btnBuscar.addActionListener(e -> {
@@ -1102,38 +1100,38 @@ public class Administrador extends JFrame {
                 JLabel lblNuevoNombre = new JLabel("Nuevo nombre:");
                 lblNuevoNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
                 lblNuevoNombre.setForeground(Color.WHITE);
-                lblNuevoNombre.setBounds(310, 180, 180, 34);
+                lblNuevoNombre.setBounds(310, 300, 180, 34);
                 panelActual.add(lblNuevoNombre);
 
                 JTextField textFieldNuevoNombre = new JTextField(usuario.getNombre());
-                textFieldNuevoNombre.setBounds(310, 230, 180, 30);
+                textFieldNuevoNombre.setBounds(310, 350, 180, 30);
                 panelActual.add(textFieldNuevoNombre);
 
                 JLabel lblNuevoApellido = new JLabel("Nuevo apellido:");
                 lblNuevoApellido.setFont(new Font("Tahoma", Font.BOLD, 20));
                 lblNuevoApellido.setForeground(Color.WHITE);
-                lblNuevoApellido.setBounds(310, 280, 180, 34);
+                lblNuevoApellido.setBounds(310, 400, 180, 34);
                 panelActual.add(lblNuevoApellido);
 
                 JTextField textFieldNuevoApellido = new JTextField(usuario.getApellidos());
-                textFieldNuevoApellido.setBounds(310, 330, 180, 30);
+                textFieldNuevoApellido.setBounds(310, 450, 180, 30);
                 panelActual.add(textFieldNuevoApellido);
 
                 JLabel lblNuevoCargo = new JLabel("Nuevo cargo:");
                 lblNuevoCargo.setFont(new Font("Tahoma", Font.BOLD, 20));
                 lblNuevoCargo.setForeground(Color.WHITE);
-                lblNuevoCargo.setBounds(310, 380, 180, 34);
+                lblNuevoCargo.setBounds(310, 500, 180, 34);
                 panelActual.add(lblNuevoCargo);
 
                 // Menú desplegable para seleccionar el cargo
                 JComboBox<String> comboBoxNuevoCargo = new JComboBox<>(new String[]{"Médico", "Agente de Atención al Paciente"});
                 comboBoxNuevoCargo.setSelectedItem(usuario.getCargo()); // Seleccionar el cargo actual
-                comboBoxNuevoCargo.setBounds(310, 430, 180, 30);
+                comboBoxNuevoCargo.setBounds(310, 550, 180, 30);
                 panelActual.add(comboBoxNuevoCargo);
 
                 JButton btnGuardarCambios = new JButton("Guardar Cambios");
                 btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
-                btnGuardarCambios.setBounds(280, 480, 230, 40);
+                btnGuardarCambios.setBounds(280, 600, 230, 40);
                 panelActual.add(btnGuardarCambios);
 
                 btnGuardarCambios.addActionListener(a -> {
@@ -1179,16 +1177,16 @@ public class Administrador extends JFrame {
             JLabel lblDocumentoMedico = new JLabel("Documento:");
             lblDocumentoMedico.setFont(new Font("Tahoma", Font.BOLD, 20));
             lblDocumentoMedico.setForeground(Color.WHITE);
-            lblDocumentoMedico.setBounds(310, 230, 180, 34);
+            lblDocumentoMedico.setBounds(310, 350, 180, 34);
             panelActual.add(lblDocumentoMedico);
 
             JTextField passwordFieldDocumento = new JTextField();
-            passwordFieldDocumento.setBounds(310, 280, 180, 30);
+            passwordFieldDocumento.setBounds(310, 400, 180, 30);
             panelActual.add(passwordFieldDocumento);
 
             JButton btnEliminarUsuario = new JButton("Eliminar usuario");
             btnEliminarUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
-            btnEliminarUsuario.setBounds(290, 330, 220, 40);
+            btnEliminarUsuario.setBounds(290, 450, 220, 40);
             panelActual.add(btnEliminarUsuario);
 
             btnEliminarUsuario.addActionListener(new ActionListener() {
@@ -1373,7 +1371,7 @@ public class Administrador extends JFrame {
         JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento (YYYY-MM-DD):");
         lblFechaNacimiento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblFechaNacimiento.setForeground(Color.WHITE);
-        lblFechaNacimiento.setBounds(310, 330, 380, 34); // Posición y tamaño
+        lblFechaNacimiento.setBounds(220, 330, 380, 34); // Posición y tamaño
         panelActual.add(lblFechaNacimiento);
 
         JTextField textFieldFechaNacimiento = new JTextField();
@@ -1466,16 +1464,16 @@ public class Administrador extends JFrame {
         JLabel lblDocumento = new JLabel("Documento del paciente:");
         lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblDocumento.setForeground(Color.WHITE);
-        lblDocumento.setBounds(310, 30, 250, 34); // Posición y tamaño
+        lblDocumento.setBounds(280, 200, 270, 34); // Posición y tamaño
         panelActual.add(lblDocumento);
 
         JTextField textFieldDocumento = new JTextField();
-        textFieldDocumento.setBounds(310, 80, 180, 30); // Posición y tamaño
+        textFieldDocumento.setBounds(310, 250, 180, 30); // Posición y tamaño
         panelActual.add(textFieldDocumento);
 
         JButton btnBuscar = new JButton("Buscar");
         btnBuscar.setFont(new Font("Tahoma", Font.BOLD, 20));
-        btnBuscar.setBounds(310, 120, 180, 40); // Posición y tamaño
+        btnBuscar.setBounds(310, 300, 180, 40); // Posición y tamaño
         panelActual.add(btnBuscar);
 
         btnBuscar.addActionListener(new ActionListener() {
@@ -1496,40 +1494,38 @@ public class Administrador extends JFrame {
                         return;
                     }
 
-                    limpiarPanel(panelActual); // Limpia el panel para mostrar la información del paciente
-
                     JLabel lblNombre = new JLabel("Nuevo nombre:");
                     lblNombre.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblNombre.setForeground(Color.WHITE);
-                    lblNombre.setBounds(310, 180, 180, 34); // Posición y tamaño
+                    lblNombre.setBounds(310, 360, 180, 34); // Posición y tamaño
                     panelActual.add(lblNombre);
 
                     JTextField textFieldNuevoNombre = new JTextField(paciente.getUsr().getNombre());
-                    textFieldNuevoNombre.setBounds(310, 230, 180, 30); // Posición y tamaño
+                    textFieldNuevoNombre.setBounds(310, 410, 180, 30); // Posición y tamaño
                     panelActual.add(textFieldNuevoNombre);
 
                     JLabel lblCorreo = new JLabel("Nuevo correo:");
                     lblCorreo.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblCorreo.setForeground(Color.WHITE);
-                    lblCorreo.setBounds(310, 280, 180, 34); // Posición y tamaño
+                    lblCorreo.setBounds(310, 460, 180, 34); // Posición y tamaño
                     panelActual.add(lblCorreo);
 
                     JTextField textFieldNuevoCorreo = new JTextField(paciente.getCorreo());
-                    textFieldNuevoCorreo.setBounds(310, 330, 180, 30); // Posición y tamaño
+                    textFieldNuevoCorreo.setBounds(310, 510, 180, 30); // Posición y tamaño
                     panelActual.add(textFieldNuevoCorreo);
 
                     JLabel lblTelefono = new JLabel("Nuevo teléfono:");
                     lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 20));
                     lblTelefono.setForeground(Color.WHITE);
-                    lblTelefono.setBounds(310, 380, 180, 34); // Posición y tamaño
+                    lblTelefono.setBounds(310, 560, 180, 34); // Posición y tamaño
                     panelActual.add(lblTelefono);
 
                     JTextField textFieldNuevoTelefono = new JTextField(paciente.getTelefono());
-                    textFieldNuevoTelefono.setBounds(310, 430, 180, 30); // Posición y tamaño
+                    textFieldNuevoTelefono.setBounds(310, 610, 180, 30); // Posición y tamaño
                     panelActual.add(textFieldNuevoTelefono);
 
                     JButton btnGuardarCambios = new JButton("Guardar Cambios");
-                    btnGuardarCambios.setBounds(310, 480, 180, 40); // Posición y tamaño
+                    btnGuardarCambios.setBounds(290, 660, 210, 40); // Posición y tamaño
                     btnGuardarCambios.setFont(new Font("Tahoma", Font.BOLD, 20));
                     panelActual.add(btnGuardarCambios);
 
@@ -1579,7 +1575,7 @@ public class Administrador extends JFrame {
         JLabel lblDocumento = new JLabel("Documento del paciente:");
         lblDocumento.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblDocumento.setForeground(Color.WHITE);
-        lblDocumento.setBounds(305, 400, 250, 34);
+        lblDocumento.setBounds(300, 400, 270, 34);
         panelActual.add(lblDocumento);
 
         JTextField textFieldDocumento = new JTextField();
